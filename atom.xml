@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2012-08-10T00:02:59+02:00</updated>
+  <updated>2012-08-10T12:05:51+02:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Stefano Gualandi]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
