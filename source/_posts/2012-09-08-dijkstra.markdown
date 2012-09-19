@@ -11,17 +11,15 @@ published: true
 table { width:100%; }
 thead {
    background-color: rgba(0,0,255,0.3);
-color: black;
-       text-indent: 14px;
-       text-align: left;
+   color: black;
+   text-indent: 14px;
+   text-align: left;
 }
 td { padding:4px; }
-tbody tr:nth-child(odd) {
-   background-color: rgba(0, 0, 100, 0.2); /* green, 10% alpha */
-}
-tbody tr:nth-child(even) {
-   background-color: rgba(0, 0, 100, 0.1); /* red, 30% alpha */
-}
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
 </style>
 
 Here we go, my first blog entry, ever. Let start with two short quizzes.
@@ -238,7 +236,7 @@ If you have any comment or criticism, do not hesitate to comment below.
 
 1. <p> Pohl, I.
    <span class="title">Bi-directional and heuristic search in path problems</span>. 
-   <span class="journal">Department of Computer Science, Stanford University</span>, 1969
+   Department of Computer Science, Stanford University, 1969.
    <a href="http://www.slac.stanford.edu/cgi-wrap/getdoc/slac-r-104.pdf">[pdf]</a></p>
 
 2. <p>Sniedovich, M.
@@ -247,7 +245,7 @@ If you have any comment or criticism, do not hesitate to comment below.
    <a href="http://oxygene.ibspan.waw.pl:3000/contents/export?filename=Sniedovich.pdf">[pdf]</a></p>
 
 3. <p>Dantzig, G.B.
-   <span class="title">Linear Programming and Extensions</span>
+   <span class="title">Linear Programming and Extensions</span>.
    Princeton University Press, Princeton, NJ, 1962.</p>
 
 4. <p>Delling, D. and Sanders, P. and Schultes, D. and Wagner, D.
@@ -257,6 +255,6 @@ If you have any comment or criticism, do not hesitate to comment below.
    <a href="http://dx.doi.org/10.1007/978-3-642-02094-0_7">[doi]</a></p>
 
 5. <p>Goldberg, A.V. and Harrelson, C.
-   <span class="title">Computing the shortest path: A search meets graph theory</span>.
+   <span class="title">Computing the shortest path: A-star search meets graph theory</span>.
    <span class="journal">Proc. of the sixteenth annual ACM-SIAM symposium on Discrete algorithms</span>, 156-165, 2005.
    <a href="http://http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.136.1062&rep=rep1&type=pdf/">[pdf]</a></p>
