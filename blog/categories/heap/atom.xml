@@ -4,7 +4,7 @@
   <title><![CDATA[Category: heap | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/blog/categories/heap/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2012-09-19T16:26:57+02:00</updated>
+  <updated>2012-09-19T16:33:35+02:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -164,7 +164,7 @@ The graphs are:</p>
 </ol>
 
 <p>For each graph, 50 queries between different pairs of source and destination nodes are performed.
-The table below reports the average and standard deviations (in round brackets) of query times.
+The table below reports the average of query times (total time divided by query numbers).
 The entries in bold highlight the shortest time per row.</p>
 
 <table>
