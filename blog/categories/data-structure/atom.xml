@@ -4,7 +4,7 @@
   <title><![CDATA[Category: data structure | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/blog/categories/data-structure/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2012-09-19T16:48:48+02:00</updated>
+  <updated>2012-09-19T17:15:16+02:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -43,7 +43,7 @@ tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
 
 <p><strong>2. Which is the best C++ implementation of Dijkstra’s algorithm among the following?</strong><br />
 [a] The <a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a><br />
-[b] The COIN-OR Lemon Graph Library <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon</a><br />
+[b] The <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon Graph Library</a><br />
 [c] The <a href="http://code.google.com/p/or-tools/">Google OrTools</a><br />
 [d] Hei dude! We can do better!!!  </p>
 
