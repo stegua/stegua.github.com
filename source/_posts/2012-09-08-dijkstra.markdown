@@ -22,7 +22,7 @@ tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
 .journal { font-style: italic; }
 </style>
 
-Here we go, my first blog entry, ever. Let start with two short quizzes.
+Here we go, my first blog entry, ever. Let's start with two short quizzes.
 
 **1. The well known Dijkstra's algorithm is:**  
 [a]  A greedy algorithm  
@@ -43,7 +43,7 @@ If you are curious to learn more about the _classification_ of the Dijkstra's al
 please consider reading [1] and [2]. Honestly, I did not know that the algorithm was independently discovered by Dantzig [3] as a special
 case of Linear Programming. 
 However, Dantzig is credited for the first version of the bidirectional 
-Dijkstra's algorithm (should we called it **Dantzig's algorithm**?), which is nowadays the most performing
+Dijkstra's algorithm (should we called it **Dantzig's algorithm**?), which is nowadays the best performing
 algorithm on general graphs.
 The bidirectional Dijkstra's algorithm is used as benchmark to measure the speed-up of modern specialized
 shortest path algorithms for road networks [4,5], those algorithms that are implemented, for instance, in our
@@ -101,7 +101,7 @@ The queue has to support three operations: *push*, *update*, and *extract-min*.
 The type of priority queue used determines the worst-case complexity of the Dijkstra's algorithm.
 Theoretically, the best strongly polynomial worst-case complexity is achieved via a **Fibonacci heap**. 
 On road networks, the Multi Bucket heap yields a weakly polynomial worst-case complexity that
-is more efficient in practice. Unfortunately, the Fibonacci Heap is a rather complex data structure,
+is more efficient in practice [4,5]. Unfortunately, the Fibonacci Heap is a rather complex data structure,
 and lazy implementations end up in using a simpler Binomial Heap.
 
 The good news is that the Boost Library from version 1.49 has a [Heap library](http://www.boost.org/doc/libs/1_51_0/doc/html/heap.html).
@@ -115,10 +115,11 @@ where all arc lengths are non negative, this is not a problem: we can store the 
 the distance changed in sign (sorry for the rough explanation, but if you are _really_ intrested it is better to read directly the source code).
 
 The big advantage of **boost::heap** is that it allows to program Dijkstra once, and to compile it
-with different heaps via templates.
+with different heaps via templates. If you wonder why the Boost Graph Library does not use boost::heap,
+well, the reason is that BGL was implemented a few years ago, while boost::heap appeared this year.
 
 ## Benchmarking on Road Networks
-Here is the point that maybe interest you the most: can we do better than well-reputed C++ graph libraries?
+Here is the point that maybe interests you the most: can we do better than well-reputed C++ graph libraries?
 
 I have tried three graph libraries: 
 [Boost Graph Library (BGL)](http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html) v1.51, 
@@ -151,13 +152,13 @@ For each graph, 50 queries between different pairs of source and destination nod
 The table below reports the average and standard deviations (in round brackets) of query times.
 The entries in bold highlight the shortest time per row.
 
-|---------|--------------------|-----------------|----------------|----------------  
-| Graph   |  MyGraph           |  BGL            |    Lemon       |   OrTools        
-|:--------|:------------------:|:---------------:|:--------------:|:--------------:  
-| Rand 1  | **0.0052 (0.002)** |  0.0059 (0.000) | 0.0074 (0.003) | 1.2722 (0.552)   
-| Rand 2  | **0.0134 (0.005)** |  0.0535 (0.000) | 0.0706 (0.036) | 1.6128 (0.714)   
-| Rand 3  | **0.0705 (0.039)** |  0.5276 (0.002) | 0.7247 (0.401) | 4.2535 (0.688)   
-|---------|--------------------|-----------------|----------------|----------------  
+|---------|------------|---------|---------|---------  
+| Graph   |  MyGraph   |  BGL    |  Lemon  | OrTools        
+|:--------|:----------:|:-------:|:-------:|:--------:  
+| Rand 1  | **0.0052** |  0.0059 | 0.0074  |  1.2722   
+| Rand 2  | **0.0134** |  0.0535 | 0.0706  |  1.6128   
+| Rand 3  | **0.0705** |  0.5276 | 0.7247  |  4.2535   
+|---------|------------|---------|---------|---------  
 
 <br>
 In these tests, it looks like my implementation is the winner... wow!
@@ -192,7 +193,7 @@ This table below shows the average query time for the standard implementations t
 
 <br>
 From this table, BGL and my implementation are equally good, while Lemon comes after.
-What happen if we use a diffent type of heap?
+What happen does it happen if we use a diffent type of heap?
 
 This second table shows the average query time for the Lemon graph library with a specialized 
 [Binary Heap](http://lemon.cs.elte.hu/pub/doc/latest/a00048.html) implementation,
@@ -228,6 +229,7 @@ Using an existing efficient heap data structure, it is easy to implement an **"e
 
 However, if you have spare time, or you need to solve shortest path problems on a specific type of graphs (e.g., road networks),
 you might give a try with existing graph libraries, before investing developing time in your own implementation.
+In addition, be sure to read [4] and the references therein contained.
 
 All the code I have used to write this post is available on [github](https://github.com/stegua/MyBlogEntries/tree/master/Dijkstra). 
 If you have any comment or criticism, do not hesitate to comment below.
