@@ -32,7 +32,7 @@ Here we go, my first blog entry, ever. Let's start with two short quizzes.
 
 **2. Which is the best C++ implementation of Dijkstra's algorithm among the following?**  
 [a] The [Boost Graph Library (BGL)](http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html)  
-[b] The COIN-OR Lemon Graph Library [COIN-OR Lemon](http://lemon.cs.elte.hu/trac/lemon)  
+[b] The [COIN-OR Lemon Graph Library](http://lemon.cs.elte.hu/trac/lemon)  
 [c] The [Google OrTools](http://code.google.com/p/or-tools/)  
 [d] Hei dude! We can do better!!!  
 
