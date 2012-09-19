@@ -149,7 +149,7 @@ The graphs are:
 3. **Rand 3**: with _n_=10000, _m_=10000000, _d_=0.1
 
 For each graph, 50 queries between different pairs of source and destination nodes are performed.
-The table below reports the average and standard deviations (in round brackets) of query times.
+The table below reports the average of query times (total time divided by query numbers).
 The entries in bold highlight the shortest time per row.
 
 |---------|------------|---------|---------|---------  
