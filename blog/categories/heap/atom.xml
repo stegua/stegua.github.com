@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: heap | Spaghetti Optimization]]></title>
+  <link href="http://stegua.github.com/blog/categories/heap/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
   <updated>2012-09-19T14:24:03+02:00</updated>
   <id>http://stegua.github.com/</id>
@@ -457,7 +457,7 @@ If you have any comment or criticism, do not hesitate to comment below.</p>
   </li>
   <li>
     <p>Sniedovich, M.
-<span class="title">Dijkstra&#8217;s algorithm revisited: the dynamic programming connexion</span>.
+<span class="title">Dijkstra's algorithm revisited: the dynamic programming connexion</span>.
 <span class="journal">Control and cybernetics</span> vol. 35(3), pages 599-620, 2006.
 <a href="http://oxygene.ibspan.waw.pl:3000/contents/export?filename=Sniedovich.pdf">[pdf]</a></p>
   </li>

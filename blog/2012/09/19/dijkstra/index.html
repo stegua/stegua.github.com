@@ -1,24 +1,117 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.com/atom.xml" rel="self"/>
-  <link href="http://stegua.github.com/"/>
-  <updated>2012-09-19T14:24:03+02:00</updated>
-  <id>http://stegua.github.com/</id>
-  <author>
-    <name><![CDATA[Stefano Gualandi]]></name>
-    
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Dijkstra, Dantzig, and Shortest Paths - Spaghetti Optimization</title>
+  <meta name="author" content="Stefano Gualandi">
 
   
-  <entry>
-    <title type="html"><![CDATA[Dijkstra, Dantzig, and Shortest Paths]]></title>
-    <link href="http://stegua.github.com/blog/2012/09/19/dijkstra/"/>
-    <updated>2012-09-19T22:14:00+02:00</updated>
-    <id>http://stegua.github.com/blog/2012/09/19/dijkstra</id>
-    <content type="html"><![CDATA[<style type="text/css">
+  <meta name="description" content="table { width:100%; }
+thead { background-color: rgba(0,0,255,0.3);
+color: black; text-indent: 14px; text-align: left;
+}
+td { padding:4px; }
+tbody tr &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stegua.github.com/blog/2012/09/19/dijkstra/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Spaghetti Optimization" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34931940-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript"
+     src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+     MathJax.Hub.Config({messageStyle: "none"})
+      </script>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Spaghetti Optimization</a></h1>
+  
+    <h2>My cookbook about Math, Algorithms, and Programming</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:stegua.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Dijkstra, Dantzig, and Shortest Paths</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-19T22:14:00+02:00" pubdate data-updated="true">Sep 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><style type="text/css">
 table { width:100%; }
 thead {
    background-color: rgba(0,0,255,0.3);
@@ -480,7 +573,164 @@ Lecture Notes in Computer Science, Volume 5515, pages 117-139, 2009.
 <a href="http://http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.136.1062&amp;rep=rep1&amp;type=pdf/">[pdf]</a></p>
   </li>
 </ol>
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-</feed>
+
+<span class="byline author vcard">Posted by <span class="fn">Stefano Gualandi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-19T22:14:00+02:00" pubdate data-updated="true">Sep 19<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/c-/'>C++</a>, <a class='category' href='/blog/categories/algorithm/'>algorithm</a>, <a class='category' href='/blog/categories/boost/'>boost</a>, <a class='category' href='/blog/categories/data-structure/'>data structure</a>, <a class='category' href='/blog/categories/duality/'>duality</a>, <a class='category' href='/blog/categories/heap/'>heap</a>, <a class='category' href='/blog/categories/implementation/'>implementation</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stegua.github.com/blog/2012/09/19/dijkstra/" data-via="" data-counturl="http://stegua.github.com/blog/2012/09/19/dijkstra/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="small"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>Post doctoral researcher at the Math Dept, University of Pavia.
+  <nav>
+  <div><a href="http://www-dimat.unipv.it/~gualandi/Home.html">My Official Home Page</a></div>
+  <div><a href="http://www-dimat.unipv.it/~gualandi/Papers.html">My Pubblications</a></div>
+  </nav>
+  </p>
+</section>
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/101441650504695542578?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/09/19/dijkstra/">Dijkstra, Dantzig, and Shortest Paths</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/stegua">@stegua</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'stegua',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Stefano Gualandi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
