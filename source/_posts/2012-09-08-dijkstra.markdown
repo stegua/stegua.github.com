@@ -193,7 +193,7 @@ This table below shows the average query time for the standard implementations t
 
 <br>
 From this table, BGL and my implementation are equally good, while Lemon comes after.
-What happen does it happen if we use a diffent type of heap?
+What would happen if we use a diffent type of heap?
 
 This second table shows the average query time for the Lemon graph library with a specialized 
 [Binary Heap](http://lemon.cs.elte.hu/pub/doc/latest/a00048.html) implementation,
