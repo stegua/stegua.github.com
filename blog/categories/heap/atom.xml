@@ -4,7 +4,7 @@
   <title><![CDATA[Category: heap | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/blog/categories/heap/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2012-09-19T14:49:24+02:00</updated>
+  <updated>2012-09-19T15:24:34+02:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -22,17 +22,15 @@
 table { width:100%; }
 thead {
    background-color: rgba(0,0,255,0.3);
-color: black;
-       text-indent: 14px;
-       text-align: left;
+   color: black;
+   text-indent: 14px;
+   text-align: left;
 }
 td { padding:4px; }
-tbody tr:nth-child(odd) {
-   background-color: rgba(0, 0, 100, 0.2); /* green, 10% alpha */
-}
-tbody tr:nth-child(even) {
-   background-color: rgba(0, 0, 100, 0.1); /* red, 30% alpha */
-}
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
 </style>
 
 <p>Here we go, my first blog entry, ever. Let start with two short quizzes.</p>
