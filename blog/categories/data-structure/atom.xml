@@ -4,7 +4,7 @@
   <title><![CDATA[Category: data structure | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/blog/categories/data-structure/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2012-09-19T16:33:35+02:00</updated>
+  <updated>2012-09-19T16:48:48+02:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -314,7 +314,7 @@ We decided to leave out OrTools since it is not very performing on very sparse g
 
 <p><br />
 From this table, BGL and my implementation are equally good, while Lemon comes after.
-What happen does it happen if we use a diffent type of heap?</p>
+What would happen if we use a diffent type of heap?</p>
 
 <p>This second table shows the average query time for the Lemon graph library with a specialized 
 <a href="http://lemon.cs.elte.hu/pub/doc/latest/a00048.html">Binary Heap</a> implementation,
