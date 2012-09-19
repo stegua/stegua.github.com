@@ -4,7 +4,7 @@
   <title><![CDATA[Category: boost | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/blog/categories/boost/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2012-09-19T15:38:33+02:00</updated>
+  <updated>2012-09-19T15:39:58+02:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -473,7 +473,7 @@ Lecture Notes in Computer Science, Volume 5515, pages 117-139, 2009.
   </li>
   <li>
     <p>Goldberg, A.V. and Harrelson, C.
-<span class="title">Computing the shortest path: A\* search meets graph theory</span>.
+<span class="title">Computing the shortest path: A-star search meets graph theory</span>.
 <span class="journal">Proc. of the sixteenth annual ACM-SIAM symposium on Discrete algorithms</span>, 156-165, 2005.
 <a href="http://http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.136.1062&amp;rep=rep1&amp;type=pdf/">[pdf]</a></p>
   </li>
