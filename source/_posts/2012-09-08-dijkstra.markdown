@@ -3,6 +3,8 @@ layout: post
 title: "Dijkstra, Dantzig, and Shortest Paths"
 date: 2012-09-19 22:14
 comments: true
+footer: true
+sharing: true
 categories: [heap, boost, C++, duality, algorithm, data structure, implementation]
 published: true
 ---
