@@ -4,7 +4,7 @@
   <title><![CDATA[Category: heap | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/blog/categories/heap/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2012-09-19T17:15:16+02:00</updated>
+  <updated>2012-09-20T09:07:14+02:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -99,7 +99,7 @@ recursive relation
 for all <script type="math/tex">j \in N</script>.
 If you are familiar with Linear Programming, you should recognize that the distance labels
 play the role of dual variable of a flow based formulation of the shortest path problem,
-and the Dijkstra’s algorithm costruct a <strong>primal</strong> solution (i.e. a path) that satisfies the <strong>dual</strong>
+and the Dijkstra’s algorithm costructs a <strong>primal</strong> solution (i.e. a path) that satisfies the <strong>dual</strong>
 constraints <script type="math/tex">d_j - d_i \leq c_{ij}</script>.</p>
 
 <h2 id="graphs-and-heaps">Graphs and Heaps</h2>
