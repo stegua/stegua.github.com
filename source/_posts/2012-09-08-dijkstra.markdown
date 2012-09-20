@@ -86,7 +86,7 @@ $$d_j = \min \{d_i + c_{ij} \mid (i,j) \in A \}$$
 for all $$j \in N$$.
 If you are familiar with Linear Programming, you should recognize that the distance labels
 play the role of dual variable of a flow based formulation of the shortest path problem,
-and the Dijkstra's algorithm costruct a **primal** solution (i.e. a path) that satisfies the **dual**
+and the Dijkstra's algorithm costructs a **primal** solution (i.e. a path) that satisfies the **dual**
 constraints $$d_j - d_i \leq c_{ij}$$.
 
 ## Graphs and Heaps
