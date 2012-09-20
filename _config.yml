@@ -59,16 +59,16 @@ page_asides: [custom/asides/about.html, asides/googleplus.html, asides/recent_po
 
 # Github repositories
 github_user: stegua
-github_repo_count: 0
+github_repo_count: 1
 github_show_profile_link: true
 github_skip_forks: true
 
 # Twitter
-twitter_user:
+twitter_user: famo2spaghi
 twitter_tweet_count: 4
-twitter_show_replies: false
+twitter_show_replies: true
 twitter_follow_button: true
-twitter_show_follower_count: false
+twitter_show_follower_count: true
 twitter_tweet_button: true
 
 # Google +1
