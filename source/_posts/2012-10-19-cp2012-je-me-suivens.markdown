@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "CP2012: Je me suivens"
+title: "CP2012: Je me souviens"
 date: 2012-10-19 13:24
 comments: true
-published: false
+published: true
 categories: [Conference report, Constraint Programming, Optimization, Smart Grids]
 sharing: true
 ---
@@ -17,7 +17,7 @@ You can find [very nice pictures](http://4c.ucc.ie/~hsimonis/CP2012/index.htm) o
 During the conference, the weather outside was pretty cold, but at the conference site
 the discussions were warm and the presentations were intriguing.
 
-In this post, I share an informal report of the conference as [_"Je me suivens"_](http://en.wikipedia.org/wiki/Je_me_souviens). 
+In this post, I share an informal report of the conference as [_"Je me souviens"_](http://en.wikipedia.org/wiki/Je_me_souviens). 
 
 ### Challenges in Smart Grids
 The invited talks were excellent and my favorite one was given by Miguel F. Anjos
