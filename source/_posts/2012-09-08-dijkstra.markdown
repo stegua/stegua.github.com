@@ -3,10 +3,9 @@ layout: post
 title: "Dijkstra, Dantzig, and Shortest Paths"
 date: 2012-09-19 22:14
 comments: true
-footer: true
-sharing: true
-categories: [heap, boost, C++, duality, algorithm, data structure, implementation]
 published: true
+categories: [heap, boost, C++, duality, algorithm, data structure, implementation]
+sharing: true
 ---
 
 <style type="text/css">
@@ -262,3 +261,5 @@ If you have any comment or criticism, do not hesitate to comment below.
    <span class="title">Computing the shortest path: A-star search meets graph theory</span>.
    <span class="journal">Proc. of the sixteenth annual ACM-SIAM symposium on Discrete algorithms</span>, 156-165, 2005.
    <a href="http://http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.136.1062&rep=rep1&type=pdf/">[pdf]</a></p>
+
+
