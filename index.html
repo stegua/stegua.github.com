@@ -162,17 +162,17 @@ Can these branch-and-cut commercial solvers be competitive on such problems? </p
 
 <h2 id="problem-overview">Problem Overview</h2>
 
-<p>Consider you are given a set of processes $P$, a set of machines $M$,
-and an initial mapping $\pi$ of each process to a single machine 
-(i.e., $\pi_p = i$ if process $p$ is initially assigned to machine $i$).
+<p>Consider you are given a set of processes <script type="math/tex">P</script>, a set of machines <script type="math/tex">M</script>,
+and an initial mapping <script type="math/tex">\pi</script> of each process to a single machine 
+(i.e., <script type="math/tex">\pi_p = i</script> if process <script type="math/tex">p</script> is initially assigned to machine <script type="math/tex">i</script>).
 Each process consumes several <em>resources</em>, e.g., CPU, memory, and bandwidth.
 In the challenge, some processes were defined to be
 <em>transient</em>: they consume resources both on the machine where they are initially located,
 and in the machine they are going to be after the reassignment.
 The problem asks to find a new assignment of processes to machines that minimizes a rather involved cost function.</p>
 
-<p>A basic ILP model will have a 0-1 variable $x_{pi}$ equals to 1 if you
-(re)assign process $p$ to machine $i$. The number of processes and the number of machines give
+<p>A basic ILP model will have a 0-1 variable <script type="math/tex">x_{pi}</script> equals to 1 if you
+(re)assign process <script type="math/tex">p</script> to machine <script type="math/tex">i</script>. The number of processes and the number of machines give
 a first clue on the size of the problem. 
 The constraints on the resource capacities yield a multi-dimensional knapsack subproblem for each machine.
 The Machine Reassignment Problem has other constraints (kind of logical 0-1 constraints), 
