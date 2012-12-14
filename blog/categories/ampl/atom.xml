@@ -4,7 +4,7 @@
   <title><![CDATA[Category: AMPL | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/blog/categories/ampl/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2012-12-13T19:21:24+01:00</updated>
+  <updated>2012-12-14T08:27:14+01:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Challenging MIPs instances]]></title>
-    <link href="http://stegua.github.com/blog/2012/12/03/challenging-mips/"/>
-    <updated>2012-12-03T18:11:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2012/12/03/challenging-mips</id>
+    <link href="http://stegua.github.com/blog/2012/12/13/challenging-mips/"/>
+    <updated>2012-12-13T18:11:00+01:00</updated>
+    <id>http://stegua.github.com/blog/2012/12/13/challenging-mips</id>
     <content type="html"><![CDATA[<style type="text/css">
 table { width:100%; }
 thead {
@@ -37,7 +37,7 @@ tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
 <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps files</a>
 along with the AMPL <a href="https://github.com/stegua/MyBlogEntries/tree/master/Roadef2012">model and data files</a> 
 I used to generate them. 
-While I like the <a href="http://miplib.zib.de/">MIPLIBs</a>, I do prefer problem libraries like the 
+While I like the <a href="http://miplib.zib.de/">MIPLIBs</a>, I do prefer problem libraries similar to the 
 <a href="http://www.csplib.org/">CSPLIB</a> where
 you get both a problem description <strong>and</strong> a set of data. This allows anyone to try
 with her new model and/or method.</p>
@@ -48,7 +48,7 @@ proposed for the <a href="http://roadef.org/content/index.htm">Roadef Challenge<
 As I wrote in a <a href="http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
 the Challenge had <strong>huge</strong> instances and a <em>micro</em> time limit of 300 seconds.
 I said <em>micro</em> because I have in mind exact methods: there is little you can do in 300 seconds when you
-have a problem with potentially as many as $50000 \times 5000$ binary variables. 
+have a problem with potentially as many as <script type="math/tex">50000 \times 5000</script> binary variables. 
 If you want to use math programming and start with the solution of a linear programming relaxation of the problem,
 you have to be careful: it might happen that you cannot even solve the LP relaxation at the root node within 300 seconds.</p>
 
@@ -194,8 +194,8 @@ and hence they are not further considered.</p>
 <p>The remaining seven instances are the challenging instances mentioned at the begging of this post.
 The instances <strong>a2-x</strong> are embarrassing: they have an UB that is far away from both the best known UB
 and the computed LB.
-Specifically, look at the instance <strong>a2-1</strong>: the best result of the challenge has value 198, value Gurobi
-(with my model) finds a solution with cost 54,350,836: you may agree that this is “<em>slightly</em>” more than 198.
+Specifically, look at the instance <strong>a2-1</strong>: the best result of the challenge has value 198, Gurobi
+(using my model) finds a solution with cost 54,350,836: you may agree that this is “<em>slightly</em>” more than 198.
 At the same time the LB is only 110. </p>
 
 <p>Note that for all the <strong>a2-x</strong> instances the number of branch-and-bound nodes is zero.
@@ -206,7 +206,7 @@ running their primal heuristics. Using CPLEX 12.5 we got pretty similar results.
 
 <h2 id="search-strategies-feasibility-vs-optimality">Search Strategies: Feasibility vs Optimality</h2>
 <p>Commercial solvers have usually a meta-parameter that controls the search focus by setting other parameters
-(but how they are precisely set is undocumented: do you know more about?).
+(how they are precisely set is undocumented: do you know more about?).
 The two basic options of this parameter are (1) to focus on looking for feasible solution
 or (2) to focus on proving optimality.
 The name of this parameter is <strong>MipEmphasis</strong> in CPLEX and <strong>MipFocus</strong> in Gurobi. 
@@ -217,7 +217,7 @@ we can wonder whether generating cuts is of any help on these instances.</p>
 
 <p>Look at the table below:
 the values of the upper bounds of instances <strong>a1-2</strong>, <strong>a1-4</strong>, and <strong>a2-3</strong> are slightly better than before: 
-this is a good news. However, for instance <strong>a2-1</strong> the upper bound is worse, and for the other three instances there is no difference. Moreover, the LB are always weaker: as expected, there is no free lunch!</p>
+this is a good news. However, for instance <strong>a2-1</strong> the upper bound is worse, and for the other three instances there is no difference. Moreover, the LBs are always weaker: as expected, there is no free lunch!</p>
 
 <table>
   <thead>
@@ -298,9 +298,9 @@ challenge as starting solution. </p>
 In addition we set the time limit to one hour. The table below gives the new results.
 With this setting we are able to “prove” near-optimality of instance <strong>a1-2</strong>, and we reduce
 significantly the gap of instance <strong>a2-4</strong>.
-However, the primal solutions are never improved by the solver: this means that we have not improved the results
-obtained in the qulification phase of the challenge.
-Note also that the number of nodes explored is still rather smalli despite the longer timeout.</p>
+However, the solver never improves the primal solutions: this means that we have not improved the results
+obtained in the qualification phase of the challenge.
+Note also that the number of nodes explored is still rather small despite the longer timeout.</p>
 
 <table>
   <thead>
@@ -452,7 +452,7 @@ primal bounds.  </p>
   <p>2) Why should I use a branch-and-cut solver then? </p>
 </blockquote>
 
-<p>Any idea out there?</p>
+<p>Do you have any idea out there?</p>
 
 <h3 id="minor-remark">Minor Remark</h3>
 <p>While writing this post, we got 3 solutions that are better than those obtained by the participants of 
