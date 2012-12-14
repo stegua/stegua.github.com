@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Challenging MIPs instances"
-date: 2012-12-03 18:11
+date: 2012-12-13 18:11
 comments: true
 categories: branch-and-cut heuristic AMPL Gurobi
 published: true
@@ -27,7 +27,7 @@ Today, I share seven challenging MIP instances as
 [.mps files](http://en.wikipedia.org/wiki/MPS_%28format%29)
 along with the AMPL [model and data files](https://github.com/stegua/MyBlogEntries/tree/master/Roadef2012) 
 I used to generate them. 
-While I like the [MIPLIBs](http://miplib.zib.de/), I do prefer problem libraries like the 
+While I like the [MIPLIBs](http://miplib.zib.de/), I do prefer problem libraries similar to the 
 [CSPLIB](http://www.csplib.org/) where
 you get both a problem description **and** a set of data. This allows anyone to try
 with her new model and/or method.
@@ -38,7 +38,7 @@ proposed for the [Roadef Challenge](http://roadef.org/content/index.htm) sponsor
 As I wrote in a [previous post](http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/), 
 the Challenge had **huge** instances and a _micro_ time limit of 300 seconds.
 I said _micro_ because I have in mind exact methods: there is little you can do in 300 seconds when you
-have a problem with potentially as many as $50000 \times 5000$ binary variables. 
+have a problem with potentially as many as $$50000 \times 5000$$ binary variables. 
 If you want to use math programming and start with the solution of a linear programming relaxation of the problem,
 you have to be careful: it might happen that you cannot even solve the LP relaxation at the root node within 300 seconds.
 
@@ -104,8 +104,8 @@ and hence they are not further considered.
 The remaining seven instances are the challenging instances mentioned at the begging of this post.
 The instances **a2-x** are embarrassing: they have an UB that is far away from both the best known UB
 and the computed LB.
-Specifically, look at the instance **a2-1**: the best result of the challenge has value 198, value Gurobi
-(with my model) finds a solution with cost 54,350,836: you may agree that this is "_slightly_" more than 198.
+Specifically, look at the instance **a2-1**: the best result of the challenge has value 198, Gurobi
+(using my model) finds a solution with cost 54,350,836: you may agree that this is "_slightly_" more than 198.
 At the same time the LB is only 110. 
 
 Note that for all the **a2-x** instances the number of branch-and-bound nodes is zero.
@@ -116,7 +116,7 @@ This is why I think these instances are challenging for branch-and-cut solvers.
 
 ## Search Strategies: Feasibility vs Optimality
 Commercial solvers have usually a meta-parameter that controls the search focus by setting other parameters
-(but how they are precisely set is undocumented: do you know more about?).
+(how they are precisely set is undocumented: do you know more about?).
 The two basic options of this parameter are (1) to focus on looking for feasible solution
 or (2) to focus on proving optimality.
 The name of this parameter is **MipEmphasis** in CPLEX and **MipFocus** in Gurobi. 
@@ -127,7 +127,7 @@ If we set the MipFocus to **feasibility** and we explicitly **disable all cut ge
 
 Look at the table below:
 the values of the upper bounds of instances **a1-2**, **a1-4**, and **a2-3** are slightly better than before: 
-this is a good news. However, for instance **a2-1** the upper bound is worse, and for the other three instances there is no difference. Moreover, the LB are always weaker: as expected, there is no free lunch!
+this is a good news. However, for instance **a2-1** the upper bound is worse, and for the other three instances there is no difference. Moreover, the LBs are always weaker: as expected, there is no free lunch!
 
 |----------|---------------|---------------|---------|-------| 
 | Instance | Upper Bound   | Lower Bound   | Gap     | Nodes |
@@ -155,9 +155,9 @@ So, let us make a step backward: we enable all cut generators and we set all par
 In addition we set the time limit to one hour. The table below gives the new results.
 With this setting we are able to "prove" near-optimality of instance **a1-2**, and we reduce
 significantly the gap of instance **a2-4**.
-However, the primal solutions are never improved by the solver: this means that we have not improved the results
-obtained in the qulification phase of the challenge.
-Note also that the number of nodes explored is still rather smalli despite the longer timeout.
+However, the solver never improves the primal solutions: this means that we have not improved the results
+obtained in the qualification phase of the challenge.
+Note also that the number of nodes explored is still rather small despite the longer timeout.
 
 |----------|---------------|---------------|---------|-------| 
 | Instance | Upper Bound   | Lower Bound   | Gap     | Nodes |
@@ -203,7 +203,7 @@ primal bounds.
 
 > 2) Why should I use a branch-and-cut solver then? 
 
-Any idea out there?
+Do you have any idea out there?
 
 ### Minor Remark
 While writing this post, we got 3 solutions that are better than those obtained by the participants of 
