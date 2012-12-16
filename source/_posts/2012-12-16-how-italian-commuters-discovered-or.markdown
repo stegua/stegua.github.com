@@ -17,7 +17,7 @@ The Italian edition of Wired has an [article about this horrible week](http://da
 If you want to get an idea of the chaos you can search for "caos tilt software trenord" on google.it.
 
 Trenord officially said that the software that planned the crew schedule is faulty. 
-The software was bought last year from [Goal System](http://www.goalsystem.com) a Spanish company.
+The software was bought last year from [Goal Systems](http://www.goalsystems.com) a Spanish company.
 Rumors say that Lenord paid the Goal System around **1.500.000 euro**.
 Likely, the system is not faulty, but it had "_only_" bad input data.
 
