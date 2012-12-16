@@ -4,7 +4,7 @@
   <title><![CDATA[Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2012-12-16T20:18:03+01:00</updated>
+  <updated>2012-12-16T20:19:47+01:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -12,6 +12,52 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How Italian Commuters Discovered Operations Research]]></title>
+    <link href="http://stegua.github.com/blog/2012/12/16/how-italian-commuters-discovered-or/"/>
+    <updated>2012-12-16T10:45:00+01:00</updated>
+    <id>http://stegua.github.com/blog/2012/12/16/how-italian-commuters-discovered-or</id>
+    <content type="html"><![CDATA[<p>Last week, more then 700.000 Italian commuters discovered the importance of Operations Research (OR).
+Nobody explicitly mentioned OR, 
+but due to a horrible crew schedule of <a href="http://www.trenord.it">Trenord</a> (a train operator),
+the commuters had a <strong>long, long, long nightmare</strong>. 
+During all the week, several trains were cancelled and most of the trains were delayed.
+A <a href="http://stegua.github.com//http://milano.corriere.it/milano/notizie/cronaca/12_dicembre_11/treni-cronaca-caos-episodi-2113111724378.shtml">newspaper</a> wrote that a commuter waiting to go home had the sad record of 11 consecutive trains cancelled.
+The Italian edition of Wired has an <a href="http://daily.wired.it/news/tech/2012/12/13/trenord-treni-software-caos-85247.html">article about this horrible week</a>.
+If you want to get an idea of the chaos you can search for “caos tilt software trenord” on google.it.</p>
+
+<p>Trenord officially said that the software that planned the crew schedule is faulty. 
+The software was bought last year from <a href="http://www.goalsystem.com">Goal System</a> a Spanish company.
+Rumors say that Lenord paid the Goal System around <strong>1.500.000 euro</strong>.
+Likely, the system is not faulty, but it had “<em>only</em>” bad input data.</p>
+
+<h2 id="what-newspaper-do-not-write">What newspaper do not write</h2>
+
+<p>Before Goal System, Lenord was using a different software, produced by <a href="http://www.maior.it">M.A.I.O.R. srl</a>,
+that is used by most of the public transportation companies in Italy,
+included <a href="http://www.atm.it">ATM</a> that operates the subway and buses in Milan. 
+Honestly, I am biased, since I collaborate with MAIOR. However, last June, Lenord kicked MAOIR out of its business
+without any reason and without any complain on its software: it had just bought the Goal System.</p>
+
+<p>Newspaper do not cover the following two questions:</p>
+
+<ol>
+  <li>
+    <p>Why to change software if the previous one was working correctly?</p>
+  </li>
+  <li>
+    <p>With the Italian economical crisis, why to invest 1.500.000 euro into a Spanish company, while there
+is an Italian software house that produces an excellent scheduler and collaborate with Italian OR research
+groups at Politecnico di Milano and University of Pisa?</p>
+  </li>
+</ol>
+
+<h3 id="maior-is-back">MAIOR is back</h3>
+<p>Likely, next week will be better for 700,000 commuters,
+since OR experts from MAIOR are traveling to Milan to re-schedule everything.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Challenging MIPs instances]]></title>
