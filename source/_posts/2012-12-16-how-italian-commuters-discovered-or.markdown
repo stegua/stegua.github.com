@@ -9,11 +9,12 @@ categories:
 
 Last week, more then 700.000 Italian commuters discovered the importance of Operations Research (OR).
 Nobody explicitly mentioned OR, 
-but due to a horrible crew schedule of [Trenord](http://www.trenord.it) (a train operator),
+but due to a horrible crew schedule of [Trenord](http://www.trenord.it) 
+(a train operator with around 330 trains and 2700 emplyees),
 the commuters had a **long, long, long nightmare**. 
 During all the week, several trains were cancelled and most of the trains were delayed.
-A [newspaper](//http://milano.corriere.it/milano/notizie/cronaca/12_dicembre_11/treni-cronaca-caos-episodi-2113111724378.shtml) wrote that a commuter waiting to go home had the sad record of 11 consecutive trains cancelled.
-The Italian edition of Wired has an [article about this horrible week](http://daily.wired.it/news/tech/2012/12/13/trenord-treni-software-caos-85247.html).
+A [newspaper](http://milano.corriere.it/milano/notizie/cronaca/12_dicembre_11/treni-cronaca-caos-episodi-2113111724378.shtml) wrote that a commuter waiting to go home had the sad record of 11 consecutive trains cancelled.
+The Italian edition of Wired has an [article about this horrible week](http://daily.wired.it/news/tech/2012/12/13/trenord-treni-software-caos-85247.html). 
 If you want to get an idea of the chaos you can search for "caos tilt software trenord" on google.it.
 
 Trenord officially said that the software that planned the crew schedule is faulty. 
