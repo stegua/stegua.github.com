@@ -26,19 +26,26 @@ Likely, the system is not faulty, but it "_only_" had bad input data.
 
 Before the Goal System, Trenord was using a different software, produced by
 [Management Artificial Intelligence Operations Research srl (MAIOR)](http://www.maior.it),
-that is used by most of the public transportation companies in Italy,
+that is used by several public transportation companies in Italy,
 included [ATM](http://www.atm.it) that operates the subway and buses in Milan. 
-Honestly, I am biased, since I collaborate with MAIOR. However, last June, Lenord kicked MAOIR out of its business
-without any reason and without any complaint on its software: it had just bought the Goal System.
+Honestly, I am biased, since I collaborate with MAIOR. 
+However, last June, Trenord dismissed the software of MAOIR
+without any specific complaint, since the management had decided to buy the Goal System software.
 
 Newspapers do not cover the following two questions:
 
 1. Why to change a piece of software, if the previous one was working correctly?
 
-2. With the Italian economical crisis, why to invest 1,500,000 Euro into a Spanish company, while there
-is an Italian software house that produces an excellent scheduler and collaborates with Italian OR research
-groups at Politecnico di Milano and University of Pisa?
+2. With the Italian economical crisis, why to invest 1,500,000 Euro into a foreign company, while there
+is an Italian software house that produces an excellent scheduler and collaborates with OR research
+groups at _Politecnico di Milano_ and _University of Pisa_?
 
 ### MAIOR is back
 Likely, next week will be better for the 700,000 commuters,
-since OR experts from MAIOR are traveling to Milan to re-schedule everything.
+since OR experts from MAIOR are traveling to Milan to 
+help Trenord to improve the situation.
+
+### Disclaimer (edited on 18th December 2012)
+1. This post does not intend to offend anyone. 
+2. I am a Pavia-Milano commuter disappointed of the chaotic week we had.
+3. Surely, the Goal System is a piece of software as good as MAIOR software is.
