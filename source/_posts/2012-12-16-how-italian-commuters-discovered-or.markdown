@@ -38,6 +38,9 @@ Newspapers do not ask the following question:
 
 > Why to change a piece of software, if the previous one was working correctly?
 
+In Italy, soccer players have a motto: "_squadra che vince non si cambia_".
+Maybe at Trenord nobody plays soccer.
+
 ### MAIOR is back
 Likely, next week will be better for the 700,000 commuters,
 since OR experts from MAIOR are traveling to Milan to 
