@@ -1,0 +1,803 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Dijkstra, Dantzig, and Shortest Paths - Spaghetti Optimization</title>
+  <meta name="author" content="Stefano Gualandi">
+
+  
+  <meta name="description" content="table { width:100%; }
+thead { background-color: rgba(0,0,255,0.3); color: black; text-indent: 14px; text-align: left;
+}
+td { padding:4px; }
+tbody tr &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stegua.github.com/blog/2012/09/19/dijkstra/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Spaghetti Optimization" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34931940-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Spaghetti Optimization</a></h1>
+  
+    <h2>My cookbook about Math, Algorithms, and Programming</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:stegua.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/credits">Credits</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Dijkstra, Dantzig, and Shortest Paths</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-19T22:14:00+02:00" pubdate data-updated="true">Sep 19<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><style type="text/css">
+table { width:100%; }
+thead {
+   background-color: rgba(0,0,255,0.3);
+   color: black;
+   text-indent: 14px;
+   text-align: left;
+}
+td { padding:4px; }
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
+<p>Here we go, my first blog entry, ever. Let’s start with two short quizzes.</p>
+
+<p><strong>1. The well known Dijkstra’s algorithm is:</strong><br />
+[a]  A greedy algorithm<br />
+[b]  A dynamic programming algorithm<br />
+[c]  A primal-dual algorithm<br />
+[d]  It was discovered by Dantzig  </p>
+
+<p><strong>2. Which is the best C++ implementation of Dijkstra’s algorithm among the following?</strong><br />
+[a] The <a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a><br />
+[b] The <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon Graph Library</a><br />
+[c] The <a href="http://code.google.com/p/or-tools/">Google OrTools</a><br />
+[d] Hei dude! We can do better!!!  </p>
+
+<p>What is your answer for the first question? … well, the answers are all correct!
+And for the second question? To know the correct answer, sorry, you have to read this post to the end…</p>
+
+<p>If you are curious to learn more about the <em>classification</em> of the Dijkstra’s algorithm proposed in the first three answers,
+please consider reading [1] and [2]. Honestly, I did not know that the algorithm was independently discovered by Dantzig [3] as a special
+case of Linear Programming. 
+However, Dantzig is credited for the first version of the bidirectional 
+Dijkstra’s algorithm (should we called it <strong>Dantzig’s algorithm</strong>?), which is nowadays the best performing
+algorithm on general graphs.
+The bidirectional Dijkstra’s algorithm is used as benchmark to measure the speed-up of modern specialized
+shortest path algorithms for road networks [4,5], those algorithms that are implemented, for instance, in our
+GPS navigation systems, in yours smartphones (I don’t have one, argh!), in Google Maps Directions, and Microsoft Bing Maps. </p>
+
+<p>Why a first blog entry on Dijkstra’s algorithm? That’s simple.</p>
+
+<ul>
+  <li>Have you ever implemented an <em>efficient</em> version of this well-known and widely studied algorithm?</li>
+  <li>Have you ever used the version that is implemented in well-reputed graph libraries, such as, the 
+<a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a>, 
+the <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon</a>, and/or 
+<a href="http://code.google.com/p/or-tools/">Google OrTools</a>?</li>
+</ul>
+
+<p>I did while programming in C++, and I want to share with you my experience.</p>
+
+<h2 id="the-algorithm">The Algorithm</h2>
+
+<p>The algorithm is quite simple. First partition the nodes of the input graph <em>G=(N,A)</em> in three
+sets: the sets of (1) <em>scanned</em>, (2) <em>reachable</em>, and (3) <em>unvisited</em> nodes.
+Every node has a distance label <script type="math/tex">d_i</script> and a predecessor vertex <script type="math/tex">p_i</script>. Initially, set the 
+label of the source node <script type="math/tex">d_s=0</script>, while set <script type="math/tex">d_i=+\infty</script> for all other nodes. Moreover,
+the node <em>s</em> is placed in the set of <em>reachable</em> nodes, while all the other nodes are <em>unvisited</em>.</p>
+
+<p>The algorithm proceedes as follows: select a <em>reachable</em> node <em>i</em> with minimum distance label,
+and move it in the set of <em>scanned</em> nodes, it will be never selected again. 
+For each arc <em>(i,j)</em> in the forward star of node <em>i</em> check if node <em>j</em> has distance label <script type="math/tex">d_j > d_i + c_{ij}</script>; 
+if it is the case, update the label <script type="math/tex">d_j = d_i + c_{ij}</script> and the predecessor vertex <script type="math/tex">p_j=i</script>.
+In addition, if the node was <em>unvisited</em>, move it in the 
+set of reachable nodes. If the selected node <em>i</em> is the destination node
+<em>t</em>, stop the algorithm.
+Otherwise, continue by selecting the next node <em>i</em> with minimum distance label.</p>
+
+<p>The algorithm stops either when it scans the destination node <em>t</em> or the set of reachable nodes is empty.
+For the nice properties of the algorithm consult any textbook in computer science or operations research. </p>
+
+<p>At this point it should be clear why Dijkstra’s algorithm is <strong>greedy</strong>: it always select a reachable node with
+minimum distance label. It is a <strong>dynamic programming</strong> algorithm because it maintains the 
+recursive relation 
+<script type="math/tex">d_j = \min \{d_i + c_{ij} \mid (i,j) \in A \}</script> 
+for all <script type="math/tex">j \in N</script>.
+If you are familiar with Linear Programming, you should recognize that the distance labels
+play the role of dual variable of a flow based formulation of the shortest path problem,
+and the Dijkstra’s algorithm costructs a <strong>primal</strong> solution (i.e. a path) that satisfies the <strong>dual</strong>
+constraints <script type="math/tex">d_j - d_i \leq c_{ij}</script>.</p>
+
+<h2 id="graphs-and-heaps">Graphs and Heaps</h2>
+
+<p>The algorithm uses two data structures: the input graph <em>G</em> and the set of reachable nodes <em>Q</em>.
+The graph <em>G</em> can be stored with an adjacency list, but be sure that the arcs are stored in contiguous memory,
+in order to reduce the chance of cache misses when scanning the forward stars. In my implementation, I have used
+a std::vector to store the forward star of each node.</p>
+
+<p>The second data structure, the most important, is the priority queue <em>Q</em>.
+The queue has to support three operations: <em>push</em>, <em>update</em>, and <em>extract-min</em>.
+The type of priority queue used determines the worst-case complexity of the Dijkstra’s algorithm.
+Theoretically, the best strongly polynomial worst-case complexity is achieved via a <strong>Fibonacci heap</strong>. 
+On road networks, the Multi Bucket heap yields a weakly polynomial worst-case complexity that
+is more efficient in practice [4,5]. Unfortunately, the Fibonacci Heap is a rather complex data structure,
+and lazy implementations end up in using a simpler Binomial Heap.</p>
+
+<p>The good news is that the Boost Library from version 1.49 has a <a href="http://www.boost.org/doc/libs/1_51_0/doc/html/heap.html">Heap library</a>.
+This library contains several type of heaps that share a common interface: 
+d-ary-heap, binomial-heap, fibonacci-heap, pairing-heap, and skew-heap.
+The worst-case complexity of the basic operations are summarized in a
+<a href="http://www.boost.org/doc/libs/1_51_0/doc/html/heap/data_structures.html#heap.data_structures.data_structure_configuration">nice table</a>. 
+Contrary to text-books, these heaps are ordered in non increasing order (they are max-heap instead of min-heap), that means
+that the top of the heap is always the element with highest priority. For implementing Dijkstra,
+where all arc lengths are non negative, this is not a problem: we can store the elements with
+the distance changed in sign (sorry for the rough explanation, but if you are <em>really</em> intrested it is better to read directly the source code).</p>
+
+<p>The big advantage of <strong>boost::heap</strong> is that it allows to program Dijkstra once, and to compile it
+with different heaps via templates. If you wonder why the Boost Graph Library does not use boost::heap,
+well, the reason is that BGL was implemented a few years ago, while boost::heap appeared this year.</p>
+
+<h2 id="benchmarking-on-road-networks">Benchmarking on Road Networks</h2>
+<p>Here is the point that maybe interests you the most: can we do better than well-reputed C++ graph libraries?</p>
+
+<p>I have tried three graph libraries: 
+<a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a> v1.51, 
+<a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon</a> v1.2.3, and 
+<a href="http://code.google.com/p/or-tools/">Google OrTools</a> cheked out from svn on Sep 7th, 2012.
+They all have a Dijkstra implementation, even if I don’t know the implementation details.
+As a plus, the three libraries have python wrappers (but I have not test it).
+The BGL is a header only library. Lemon came after BGL.
+BGL, Lemon, and my implementation use (different) Fibonacci Heaps, while I have not clear what type of priority queue is used by OrTools.</p>
+
+<p><strong>Disclaimer</strong>: Google OrTools is much more than a graph library: among others, it has a Constraint Programming solver with very nice
+features for Large Neighborhood Search; however, we are interested here only in its Dijkstra implementation.
+Constraint Programming will be the subject of another future post.</p>
+
+<p>A few tests on instances taken from the last <a href="http://www.dis.uniroma1.it/challenge9/download.shtml">DIMACS challenge on Shortest Path problems</a>
+show the pros and cons of each implementation. Three instances are generated using the <strong>rand</strong> graph generator, while 10 instances are
+road networks. The test are done on my late 2008 MacBookPro using the apple gcc-4.2 compiler.
+All the source code, scripts, and even this post text, are available on <a href="https://github.com/stegua/MyBlogEntries/tree/master/Dijkstra">github</a>.</p>
+
+<h2 id="rand-graphs">RAND Graphs</h2>
+
+<p>The first test compares the four implementations on 3 graphs with different density <em>d</em> that is the ratio <script type="math/tex">\frac{2m}{n(n-1)}</script>.
+The graphs are:</p>
+
+<ol>
+  <li><strong>Rand 1</strong>: with <em>n</em>=10000, <em>m</em>=100000, <em>d</em>=0.001</li>
+  <li><strong>Rand 2</strong>: with <em>n</em>=10000, <em>m</em>=1000000, <em>d</em>=0.01</li>
+  <li><strong>Rand 3</strong>: with <em>n</em>=10000, <em>m</em>=10000000, <em>d</em>=0.1</li>
+</ol>
+
+<p>For each graph, 50 queries between different pairs of source and destination nodes are performed.
+The table below reports the average of query times (total time divided by query numbers).
+The entries in bold highlight the shortest time per row.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Graph</th>
+      <th style="text-align: center">MyGraph</th>
+      <th style="text-align: center">BGL</th>
+      <th style="text-align: center">Lemon</th>
+      <th style="text-align: center">OrTools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Rand 1</td>
+      <td style="text-align: center"><strong>0.0052</strong></td>
+      <td style="text-align: center">0.0059</td>
+      <td style="text-align: center">0.0074</td>
+      <td style="text-align: center">1.2722</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Rand 2</td>
+      <td style="text-align: center"><strong>0.0134</strong></td>
+      <td style="text-align: center">0.0535</td>
+      <td style="text-align: center">0.0706</td>
+      <td style="text-align: center">1.6128</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Rand 3</td>
+      <td style="text-align: center"><strong>0.0705</strong></td>
+      <td style="text-align: center">0.5276</td>
+      <td style="text-align: center">0.7247</td>
+      <td style="text-align: center">4.2535</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+In these tests, it looks like my implementation is the winner… wow!
+Although, the true winner is the boost::heap library, since the nasty implementation details
+are delegated to that library.</p>
+
+<p>… but come on! These are artificial graphs: who is really interested in shortest paths on random graphs?</p>
+
+<h2 id="road-networks">Road Networks</h2>
+
+<p>The second test uses road networks that are <strong>very</strong> sparse graphs. 
+We report only average computation time in seconds over 50 different pair of source-destination nodes.
+We decided to leave out OrTools since it is not very performing on very sparse graphs.</p>
+
+<p>This table below shows the average query time for the standard implementations that use <strong>Fibonacci Heaps</strong>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Area</th>
+      <th style="text-align: center">nodes</th>
+      <th style="text-align: center">arcs</th>
+      <th style="text-align: center">MyGraph</th>
+      <th style="text-align: center">BGL</th>
+      <th style="text-align: center">Lemon</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Western USA</td>
+      <td style="text-align: center">6,262,104</td>
+      <td style="text-align: center">15,248,146</td>
+      <td style="text-align: center"><strong>2.7215</strong></td>
+      <td style="text-align: center">2.7804</td>
+      <td style="text-align: center">3.8181</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Eastern USA</td>
+      <td style="text-align: center">3,598,623</td>
+      <td style="text-align: center">8,778,114</td>
+      <td style="text-align: center">1.9425</td>
+      <td style="text-align: center"><strong>1.4255</strong></td>
+      <td style="text-align: center">2.7147</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Great Lakes</td>
+      <td style="text-align: center">2,758,119</td>
+      <td style="text-align: center">6,885,658</td>
+      <td style="text-align: center"><strong>0.1808</strong></td>
+      <td style="text-align: center">0.8946</td>
+      <td style="text-align: center">0.2602</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">California and Nevada</td>
+      <td style="text-align: center">1,890,815</td>
+      <td style="text-align: center">4,657,742</td>
+      <td style="text-align: center"><strong>0.5078</strong></td>
+      <td style="text-align: center">0.5808</td>
+      <td style="text-align: center">0.7083</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Northeast USA</td>
+      <td style="text-align: center">1,524,453</td>
+      <td style="text-align: center">3,897,636</td>
+      <td style="text-align: center">0.6061</td>
+      <td style="text-align: center"><strong>0.5662</strong></td>
+      <td style="text-align: center">0.8335</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Northwest USA</td>
+      <td style="text-align: center">1,207,945</td>
+      <td style="text-align: center">2,840,208</td>
+      <td style="text-align: center">0.3652</td>
+      <td style="text-align: center"><strong>0.3506</strong></td>
+      <td style="text-align: center">0.5152</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Florida</td>
+      <td style="text-align: center">1,070,376</td>
+      <td style="text-align: center">2,712,798</td>
+      <td style="text-align: center"><strong>0.1141</strong></td>
+      <td style="text-align: center">0.2753</td>
+      <td style="text-align: center">0.1574</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Colorado</td>
+      <td style="text-align: center">435,666</td>
+      <td style="text-align: center">1,057,066</td>
+      <td style="text-align: center">0.1423</td>
+      <td style="text-align: center"><strong>0.1117</strong></td>
+      <td style="text-align: center">0.1965</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">San Francisco Bay</td>
+      <td style="text-align: center">321,270</td>
+      <td style="text-align: center">800,172</td>
+      <td style="text-align: center">0.1721</td>
+      <td style="text-align: center"><strong>0.0836</strong></td>
+      <td style="text-align: center">0.2399</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">New York City</td>
+      <td style="text-align: center">264,346</td>
+      <td style="text-align: center">733,846</td>
+      <td style="text-align: center"><strong>0.0121</strong></td>
+      <td style="text-align: center">0.0677</td>
+      <td style="text-align: center">0.0176</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+From this table, BGL and my implementation are equally good, while Lemon comes after.
+What would happen if we use a diffent type of heap?</p>
+
+<p>This second table shows the average query time for the Lemon graph library with a specialized 
+<a href="http://lemon.cs.elte.hu/pub/doc/latest/a00048.html">Binary Heap</a> implementation,
+and my own implementation with generic <strong>2-Heap</strong> and <strong>3-Heap</strong> (binary and ternary heaps) and with a <strong>Skew Heap</strong>.
+Note that in order to use a different heap I just modify a single line of code.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Area</th>
+      <th style="text-align: center">nodes</th>
+      <th style="text-align: center">arcs</th>
+      <th style="text-align: center">2-Heap</th>
+      <th style="text-align: center">3-Heap</th>
+      <th style="text-align: center">Skew Heap</th>
+      <th style="text-align: center">Lemon 2-Heap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Western USA</td>
+      <td style="text-align: center">6,262,104</td>
+      <td style="text-align: center">15,248,146</td>
+      <td style="text-align: center">1.977</td>
+      <td style="text-align: center">1.934</td>
+      <td style="text-align: center">2.104</td>
+      <td style="text-align: center"><strong>1.359</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Eastern USA</td>
+      <td style="text-align: center">3,598,623</td>
+      <td style="text-align: center">8,778,114</td>
+      <td style="text-align: center">1.406</td>
+      <td style="text-align: center">1.372</td>
+      <td style="text-align: center">1.492</td>
+      <td style="text-align: center"><strong>0.938</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Great Lakes</td>
+      <td style="text-align: center">2,758,119</td>
+      <td style="text-align: center">6,885,658</td>
+      <td style="text-align: center">0.132</td>
+      <td style="text-align: center">0.130</td>
+      <td style="text-align: center">0.135</td>
+      <td style="text-align: center"><strong>0.109</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">California and Nevada</td>
+      <td style="text-align: center">1,890,815</td>
+      <td style="text-align: center">4,657,742</td>
+      <td style="text-align: center">0.361</td>
+      <td style="text-align: center">0.353</td>
+      <td style="text-align: center">0.372</td>
+      <td style="text-align: center"><strong>0.241</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Northeast USA</td>
+      <td style="text-align: center">1,524,453</td>
+      <td style="text-align: center">3,897,636</td>
+      <td style="text-align: center">0.433</td>
+      <td style="text-align: center">0.421</td>
+      <td style="text-align: center">0.457</td>
+      <td style="text-align: center"><strong>0.287</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Northwest USA</td>
+      <td style="text-align: center">1,207,945</td>
+      <td style="text-align: center">2,840,208</td>
+      <td style="text-align: center">0.257</td>
+      <td style="text-align: center">0.252</td>
+      <td style="text-align: center">0.256</td>
+      <td style="text-align: center"><strong>0.166</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Florida</td>
+      <td style="text-align: center">1,070,376</td>
+      <td style="text-align: center">2,712,798</td>
+      <td style="text-align: center">0.083</td>
+      <td style="text-align: center">0.081</td>
+      <td style="text-align: center">0.080</td>
+      <td style="text-align: center"><strong>0.059</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Colorado</td>
+      <td style="text-align: center">435,666</td>
+      <td style="text-align: center">1,057,066</td>
+      <td style="text-align: center">0.100</td>
+      <td style="text-align: center">0.098</td>
+      <td style="text-align: center">0.100</td>
+      <td style="text-align: center"><strong>0.064</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">San Francisco Bay</td>
+      <td style="text-align: center">321,270</td>
+      <td style="text-align: center">800,172</td>
+      <td style="text-align: center">0.121</td>
+      <td style="text-align: center">0.117</td>
+      <td style="text-align: center">0.122</td>
+      <td style="text-align: center"><strong>0.075</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">New York City</td>
+      <td style="text-align: center">264,346</td>
+      <td style="text-align: center">733,846</td>
+      <td style="text-align: center">0.009</td>
+      <td style="text-align: center">0.009</td>
+      <td style="text-align: center">0.009</td>
+      <td style="text-align: center"><strong>0.007</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+Mmmm… I am no longer the winner: COIN-OR Lemon is!</p>
+
+<p>This is likely due to the specialized binary heap implementation of the Lemon library.
+Instead, the boost::heap library has a <strong>d-ary-heap</strong>, that for <em>d=2</em> is a generic binary heap.</p>
+
+<h2 id="so-what">So what?</h2>
+
+<p>Dijkstra’s algorithm is so beatiful because it has the <em>elegance of simplicity</em>.</p>
+
+<p>Using an existing efficient heap data structure, it is easy to implement an <strong>“efficient”</strong> version of the algorithm.</p>
+
+<p>However, if you have spare time, or you need to solve shortest path problems on a specific type of graphs (e.g., road networks),
+you might give a try with existing graph libraries, before investing developing time in your own implementation.
+In addition, be sure to read [4] and the references therein contained.</p>
+
+<p>All the code I have used to write this post is available on <a href="https://github.com/stegua/MyBlogEntries/tree/master/Dijkstra">github</a>. 
+If you have any comment or criticism, do not hesitate to comment below.</p>
+
+<h3 id="references">References</h3>
+
+<ol>
+  <li>
+    <p> Pohl, I.
+<span class="title">Bi-directional and heuristic search in path problems</span>. 
+Department of Computer Science, Stanford University, 1969.
+<a href="http://www.slac.stanford.edu/cgi-wrap/getdoc/slac-r-104.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>Sniedovich, M.
+<span class="title">Dijkstra&#8217;s algorithm revisited: the dynamic programming connexion</span>.
+<span class="journal">Control and cybernetics</span> vol. 35(3), pages 599-620, 2006.
+<a href="http://oxygene.ibspan.waw.pl:3000/contents/export?filename=Sniedovich.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>Dantzig, G.B.
+<span class="title">Linear Programming and Extensions</span>.
+Princeton University Press, Princeton, NJ, 1962.</p>
+  </li>
+  <li>
+    <p>Delling, D. and Sanders, P. and Schultes, D. and Wagner, D.
+<span class="title">Engineering route planning algorithms</span>.
+<span class="journal">Algorithmics of large and complex networks</span>
+Lecture Notes in Computer Science, Volume 5515, pages 117-139, 2009.
+<a href="http://dx.doi.org/10.1007/978-3-642-02094-0_7">[doi]</a></p>
+  </li>
+  <li>
+    <p>Goldberg, A.V. and Harrelson, C.
+<span class="title">Computing the shortest path: A-star search meets graph theory</span>.
+<span class="journal">Proc. of the sixteenth annual ACM-SIAM symposium on Discrete algorithms</span>, 156-165, 2005.
+<a href="http://http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.136.1062&amp;rep=rep1&amp;type=pdf/">[pdf]</a></p>
+  </li>
+</ol>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Stefano Gualandi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-19T22:14:00+02:00" pubdate data-updated="true">Sep 19<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/c-/'>C++</a>, <a class='category' href='/blog/categories/algorithm/'>algorithm</a>, <a class='category' href='/blog/categories/boost/'>boost</a>, <a class='category' href='/blog/categories/data-structure/'>data structure</a>, <a class='category' href='/blog/categories/duality/'>duality</a>, <a class='category' href='/blog/categories/heap/'>heap</a>, <a class='category' href='/blog/categories/implementation/'>implementation</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stegua.github.com/blog/2012/09/19/dijkstra/" data-via="famo2spaghi" data-counturl="http://stegua.github.com/blog/2012/09/19/dijkstra/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="small"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/10/19/cp2012-je-me-souviens/" title="Next Post: CP2012: Je me souviens">CP2012: Je me souviens &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>Post doctoral researcher at the Math Dept, University of Pavia.
+  <nav>
+  <div><a href="http://www-dimat.unipv.it/~gualandi/Home.html">My Official Home Page</a></div>
+  <div><a href="http://www-dimat.unipv.it/~gualandi/Papers.html">My Pubblications</a></div>
+  </nav>
+  </p>
+</section>
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/101441650504695542578?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("famo2spaghi", 3, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/famo2spaghi" class="twitter-follow-button" data-show-count="true">Follow @famo2spaghi</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/05/gomory-cuts-with-cplex/">From blackboard to code: Gomory Cuts using CPLEX</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/16/how-italian-commuters-discovered-or/">How Italian Commuters Discovered Operations Research</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/13/challenging-mips/">Challenging MIPs instances</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/19/cp2012-je-me-souviens/">CP2012: Je me souviens</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/19/dijkstra/">Dijkstra, Dantzig, and Shortest Paths</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/stegua">@stegua</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'stegua',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Stefano Gualandi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'famo2spaghi';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://stegua.github.com/blog/2012/09/19/dijkstra/';
+        var disqus_url = 'http://stegua.github.com/blog/2012/09/19/dijkstra/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
