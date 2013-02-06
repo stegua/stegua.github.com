@@ -1,0 +1,518 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>From blackboard to code: Gomory Cuts using CPLEX - Spaghetti Optimization</title>
+  <meta name="author" content="Stefano Gualandi">
+
+  
+  <meta name="description" content="On the blackboard, to solve small Integer Linear Programs with 2 variables and less or equal constraints is easy,
+since they can be plotted in the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Spaghetti Optimization" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34931940-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <script type="text/javascript"
+     src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+     MathJax.Hub.Config({messageStyle: "none"})
+      </script>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Spaghetti Optimization</a></h1>
+  
+    <h2>My cookbook about Math, Algorithms, and Programming</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:stegua.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/credits">Credits</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">From Blackboard to Code: Gomory Cuts Using CPLEX</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-05T15:22:00+01:00" pubdate data-updated="true">Feb 5<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>On the blackboard, to solve small Integer Linear Programs with 2 variables and <em>less or equal</em> constraints is easy,
+since they can be plotted in the plane and the linear relaxation can be solved geometrically. 
+You can draw the lattice of integer points, and once you have found a new cutting plane, 
+you show that it <em>cuts off</em> the optimum solution of the LP relaxation.</p>
+
+<p>This post presents a naive (textbook) implementation of Gomory cuts that uses the basic solution
+computed by CPLEX, the commercial Linear Programming solver used in our lab sessions.
+In practice, this post is an online supplement to one of my last exercise session.</p>
+
+<p>In order to solve the <em>“blackboard”</em> examples with CPLEX, it is necessary to use a couple of functions
+that a few years ago were undocumented. GUROBI has very similar functions, but they are currently undocumented.</p>
+
+<p>As usual, all the sources used to write this post are publicly available on 
+<a href="https://github.com/stegua/MyBlogEntries/tree/master/GomoryCut">my GitHub repository</a>.</p>
+
+<h3 id="the-basics">The basics</h3>
+<p>Given a Integer Linear Program in the form:</p>
+
+<script type="math/tex; mode=display">(P) \qquad \min \{ cx \mid Ax \leq b, \, x \geq 0, \, x \mbox{ integer} \}</script>
+
+<p>it is possible to rewrite the problem in standard form by adding slack variables:</p>
+
+<script type="math/tex; mode=display">(P) \qquad \min \{ cx \mid Ax + Ix_S = b, \, x \geq 0, \, x \mbox{ integer}, \, x_S \geq 0, \}</script>
+
+<p>where <script type="math/tex">I</script> is the identity matrix and <script type="math/tex">x_S</script> is a vector of slack variables, one for each constraint in <script type="math/tex">(P)</script>.
+Let us denote by <script type="math/tex">(\bar{P})</script> the linear relaxation of <script type="math/tex">(P)</script> obtained by relaxing the integrality constraint.</p>
+
+<p>The optimum solution vector of <script type="math/tex">(\bar{P})</script>, if it exists and it is finite, it is used to derive a basis
+(for a formal definition of <strong>basis</strong>, see [1] or [3]).
+Indeed, the basis partition the columns of matrix <script type="math/tex">A</script> into two submatrices
+<script type="math/tex">B</script> and <script type="math/tex">N</script>, where <script type="math/tex">B</script> is given by the columns corresponding to the basic variables,
+and <script type="math/tex">N</script> by columns corresponding to variables out of the base (they are equal to zero in the optimal solution vector).</p>
+
+<p>Remember that, by definition, <script type="math/tex">B</script> is nonsingular and therefore is invertible. 
+Using the matrices <script type="math/tex">B</script> and <script type="math/tex">N</script>, it is easy to derive the following inequalities (for details, see any OR textbook, e.g., [1]): </p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{eqnarray}
+&Ax = b & \\
+&Bx_B + Nx_N = b& \\
+&x_B + B^{-1}N\,x_N = B^{-1}\,b & \qquad B \mbox{ is nonsingular} \\
+&x_B + \lfloor B^{-1}N \rfloor \,x_N \leq B^{-1}\,b &\qquad  \mbox{since }x \geq 0 \\
+&x_B + \lfloor B^{-1}N \rfloor \,x_N \leq \lfloor B^{-1}\,b \rfloor& \qquad x \mbox{ is integer}
+\end{eqnarray} %]]></script>
+
+<p>where the operator <script type="math/tex">\lfloor \cdot \rfloor</script> is applied component wise to the matrix elements.
+In practice, for each fractional basic variable, it is possible to generate a valid Gomory cut.</p>
+
+<p>The key step to generate Gomory cuts is to get an optimal base or, even better, the inverse of the basis matrix <script type="math/tex">B^{-1}</script>
+multiplied with <script type="math/tex">A</script> and with <script type="math/tex">b</script>. Once we have that matrix, in order to generate a Gomory cut from a fractional
+basic variable, we just use the last previous equation row-wise.</p>
+
+<p>Given the optimal basis, the optimal basic vector is <script type="math/tex">x_B=B^{-1}A</script>, since the non basic variable are equal to zero.
+Let <script type="math/tex">i</script> be the index of a fractional basic variable, and let <script type="math/tex">j</script> be the index of the constraint corresponding to
+variable <script type="math/tex">i</script> in the system <script type="math/tex">x_B=B^{-1}A</script>, then the Gomory cut for variable <script type="math/tex">i</script> is:</p>
+
+<script type="math/tex; mode=display">x_i + \sum_{l \in N} \lfloor (B^{-1}N)_{jl} \rfloor\,x_l \leq (B^{-1}\,b)_j</script>
+
+<h3 id="using-the-cplex-callable-library">Using the CPLEX callable library</h3>
+<p>The CPLEX callable library (written in C) has the following <em>advanced</em> functions:</p>
+
+<ul>
+  <li><a href="http://pic.dhe.ibm.com/infocenter/cosinfoc/v12r5/index.jsp?topic=%2Filog.odms.cplex.help%2Frefcallablelibrary%2Fhtml%2Ffunctions%2FCPXbinvarow.html">CPXbinvarow</a> computes the <em>i</em>-th row of the tableau</li>
+  <li><a href="http://pic.dhe.ibm.com/infocenter/cosinfoc/v12r5/index.jsp?topic=%2Filog.odms.cplex.help%2Frefcallablelibrary%2Fhtml%2Ffunctions%2FCPXbinvrow.html">CPXbinvrow</a> computes the <em>i</em>-th row of the basis inverse</li>
+  <li><a href="http://pic.dhe.ibm.com/infocenter/cosinfoc/v12r5/index.jsp?topic=%2Filog.odms.cplex.help%2Frefcallablelibrary%2Fhtml%2Ffunctions%2FCPXbinvacol.html">CPXbinvacol</a> computes the representation of the <em>j</em>-th column in terms of the basis</li>
+  <li><a href="http://pic.dhe.ibm.com/infocenter/cosinfoc/v12r5/index.jsp?topic=%2Filog.odms.cplex.help%2Frefcallablelibrary%2Fhtml%2Ffunctions%2FCPXbinvcol.html">CPXbinvcol</a> computes the <em>j</em>-th column of the basis inverse</li>
+</ul>
+
+<p>Using the first two functions, Gomory cuts from an optimal base can be generated as follows:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Gomory cut </span><a href="https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/cpx_gomory.c">Fork Me on GitHub</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Generate Gomory cuts:</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class="line"><span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="n">cut</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">/// Index of cut to be added</span>
+</span><span class="line"><span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+</span><span class="line"><span class="k">if</span> <span class="p">(</span> <span class="n">floor</span><span class="p">(</span><span class="n">b_bar</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="n">b_bar</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Row %d gives cut -&gt;   &quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+</span><span class="line">   <span class="n">POST_CMD</span><span class="p">(</span> <span class="n">CPXbinvarow</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="p">);</span>
+</span><span class="line">   <span class="n">rmatbeg</span><span class="p">[</span><span class="n">cut</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span><span class="p">;</span>
+</span><span class="line">   <span class="k">for</span> <span class="p">(</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n1</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span> <span class="c1">/// DANGER!</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span> <span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">         <span class="n">rmatind</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+</span><span class="line">         <span class="n">rmatval</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+</span><span class="line">         <span class="n">idx</span><span class="o">++</span><span class="p">;</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">      <span class="c1">/// Print the cut</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span> <span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;+&quot;</span><span class="p">);</span>
+</span><span class="line">      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%.1f x%d &quot;</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+</span><span class="line">   <span class="p">}</span>
+</span><span class="line">   <span class="n">gc_rhs</span><span class="p">[</span><span class="n">cut</span><span class="p">]</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">b_bar</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="c1">/// DANGER!</span>
+</span><span class="line">   <span class="n">gc_sense</span><span class="p">[</span><span class="n">cut</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;L&#39;</span><span class="p">;</span>
+</span><span class="line">   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;&lt;= %.1f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">gc_rhs</span><span class="p">[</span><span class="n">cut</span><span class="p">]);</span>
+</span><span class="line">   <span class="n">cut</span><span class="o">++</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="c1">/// Add the new cuts</span>
+</span><span class="line"><span class="n">POST_CMD</span><span class="p">(</span> <span class="n">CPXaddrows</span> <span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n_cuts</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">gc_rhs</span><span class="p">,</span> <span class="n">gc_sense</span><span class="p">,</span>
+</span><span class="line">         <span class="n">rmatbeg</span><span class="p">,</span> <span class="n">rmatind</span><span class="p">,</span> <span class="n">rmatval</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The code reads row by row (index <em>i</em>) the inverse basis matrix <script type="math/tex">B^{-1}</script> multiplied with <script type="math/tex">A</script> (line 7),
+and stores the corresponding Gomory cut in the compact matrix given by vectors <code>rmatbeg</code>, <code>rmatind</code>, and <code>rmatval</code> (lines 8-15).
+The array <code>b_bar</code> contains the vector <script type="math/tex">B^{-1}b</script> (line 21). In lines 28-31, all the cuts are added at once to current LP data structure.</p>
+
+<p>On GitHub you find a small program that I wrote to generate Gomory cuts for problems written as <script type="math/tex">(P)</script>.
+The repository have an <a href="https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/README.md">example of execution</a> of my program.</p>
+
+<p>The code is simple only because it is designed for small IPs in the form
+<script type="math/tex"> \min\, \{\, cx \mid Ax\, \leq\,b,\, x\geq 0\}</script>.
+Otherwise, the code <strong>must</strong> consider the effects of preprocessing, different sense of the constraints,
+and additional constraints introduced because of range constraints.
+If you are interested in a <strong>real</strong> implementation of MIR Gomory cuts, please look at
+the <a href="http://scip.zib.de/doc/html/sepa__gomory_8h.shtml">SCIP source code</a>.</p>
+
+<h3 id="additional-readings">Additional readings</h3>
+<p>The introduction of Gomory cuts in CPLEX was <strong>The</strong> major breakthrough of CPLEX 6.5 and produced
+the version-to-version speed-up given by the blue bars in the chart below
+(source: <a href="http://www.ferc.gov/eventcalendar/Files/20100609110044-Bixby,%20Gurobi%20Optimization.pdf">Bixby’s slides available on the web</a>):</p>
+
+<p><img src="images/cplex65.png" /></p>
+
+<p>Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
+These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix
+requires the division by its determinant. 
+A recent paper by Cornuejols, Margot, and Nannicini deals with some of these issues [2].</p>
+
+<p>If you like to learn more about how the basis are computed in the CPLEX LP solver, there is very nice paper
+by Bixby [3]. The paper explains different approaches to get the first basic feasible solution and
+gives some hints of the CPLEX implementation of that time, i.e., 1992. Though the paper does not deal with Gomory
+cuts directly, it is a very pleasant reading.</p>
+
+<h2 id="references">References</h2>
+<ol>
+  <li>
+    <p>C.H. Papadimitriou, K. Steiglitz.
+<span class="title">Combinatorial Optimization: Algorithms and Complexity</span>. 1998.
+<a href="http://www.amazon.com/Combinatorial-Optimization-Algorithms-Complexity-Computer/dp/0486402584">[book]</a></p>
+  </li>
+  <li>
+    <p>G. Cornuejols, F. Margot and G. Nannicini.
+<span class="title">On the safety of Gomory cut generators</span>. Submitted in 2012.
+<span class="journal">Mathematical Programming Computation, under review.</span> 
+<a href="http://faculty.sutd.edu.sg/~nannicini/papers/testing_gomory.pdf">[preprint]</a></p>
+  </li>
+  <li>
+    <p>R.E. Bixby.
+<span class="title">Implementing the Simplex Method: The Initial Basis</span>.
+<span class="journal">Journal on Computing</span> vol. 4(3), pages 267&#8211;284, 1992.
+<a href="http://joc.journal.informs.org/content/4/3/267.short">[abstract]</a></p>
+  </li>
+</ol>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Stefano Gualandi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-05T15:22:00+01:00" pubdate data-updated="true">Feb 5<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cplex/'>CPLEX</a>, <a class='category' href='/blog/categories/cutting-planes/'>cutting planes</a>, <a class='category' href='/blog/categories/integer-programming/'>integer programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/" data-via="famo2spaghi" data-counturl="http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="small"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/16/how-italian-commuters-discovered-or/" title="Previous Post: How Italian Commuters Discovered Operations Research">&laquo; How Italian Commuters Discovered Operations Research</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>Post doctoral researcher at the Math Dept, University of Pavia.
+  <nav>
+  <div><a href="http://www-dimat.unipv.it/~gualandi/Home.html">My Official Home Page</a></div>
+  <div><a href="http://www-dimat.unipv.it/~gualandi/Papers.html">My Pubblications</a></div>
+  </nav>
+  </p>
+</section>
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/101441650504695542578?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+<section>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("famo2spaghi", 3, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/famo2spaghi" class="twitter-follow-button" data-show-count="true">Follow @famo2spaghi</a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/05/gomory-cuts-with-cplex/">From blackboard to code: Gomory Cuts using CPLEX</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/16/how-italian-commuters-discovered-or/">How Italian Commuters Discovered Operations Research</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/13/challenging-mips/">Challenging MIPs instances</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/19/cp2012-je-me-souviens/">CP2012: Je me souviens</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/19/dijkstra/">Dijkstra, Dantzig, and Shortest Paths</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/stegua">@stegua</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'stegua',
+            count: 1,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Stefano Gualandi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'famo2spaghi';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/';
+        var disqus_url = 'http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
