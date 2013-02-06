@@ -125,7 +125,7 @@ The introduction of Gomory cuts in CPLEX was **The** major breakthrough of CPLEX
 the version-to-version speed-up given by the blue bars in the chart below
 (source: [Bixby's slides available on the web](http://www.ferc.gov/eventcalendar/Files/20100609110044-Bixby,%20Gurobi%20Optimization.pdf)):
 
-{% img images/cplex65.png %}
+{% img http://stegua.github.com/images/cplex65.png %}
 
 Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
 These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix

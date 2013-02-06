@@ -4,7 +4,7 @@
   <title><![CDATA[Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2013-02-06T16:06:56+01:00</updated>
+  <updated>2013-02-06T16:31:17+01:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -163,7 +163,7 @@ the <a href="http://scip.zib.de/doc/html/sepa__gomory_8h.shtml">SCIP source code
 the version-to-version speed-up given by the blue bars in the chart below
 (source: <a href="http://www.ferc.gov/eventcalendar/Files/20100609110044-Bixby,%20Gurobi%20Optimization.pdf">Bixby’s slides available on the web</a>):</p>
 
-<p><img src="images/cplex65.png" /></p>
+<p><img src="http://stegua.github.com/images/cplex65.png" /></p>
 
 <p>Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
 These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix
