@@ -14,4 +14,4 @@ he is a contributor of this blog: thanks Stefano!
 
 Another friend and coauthor that supports this blog is <a href="http://www.imada.sdu.dk/~marco">Marco Chiarandini</a>.
 I do not know how he finds the time to proofread my posts, but he does, with the same
-seriousness as he were reviewing a paper: thanks Marco!
+seriousness as if he were reviewing a paper: thanks Marco!

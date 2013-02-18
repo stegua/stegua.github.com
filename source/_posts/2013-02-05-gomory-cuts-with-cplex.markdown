@@ -13,12 +13,13 @@ since they can be plotted in the plane and the linear relaxation can be solved g
 You can draw the lattice of integer points, and once you have found a new cutting plane, 
 you show that it _cuts off_ the optimum solution of the LP relaxation.
 
-This post presents a naive (textbook) implementation of Gomory cuts that uses the basic solution
+This post presents a naive (textbook) implementation of **Fractional Gomory Cuts** that uses the basic solution
 computed by CPLEX, the commercial Linear Programming solver used in our lab sessions.
 In practice, this post is an online supplement to one of my last exercise session.
 
-In order to solve the *"blackboard"* examples with CPLEX, it is necessary to use a couple of functions
-that a few years ago were undocumented. GUROBI has very similar functions, but they are currently undocumented.
+In order to solve the *"blackboard"* examples with [CPLEX](http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/),
+it is necessary to use a couple of functions
+that a few years ago were undocumented. [GUROBI](http://www.gurobi.com) has very similar functions, but they are currently undocumented.
 
 As usual, all the sources used to write this post are publicly available on 
 [my GitHub repository](https://github.com/stegua/MyBlogEntries/tree/master/GomoryCut).
@@ -30,14 +31,14 @@ $$(P) \qquad \min \{ cx \mid Ax \leq b, \, x \geq 0, \, x \mbox{ integer} \}$$
 
 it is possible to rewrite the problem in standard form by adding slack variables:
 
-$$(P) \qquad \min \{ cx \mid Ax + Ix_S = b, \, x \geq 0, \, x \mbox{ integer}, \, x_S \geq 0, \}$$
+$$(P) \qquad \min \{ cx \mid Ax + Ix_S = b, \, x \geq 0, \, x \mbox{ integer}, \, x_S \geq 0 \}$$
 
 where $$I$$ is the identity matrix and $$x_S$$ is a vector of slack variables, one for each constraint in $$(P)$$.
 Let us denote by $$(\bar{P})$$ the linear relaxation of $$(P)$$ obtained by relaxing the integrality constraint.
 
 The optimum solution vector of $$(\bar{P})$$, if it exists and it is finite, it is used to derive a basis
 (for a formal definition of **basis**, see [1] or [3]).
-Indeed, the basis partition the columns of matrix $$A$$ into two submatrices
+Indeed, the basis partitions the columns of matrix $$A$$ into two submatrices
 $$B$$ and $$N$$, where $$B$$ is given by the columns corresponding to the basic variables,
 and $$N$$ by columns corresponding to variables out of the base (they are equal to zero in the optimal solution vector).
 
@@ -55,13 +56,13 @@ $$\begin{eqnarray}
 where the operator $$\lfloor \cdot \rfloor$$ is applied component wise to the matrix elements.
 In practice, for each fractional basic variable, it is possible to generate a valid Gomory cut.
 
-The key step to generate Gomory cuts is to get an optimal base or, even better, the inverse of the basis matrix $$B^{-1}$$
-multiplied with $$A$$ and with $$b$$. Once we have that matrix, in order to generate a Gomory cut from a fractional
-basic variable, we just use the last previous equation row-wise.
+The key step to generate Gomory cuts is to get an optimal basis or, even better, the inverse of the basis matrix $$B^{-1}$$
+multiplied by $$A$$ and by $$b$$. Once we have that matrix, in order to generate a Gomory cut from a fractional
+basic variable, we just use the last equation in the previous derivation, applying it to each row of the system of inequalities
 
-Given the optimal basis, the optimal basic vector is $$x_B=B^{-1}A$$, since the non basic variable are equal to zero.
+Given the optimal basis, the optimal basic vector is $$x_B=B^{-1}b$$, since the non basic variable are equal to zero.
 Let $$i$$ be the index of a fractional basic variable, and let $$j$$ be the index of the constraint corresponding to
-variable $$i$$ in the system $$x_B=B^{-1}A$$, then the Gomory cut for variable $$i$$ is:
+variable $$i$$ in the equations $$x_B=B^{-1}A$$, then the Gomory cut for variable $$i$$ is:
 
 $$x_i + \sum_{l \in N} \lfloor (B^{-1}N)_{jl} \rfloor\,x_l \leq (B^{-1}\,b)_j$$
 
@@ -105,9 +106,9 @@ POST_CMD( CPXaddrows (env, model, 0, n_cuts, idx, gc_rhs, gc_sense,
          rmatbeg, rmatind, rmatval, NULL, NULL) );
 ```
 
-The code reads row by row (index *i*) the inverse basis matrix $$B^{-1}$$ multiplied with $$A$$ (line 7),
+The code reads row by row (index *i*) the inverse basis matrix $$B^{-1}$$ multiplied by $$A$$ (line 7),
 and stores the corresponding Gomory cut in the compact matrix given by vectors `rmatbeg`, `rmatind`, and `rmatval` (lines 8-15).
-The array `b_bar` contains the vector $$B^{-1}b$$ (line 21). In lines 28-31, all the cuts are added at once to current LP data structure.
+The array `b_bar` contains the vector $$B^{-1}b$$ (line 21). In lines 28-31, all the cuts are added at once to the current LP data structure.
 
 On GitHub you find a small program that I wrote to generate Gomory cuts for problems written as $$(P)$$.
 The repository have an [example of execution](https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/README.md) of my program.
@@ -117,11 +118,14 @@ The code is simple only because it is designed for small IPs in the form
 $$ \min\, \{\, cx \mid Ax\, \leq\,b,\, x\geq 0\}$$.
 Otherwise, the code **must** consider the effects of preprocessing, different sense of the constraints,
 and additional constraints introduced because of range constraints.
-If you are interested in a **real** implementation of MIR Gomory cuts, please look at
-the [SCIP source code](http://scip.zib.de/doc/html/sepa__gomory_8h.shtml).
+
+If you are interested in a **real** implementation of **Mixed-Integer Gomory cuts**, 
+that are a generalization of Fractional Gomory cuts to **mixed integer linear programs**, 
+please look at the [SCIP source code](http://scip.zib.de/doc/html/sepa__gomory_8h.shtml).
 
 ### Additional readings
-The introduction of Gomory cuts in CPLEX was **The** major breakthrough of CPLEX 6.5 and produced
+The introduction of Mixed Integer Gomory cuts 
+in CPLEX was **The** major breakthrough of CPLEX 6.5 and produced
 the version-to-version speed-up given by the blue bars in the chart below
 (source: [Bixby's slides available on the web](http://www.ferc.gov/eventcalendar/Files/20100609110044-Bixby,%20Gurobi%20Optimization.pdf)):
 
@@ -129,13 +133,19 @@ the version-to-version speed-up given by the blue bars in the chart below
 
 Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
 These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix
-requires the division by its determinant. 
+requires the division by its determinant.
+
+> "In 1959, [...] We started to experience the unpredictability of the computational results rather steadily" (Gomory, see [4])."
+
 A recent paper by Cornuejols, Margot, and Nannicini deals with some of these issues [2].
 
 If you like to learn more about how the basis are computed in the CPLEX LP solver, there is very nice paper
 by Bixby [3]. The paper explains different approaches to get the first basic feasible solution and
 gives some hints of the CPLEX implementation of that time, i.e., 1992. Though the paper does not deal with Gomory
 cuts directly, it is a very pleasant reading.
+
+To conclude, for those of you interested in [Optimization Stories](http://www.math.uiuc.edu/documenta/vol-ismp/vol-ismp.html)
+there is a nice chapter by G. Cornuejols about the **Ongoing Story of Gomory Cuts** [4].
 
 ## References
 1. <p>C.H. Papadimitriou, K. Steiglitz.
@@ -152,4 +162,7 @@ cuts directly, it is a very pleasant reading.
    <span class="journal">Journal on Computing</span> vol. 4(3), pages 267--284, 1992.
    <a href="http://joc.journal.informs.org/content/4/3/267.short">[abstract]</a></p>
 
-
+4. <p>G. Cornuejols.
+   <span class="title">The Ongoing Story of Gomory Cuts</span>.
+   <span class="journal">Documenta Mathematica - Optimization Stories.</span> Pages 221-226, 2012.
+   <a href="http://www.math.uiuc.edu/documenta/vol-ismp/37_cornuejols-gerard.pdf">[preprint]</a></p>
