@@ -30,6 +30,13 @@ since they can be plotted in the &hellip;">
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- IMPORTANT PLEASE READ THIS: Delete the below line if your blog already uses jQuery in some form. Otherwise a conflict might be created and your blog might not work properly. -->
+<!-- Use the below line only if your blog doesn't already use jQuery. Please check your head.html and custom/head.html to be sure. -->
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> -->
+<!-- Below lines are necessary for Google Feeds API to work properly. Add them to your head.html or custom/head.html files in the _includes directory of your Octopress blog's source folder -->
+<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("feeds", "1");</script> -->
+
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -121,12 +128,13 @@ since they can be plotted in the plane and the linear relaxation can be solved g
 You can draw the lattice of integer points, and once you have found a new cutting plane, 
 you show that it <em>cuts off</em> the optimum solution of the LP relaxation.</p>
 
-<p>This post presents a naive (textbook) implementation of Gomory cuts that uses the basic solution
+<p>This post presents a naive (textbook) implementation of <strong>Fractional Gomory Cuts</strong> that uses the basic solution
 computed by CPLEX, the commercial Linear Programming solver used in our lab sessions.
 In practice, this post is an online supplement to one of my last exercise session.</p>
 
-<p>In order to solve the <em>“blackboard”</em> examples with CPLEX, it is necessary to use a couple of functions
-that a few years ago were undocumented. GUROBI has very similar functions, but they are currently undocumented.</p>
+<p>In order to solve the <em>“blackboard”</em> examples with <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>,
+it is necessary to use a couple of functions
+that a few years ago were undocumented. <a href="http://www.gurobi.com">GUROBI</a> has very similar functions, but they are currently undocumented.</p>
 
 <p>As usual, all the sources used to write this post are publicly available on 
 <a href="https://github.com/stegua/MyBlogEntries/tree/master/GomoryCut">my GitHub repository</a>.</p>
@@ -138,14 +146,14 @@ that a few years ago were undocumented. GUROBI has very similar functions, but t
 
 <p>it is possible to rewrite the problem in standard form by adding slack variables:</p>
 
-<script type="math/tex; mode=display">(P) \qquad \min \{ cx \mid Ax + Ix_S = b, \, x \geq 0, \, x \mbox{ integer}, \, x_S \geq 0, \}</script>
+<script type="math/tex; mode=display">(P) \qquad \min \{ cx \mid Ax + Ix_S = b, \, x \geq 0, \, x \mbox{ integer}, \, x_S \geq 0 \}</script>
 
 <p>where <script type="math/tex">I</script> is the identity matrix and <script type="math/tex">x_S</script> is a vector of slack variables, one for each constraint in <script type="math/tex">(P)</script>.
 Let us denote by <script type="math/tex">(\bar{P})</script> the linear relaxation of <script type="math/tex">(P)</script> obtained by relaxing the integrality constraint.</p>
 
 <p>The optimum solution vector of <script type="math/tex">(\bar{P})</script>, if it exists and it is finite, it is used to derive a basis
 (for a formal definition of <strong>basis</strong>, see [1] or [3]).
-Indeed, the basis partition the columns of matrix <script type="math/tex">A</script> into two submatrices
+Indeed, the basis partitions the columns of matrix <script type="math/tex">A</script> into two submatrices
 <script type="math/tex">B</script> and <script type="math/tex">N</script>, where <script type="math/tex">B</script> is given by the columns corresponding to the basic variables,
 and <script type="math/tex">N</script> by columns corresponding to variables out of the base (they are equal to zero in the optimal solution vector).</p>
 
@@ -164,13 +172,13 @@ Using the matrices <script type="math/tex">B</script> and <script type="math/tex
 <p>where the operator <script type="math/tex">\lfloor \cdot \rfloor</script> is applied component wise to the matrix elements.
 In practice, for each fractional basic variable, it is possible to generate a valid Gomory cut.</p>
 
-<p>The key step to generate Gomory cuts is to get an optimal base or, even better, the inverse of the basis matrix <script type="math/tex">B^{-1}</script>
-multiplied with <script type="math/tex">A</script> and with <script type="math/tex">b</script>. Once we have that matrix, in order to generate a Gomory cut from a fractional
-basic variable, we just use the last previous equation row-wise.</p>
+<p>The key step to generate Gomory cuts is to get an optimal basis or, even better, the inverse of the basis matrix <script type="math/tex">B^{-1}</script>
+multiplied by <script type="math/tex">A</script> and by <script type="math/tex">b</script>. Once we have that matrix, in order to generate a Gomory cut from a fractional
+basic variable, we just use the last equation in the previous derivation, applying it to each row of the system of inequalities</p>
 
-<p>Given the optimal basis, the optimal basic vector is <script type="math/tex">x_B=B^{-1}A</script>, since the non basic variable are equal to zero.
+<p>Given the optimal basis, the optimal basic vector is <script type="math/tex">x_B=B^{-1}b</script>, since the non basic variable are equal to zero.
 Let <script type="math/tex">i</script> be the index of a fractional basic variable, and let <script type="math/tex">j</script> be the index of the constraint corresponding to
-variable <script type="math/tex">i</script> in the system <script type="math/tex">x_B=B^{-1}A</script>, then the Gomory cut for variable <script type="math/tex">i</script> is:</p>
+variable <script type="math/tex">i</script> in the equations <script type="math/tex">x_B=B^{-1}A</script>, then the Gomory cut for variable <script type="math/tex">i</script> is:</p>
 
 <script type="math/tex; mode=display">x_i + \sum_{l \in N} \lfloor (B^{-1}N)_{jl} \rfloor\,x_l \leq (B^{-1}\,b)_j</script>
 
@@ -242,9 +250,9 @@ variable <script type="math/tex">i</script> in the system <script type="math/tex
 </span><span class="line">         <span class="n">rmatbeg</span><span class="p">,</span> <span class="n">rmatind</span><span class="p">,</span> <span class="n">rmatval</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>The code reads row by row (index <em>i</em>) the inverse basis matrix <script type="math/tex">B^{-1}</script> multiplied with <script type="math/tex">A</script> (line 7),
+<p>The code reads row by row (index <em>i</em>) the inverse basis matrix <script type="math/tex">B^{-1}</script> multiplied by <script type="math/tex">A</script> (line 7),
 and stores the corresponding Gomory cut in the compact matrix given by vectors <code>rmatbeg</code>, <code>rmatind</code>, and <code>rmatval</code> (lines 8-15).
-The array <code>b_bar</code> contains the vector <script type="math/tex">B^{-1}b</script> (line 21). In lines 28-31, all the cuts are added at once to current LP data structure.</p>
+The array <code>b_bar</code> contains the vector <script type="math/tex">B^{-1}b</script> (line 21). In lines 28-31, all the cuts are added at once to the current LP data structure.</p>
 
 <p>On GitHub you find a small program that I wrote to generate Gomory cuts for problems written as <script type="math/tex">(P)</script>.
 The repository have an <a href="https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/README.md">example of execution</a> of my program.</p>
@@ -252,12 +260,15 @@ The repository have an <a href="https://github.com/stegua/MyBlogEntries/blob/mas
 <p>The code is simple only because it is designed for small IPs in the form
 <script type="math/tex"> \min\, \{\, cx \mid Ax\, \leq\,b,\, x\geq 0\}</script>.
 Otherwise, the code <strong>must</strong> consider the effects of preprocessing, different sense of the constraints,
-and additional constraints introduced because of range constraints.
-If you are interested in a <strong>real</strong> implementation of MIR Gomory cuts, please look at
-the <a href="http://scip.zib.de/doc/html/sepa__gomory_8h.shtml">SCIP source code</a>.</p>
+and additional constraints introduced because of range constraints.</p>
+
+<p>If you are interested in a <strong>real</strong> implementation of <strong>Mixed-Integer Gomory cuts</strong>, 
+that are a generalization of Fractional Gomory cuts to <strong>mixed integer linear programs</strong>, 
+please look at the <a href="http://scip.zib.de/doc/html/sepa__gomory_8h.shtml">SCIP source code</a>.</p>
 
 <h3 id="additional-readings">Additional readings</h3>
-<p>The introduction of Gomory cuts in CPLEX was <strong>The</strong> major breakthrough of CPLEX 6.5 and produced
+<p>The introduction of Mixed Integer Gomory cuts 
+in CPLEX was <strong>The</strong> major breakthrough of CPLEX 6.5 and produced
 the version-to-version speed-up given by the blue bars in the chart below
 (source: <a href="http://www.ferc.gov/eventcalendar/Files/20100609110044-Bixby,%20Gurobi%20Optimization.pdf">Bixby’s slides available on the web</a>):</p>
 
@@ -265,13 +276,21 @@ the version-to-version speed-up given by the blue bars in the chart below
 
 <p>Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
 These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix
-requires the division by its determinant. 
-A recent paper by Cornuejols, Margot, and Nannicini deals with some of these issues [2].</p>
+requires the division by its determinant.</p>
+
+<blockquote>
+  <p>“In 1959, […] We started to experience the unpredictability of the computational results rather steadily” (Gomory, see [4]).”</p>
+</blockquote>
+
+<p>A recent paper by Cornuejols, Margot, and Nannicini deals with some of these issues [2].</p>
 
 <p>If you like to learn more about how the basis are computed in the CPLEX LP solver, there is very nice paper
 by Bixby [3]. The paper explains different approaches to get the first basic feasible solution and
 gives some hints of the CPLEX implementation of that time, i.e., 1992. Though the paper does not deal with Gomory
 cuts directly, it is a very pleasant reading.</p>
+
+<p>To conclude, for those of you interested in <a href="http://www.math.uiuc.edu/documenta/vol-ismp/vol-ismp.html">Optimization Stories</a>
+there is a nice chapter by G. Cornuejols about the <strong>Ongoing Story of Gomory Cuts</strong> [4].</p>
 
 <h2 id="references">References</h2>
 <ol>
@@ -292,8 +311,13 @@ cuts directly, it is a very pleasant reading.</p>
 <span class="journal">Journal on Computing</span> vol. 4(3), pages 267&#8211;284, 1992.
 <a href="http://joc.journal.informs.org/content/4/3/267.short">[abstract]</a></p>
   </li>
+  <li>
+    <p>G. Cornuejols.
+<span class="title">The Ongoing Story of Gomory Cuts</span>.
+<span class="journal">Documenta Mathematica - Optimization Stories.</span> Pages 221-226, 2012.
+<a href="http://www.math.uiuc.edu/documenta/vol-ismp/37_cornuejols-gerard.pdf">[preprint]</a></p>
+  </li>
 </ol>
-
 </div>
 
 
@@ -365,40 +389,42 @@ cuts directly, it is a very pleasant reading.</p>
   <p>Post doctoral researcher at the Math Dept, University of Pavia.
   <nav>
   <div><a href="http://www-dimat.unipv.it/~gualandi/Home.html">My Official Home Page</a></div>
-  <div><a href="http://www-dimat.unipv.it/~gualandi/Papers.html">My Pubblications</a></div>
+  <div><a href="http://www-dimat.unipv.it/~gualandi/Papers.html">My Publications</a></div>
   </nav>
   </p>
 </section>
+
+<section>
+ <!--- <h2>Latest Tweets</h2>
+<ul id="tweets">
+   <li class="loading">Status updating...</li>
+</ul> --->
+<a class="twitter-timeline" href="https://twitter.com/famo2spaghi" data-widget-id="303485589863407617">Tweets by @famo2spaghi</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<!--- <script type="text/javascript">
+   $.domReady(function(){
+         getTwitterFeed("famo2spaghi", 3, true);
+         });
+</script>
+<script src="/javascripts/twitter.js" type="text/javascript"> </script>
+
+<a href="http://twitter.com/famo2spaghi" class="twitter-follow-button" data-show-count="true">Follow @famo2spaghi</a>
+ --->
+</section>
+
 
 <section class="googleplus">
   <h1>
     <a href="https://plus.google.com/101441650504695542578?rel=author">
       <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
-      Google+
+      My Google+ profile
     </a>
   </h1>
 </section>
 
 
-
 <section>
-  <h1>Latest Tweets</h1>
-  <ul id="tweets">
-    <li class="loading">Status updating...</li>
-  </ul>
-  <script type="text/javascript">
-    $.domReady(function(){
-      getTwitterFeed("famo2spaghi", 3, true);
-    });
-  </script>
-  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
-  
-    <a href="http://twitter.com/famo2spaghi" class="twitter-follow-button" data-show-count="true">Follow @famo2spaghi</a>
-  
-</section>
-
-<section>
-  <h1>Recent Posts</h1>
+  <h2>Recent Posts</h2>
   <ul id="recent_posts">
     
       <li class="post">
@@ -425,7 +451,7 @@ cuts directly, it is a very pleasant reading.</p>
 </section>
 
 <section>
-  <h1>GitHub Repos</h1>
+  <h2>GitHub Repos</h2>
   <ul id="gh_repos">
     <li class="loading">Status updating...</li>
   </ul>
@@ -444,7 +470,7 @@ cuts directly, it is a very pleasant reading.</p>
 
         github.showRepos({
             user: 'stegua',
-            count: 1,
+            count: 3,
             skip_forks: true,
             target: '#gh_repos'
         });
@@ -453,6 +479,20 @@ cuts directly, it is a very pleasant reading.</p>
   <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
 
+<section>
+  <h1>Blogroll</h1>
+  <!-- IMPORTANT: Do not change the below ID as it will affect the functioning of the plugin-->
+    <ul id="blogroll-list"><li><a href='http://cp-is-fun.blogspot.fr/' feedurl='' title = 'Constraint Programming is fun'>CP is fun</a></li><li><a href='http://bob4er.blogspot.com/' feedurl='http://bob4er.blogspot.com/feeds/posts/default' title = ''>disORiented</a></li><li><a href='https://www.ibm.com/developerworks/mydeveloperworks/blogs/jfp/?lang=en' feedurl='https://www.ibm.com/developerworks/mydeveloperworks/blogs/roller-ui/rendering/feed/jfp/entries/atom?lang=en' title = 'Making Mathematical Optimization Pervasive'>IT Best Kept Secret Is Optimization</a></li><li><a href='http://mat.gsia.cmu.edu/blog/' feedurl='http://feeds.feedburner.com/MichaelTricksORB' title = 'Thoughts on the world of operations research'>Michael Trick’s Operations Research Blog</a></li><li><a href='http://www.hakank.org/constraint_programming_blog/' feedurl='http://www.hakank.org/constraint_programming_blog/atom.xml' title = 'This is my blog about constraint programming and related paradigms'>My Constraint Programming Blog</a></li><li><a href='http://nathanbrixius.wordpress.com/' feedurl='http://nathanbrixius.wordpress.com/feed/' title = 'Optimization, analytics, software'>Nathan Brixius</a></li><li><a href='http://orbythebeach.wordpress.com/' feedurl='http://feeds.feedburner.com/OrByTheBeach' title = 'Operations Research, Computers, Education, and South Florida'>O.R. by the Beach</a></li><li><a href='http://orinanobworld.blogspot.it/' feedurl='http://orinanobworld.blogspot.com/feeds/posts/default' title = 'A mix of operations research items and software tricks that I'll probably forget if I don't write them down somewhere'>OR in an OB World</a></li><li><a href='http://punkrockor.wordpress.com/' feedurl='http://punkrockor.wordpress.com/feed/' title = '~*~ peace, love, and operations research ~*~'>Punk Rock Operations Research</a></li><li><a href='http://spokutta.wordpress.com/' feedurl='http://spokutta.wordpress.com/feed/' title = 'Mathematics and related topics'>Sebastian Pokutta's blog</a></li><li><a href='http://tatu-search.posterous.com/' feedurl='http://tatu-search.posterous.com/rss.xml' title = ''>Tatu-Search Optimization</a></li><li><a href='http://org.mie.utoronto.ca/blog/' feedurl='' title = 'An Operations Research blog from the University of Toronto'>The OR Café</a></li><li><a href='http://www.thequestforoptimality.com/' feedurl='http://www.thequestforoptimality.com/feed/' title = 'OR made fun and practical'>the quest for optimality</a></li></ul>
+    
+    <script type="text/javascript">
+      $(document).ready(function(){
+        updateFeeds(true);
+      });
+    </script>
+    <script src="/javascripts/tinysort-min.js"></script>
+    <script src="/javascripts/blogroll.js"></script>
+    
+</section>
 
   
 </aside>
