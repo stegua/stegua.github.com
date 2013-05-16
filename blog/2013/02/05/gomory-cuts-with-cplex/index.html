@@ -9,8 +9,7 @@
   <meta name="author" content="Stefano Gualandi">
 
   
-  <meta name="description" content="On the blackboard, to solve small Integer Linear Programs with 2 variables and less or equal constraints is easy,
-since they can be plotted in the &hellip;">
+  <meta name="description" content="EDITED on May, 16th, 2013: fixes due to M. Chiarandini On the blackboard, to solve small Integer Linear Programs with 2 variables and less or equal &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -123,7 +122,9 @@ since they can be plotted in the &hellip;">
   </header>
 
 
-<div class="entry-content"><p>On the blackboard, to solve small Integer Linear Programs with 2 variables and <em>less or equal</em> constraints is easy,
+<div class="entry-content"><p><strong>EDITED on May, 16th, 2013</strong>: fixes due to <a href="http://imada.sdu.dk/~marco/">M. Chiarandini</a></p>
+
+<p>On the blackboard, to solve small Integer Linear Programs with 2 variables and <em>less or equal</em> constraints is easy,
 since they can be plotted in the plane and the linear relaxation can be solved geometrically. 
 You can draw the lattice of integer points, and once you have found a new cutting plane, 
 you show that it <em>cuts off</em> the optimum solution of the LP relaxation.</p>
@@ -135,7 +136,7 @@ In practice, this post is an online supplement to one of my last exercise sessio
 <p>In order to solve the <em>“blackboard”</em> examples with <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>,
 it is necessary to use a couple of functions
 that a few years ago were undocumented. <a href="http://www.gurobi.com">GUROBI</a> has very similar functions, but they are currently undocumented. (<strong>EDIT 16/05/2013</strong>: From version 5.5, Gurobi has documented its 
-<a href="http://www.gurobi.com/documentation/5.5/reference-manual/node109">adavnced simplex routines</a>)</p>
+<a href="http://www.gurobi.com/documentation/5.5/reference-manual/node109">advanced simplex routines</a>)</p>
 
 <p>As usual, all the sources used to write this post are publicly available on 
 <a href="https://github.com/stegua/MyBlogEntries/tree/master/GomoryCut">my GitHub repository</a>.</p>
