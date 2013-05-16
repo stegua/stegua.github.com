@@ -4,7 +4,7 @@
   <title><![CDATA[Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2013-03-22T22:08:31+01:00</updated>
+  <updated>2013-05-16T10:46:20+02:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -257,7 +257,8 @@ In practice, this post is an online supplement to one of my last exercise sessio
 
 <p>In order to solve the <em>“blackboard”</em> examples with <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>,
 it is necessary to use a couple of functions
-that a few years ago were undocumented. <a href="http://www.gurobi.com">GUROBI</a> has very similar functions, but they are currently undocumented.</p>
+that a few years ago were undocumented. <a href="http://www.gurobi.com">GUROBI</a> has very similar functions, but they are currently undocumented. (<strong>EDIT 16/05/2013</strong>: From version 5.5, Gurobi has documented its 
+<a href="http://www.gurobi.com/documentation/5.5/reference-manual/node109">adavnced simplex routines</a>)</p>
 
 <p>As usual, all the sources used to write this post are publicly available on 
 <a href="https://github.com/stegua/MyBlogEntries/tree/master/GomoryCut">my GitHub repository</a>.</p>
@@ -299,11 +300,11 @@ In practice, for each fractional basic variable, it is possible to generate a va
 multiplied by <script type="math/tex">A</script> and by <script type="math/tex">b</script>. Once we have that matrix, in order to generate a Gomory cut from a fractional
 basic variable, we just use the last equation in the previous derivation, applying it to each row of the system of inequalities</p>
 
-<p>Given the optimal basis, the optimal basic vector is <script type="math/tex">x_B=B^{-1}b</script>, since the non basic variable are equal to zero.
-Let <script type="math/tex">i</script> be the index of a fractional basic variable, and let <script type="math/tex">j</script> be the index of the constraint corresponding to
-variable <script type="math/tex">i</script> in the equations <script type="math/tex">x_B=B^{-1}A</script>, then the Gomory cut for variable <script type="math/tex">i</script> is:</p>
+<p>Given the optimal basis, the optimal basic vector is <script type="math/tex">x_B=B^{-1}b</script>, since the non basic variables are equal to zero.
+Let <script type="math/tex">j</script> be the index of a fractional basic variable, and let <script type="math/tex">i</script> be the index of the constraint corresponding to
+variable <script type="math/tex">j</script> in the equations <script type="math/tex">x_B=B^{-1}A</script>, then the Gomory cut for variable <script type="math/tex">j</script> is:</p>
 
-<script type="math/tex; mode=display">x_i + \sum_{l \in N} \lfloor (B^{-1}N)_{jl} \rfloor\,x_l \leq (B^{-1}\,b)_j</script>
+<script type="math/tex; mode=display">x_j + \sum_{l \in N} \lfloor (B^{-1}N)_{il} \rfloor\,x_l \leq \lfloor (B^{-1}\,b)_i \rfloor</script>
 
 <h3 id="using-the-cplex-callable-library">Using the CPLEX callable library</h3>
 <p>The CPLEX callable library (written in C) has the following <em>advanced</em> functions:</p>
@@ -374,8 +375,9 @@ variable <script type="math/tex">i</script> in the equations <script type="math/
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>The code reads row by row (index <em>i</em>) the inverse basis matrix <script type="math/tex">B^{-1}</script> multiplied by <script type="math/tex">A</script> (line 7),
-and stores the corresponding Gomory cut in the compact matrix given by vectors <code>rmatbeg</code>, <code>rmatind</code>, and <code>rmatval</code> (lines 8-15).
-The array <code>b_bar</code> contains the vector <script type="math/tex">B^{-1}b</script> (line 21). In lines 28-31, all the cuts are added at once to the current LP data structure.</p>
+which is temporally stored in vector <code>z</code>,
+and then the code stores the corresponding Gomory cut in the compact matrix given by vectors <code>rmatbeg</code>, <code>rmatind</code>, and <code>rmatval</code> (lines 8-15).
+The array <code>b_bar</code> contains the vector <script type="math/tex">B^{-1}b</script> (line 21). In lines 26-27, all the cuts are added at once to the current LP data structure.</p>
 
 <p>On GitHub you find a small program that I wrote to generate Gomory cuts for problems written as <script type="math/tex">(P)</script>.
 The repository have an <a href="https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/README.md">example of execution</a> of my program.</p>
