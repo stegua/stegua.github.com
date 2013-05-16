@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CPLEX | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/blog/categories/cplex/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2013-05-16T10:50:25+02:00</updated>
+  <updated>2013-05-16T10:56:26+02:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -18,7 +18,7 @@
     <link href="http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/"/>
     <updated>2013-02-05T15:22:00+01:00</updated>
     <id>http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex</id>
-    <content type="html"><![CDATA[<p><strong>EDITED on May, 16th, 2013</strong>: fixes due to <a href="http://imada.sdu.dk/~marco/">M. Chiarandini</a></p>
+    <content type="html"><![CDATA[<p><strong>Edited on May 16th, 2013</strong>: fixes due to <a href="http://imada.sdu.dk/~marco/">M. Chiarandini</a></p>
 
 <p>On the blackboard, to solve small Integer Linear Programs with 2 variables and <em>less or equal</em> constraints is easy,
 since they can be plotted in the plane and the linear relaxation can be solved geometrically. 
@@ -31,7 +31,8 @@ In practice, this post is an online supplement to one of my last exercise sessio
 
 <p>In order to solve the <em>“blackboard”</em> examples with <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>,
 it is necessary to use a couple of functions
-that a few years ago were undocumented. <a href="http://www.gurobi.com">GUROBI</a> has very similar functions, but they are currently undocumented. (<strong>EDIT 16/05/2013</strong>: From version 5.5, Gurobi has documented its 
+that a few years ago were undocumented. <a href="http://www.gurobi.com">GUROBI</a> has very similar functions,
+but they are currently undocumented. (<strong>Edited May 16th, 2013</strong>: From version 5.5, Gurobi has documented its 
 <a href="http://www.gurobi.com/documentation/5.5/reference-manual/node109">advanced simplex routines</a>)</p>
 
 <p>As usual, all the sources used to write this post are publicly available on 
