@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: graph coloring | Spaghetti Optimization]]></title>
+  <link href="http://stegua.github.com/blog/categories/graph-coloring/atom.xml" rel="self"/>
+  <link href="http://stegua.github.com/"/>
+  <updated>2013-06-28T22:01:06+02:00</updated>
+  <id>http://stegua.github.com/</id>
+  <author>
+    <name><![CDATA[Stefano Gualandi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GeCol: a Graph Coloring solver on top of Gecode]]></title>
+    <link href="http://stegua.github.com/blog/2013/06/28/gecol/"/>
+    <updated>2013-06-28T15:00:00+02:00</updated>
+    <id>http://stegua.github.com/blog/2013/06/28/gecol</id>
+    <content type="html"><![CDATA[<style type="text/css">
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
+<p>This post is about solving the classical <strong>Graph Coloring</strong> problem by using a simple solver, named here <strong>GeCol</strong>, that is built on top of the Constraint Programming (CP) solver <a href="http://www.gecode.org">Gecode</a>. The approach of GeCol is based on the CP model described in [1]. Here, we want to explore some of the new features of the last version of Gecode (version 4.0.0), namely: </p>
+
+<ul>
+  <li><em>Lightweight Dynamic Symmetry Breaking (LDSB)</em> [2]</li>
+  <li><em>Accumulated Failure Count (AFC)</em> and <em>Activity-based</em> strategies for variable selection while branching, combined with <em>Restart Based Search</em></li>
+</ul>
+
+<p>We are going to present computational results using these features to solve the <a href="https://sites.google.com/site/graphcoloring/vertex-coloring">instances</a> of the <a href="http://dimacs.rutgers.edu/Challenges/">Graph Coloring DIMACS Challenge</a>. However, this post is not going to describe in great details what these features are: please, for this purpose, refer to the <a href="http://www.gecode.org/doc-latest/MPG.pdf">Modeling and Programming with Gecode</a> book.</p>
+
+<p>As usual, all the sources used to write this post are publicly available on 
+<a href="https://github.com/stegua/MyBlogEntries/tree/master/Coloring">my GitHub repository</a>.</p>
+
+<h3 id="modeling-graph-coloring-with-constraint-programming">Modeling Graph Coloring with Constraint Programming</h3>
+
+<p>Given an undirected graph <script type="math/tex">G=(V,E)</script> and a set of colors <script type="math/tex">K</script>, the minimum (vertex) graph coloring problem consists of assigning a color to each vertex, while every pair of adjacent vertices gets a different color. The objective is to minimize the number of colors.</p>
+
+<p>To model this problem with CP, we can use for each vertex <script type="math/tex">i</script> an integer variable <script type="math/tex">x_i</script> with domain equals to <script type="math/tex">K</script>: if <script type="math/tex">x_i=k</script>, then color <script type="math/tex">k</script> is assigned to vertex <script type="math/tex">i</script>.
+Using (inclusion-wise) <em>maximal cliques</em>, it is possible to post constraints on subsets of adjacent vertices: every subset of vertices belonging to the same clique must get a different color. In CP, we can use the well-known <code>alldifferent</code> constraint for posting these constraints.</p>
+
+<p>In practice, to build our CP model, first, we find a collection of maximal cliques <script type="math/tex">C</script>, such that for every edge <script type="math/tex">(i,j) \in E</script> there exists at least a clique <script type="math/tex">c \in C</script> that contains both vertices <script type="math/tex">i</script> and <script type="math/tex">j</script>. Second, we post the following constraints:</p>
+
+<script type="math/tex; mode=display">\mbox{alldifferent}([x_c]) \qquad \forall c \in C</script>
+
+<p>where <script type="math/tex">x_c</script> denotes the subset of variables corresponding to the vertices that belong to the clique <script type="math/tex">c</script>.</p>
+
+<p>In order to minimize the number of colors, we use a simple iterative procedure. Every time we found a coloring with <script type="math/tex">k</script> colors, we restart the search by restricting the cardinality of <script type="math/tex">K</script> to <script type="math/tex">k-1</script>. If no feasible coloring exists with <script type="math/tex">k-1</script> colors, we have proved optimality for the last feasible coloring found, i.e. <script type="math/tex">\chi(G)=k</script>.</p>
+
+<p>In addition, we apply a few basic preprocessing steps that are described in [1].
+The maximal cliques are computed using <strong>Cliquer v1.21</strong> [5].</p>
+
+<h3 id="lightweight-dynamic-symmetry-breaking">Lightweight Dynamic Symmetry Breaking</h3>
+
+<p>The Graph Coloring problem is an optimization problem that has several equivalent optimum solutions: for instance, given an optimal assignment of colors to vertices, any permutation of the colors, gives a solution with the same optimum value.</p>
+
+<p>While this property is implicitly considered in <em>Column Generation approaches</em> to Graph Coloring (e.g., see [3], [1], and [4]), the CP model we have just presented, suffers from symmetries issues: the values of the domains of the integer variables are symmetric.</p>
+
+<p>The <strong>Lightweight Dynamic Symmetry Breaking</strong> is a strategy for dealing with this issue [2].
+In Gecode, you can define a set of values that are symmetric as follows:</p>
+
+<p><code>Symmetries syms;
+ syms &lt;&lt; ValueSymmetry(IntArgs::create(k,1));</code></p>
+
+<p>and then when posting the branching strategy you just write (just note that use of object <code>syms</code>):</p>
+
+<p><code>branch(*this, x, INT_VAR_SIZE_MIN(), INT_VAL_MIN(), syms);</code></p>
+
+<p>With <strong><em>three lines of code</em></strong>, you have solved (some of) the symmetry issues.</p>
+
+<blockquote>
+  <p>How efficient is <em>Lightweight Dynamic Symmetry Breaking</em> for Graph Coloring?</p>
+</blockquote>
+
+<p>We try to answer to this question with the plot below that shows the results for two versions of GeCol:</p>
+
+<ul>
+  <li>(A) The first version without any breaking symmetry strategy</li>
+  <li>(B) The second version with the Lightweight Dynamic Breaking Symmetry</li>
+</ul>
+
+<p>Both versions select for branching the variable with the smallest domain size.
+The plot reports the empirical cumulative distribution as function of run time (in log-scale).
+The tests were run with a timeout of 300 seconds on a quite old server. 
+Note that at the timeout, the version with LDBS has solved around 55% of the instances, while the version without LDBS has solved only around 48% of the instances.</p>
+
+<p><img class="center" src="../../../../../../images/Ecdf1.png"></p>
+
+<h3 id="accumulated-failure-count-and-activity-based-branching">Accumulated Failure Count and Activity-based Branching</h3>
+<p>The second new feature of Gecode that we explore here is the <em>Accumulated Failure Count</em> and the <em>Activity-based</em> branching strategies.</p>
+
+<p>While solving any CP model, the strategy used to select the next variable to branch over is very important. The <em>Accumulated Failure Count</em> strategy stores the cumulative number of failures for each variable (for details see Section 8.5 in <a href="http://www.gecode.org/doc-latest/MPG.pdf">MPG</a>). The <em>Activity-based</em> search does something similar, but instead of counting failures, measures the activity of each variable.
+In a sense, these two strategies try to <em>learn</em> from failures and activities as they occur during the search process. </p>
+
+<p>These two branching strategies are more effective when combined with <em>Restart Based Search</em>: the solver performs the search with increasing cutoff values on the number of failures. Gecode offers several optional strategies to improve the cutoff. In our tests, we have used a geometric cutoff sequence (Section 9.4 in <a href="http://www.gecode.org/doc-latest/MPG.pdf">MPG</a>).</p>
+
+<blockquote>
+  <p>How effective are the <strong>Accumulated Failure Count</strong> and the <strong>Activity-based</strong> strategies for Graph Coloring when combined with <strong>Restart Based Search</strong>?</p>
+</blockquote>
+
+<p>The second plot below shows a comparison of 3 versions of GeCol, with 3 different branching strategies:</p>
+
+<ul>
+  <li>(A) Select the variable with smallest domain size</li>
+  <li>(B) Select the variable with largest Activity Cumulated value</li>
+  <li>(C) Select the variable with largest Accumulated Failure Count (AFC) value</li>
+</ul>
+
+<p>The last strategy is tremendously efficient: it dominates the other two strategies, and it is able to solve more of the 60% of the considered instances within the timeout of 300 seconds.</p>
+
+<p><img class="center" src="../../../../../../images/Ecdf2.png"></p>
+
+<p>However, it is possible to do still slightly better. Likely, at the begging of the search phase, several variables have the same value of AFC. Therefore, it is possible to improve the branching strategy by breaking ties: we can divide the ACT or the AFC value of a variable by the its domain size. The next plot shows the results with these other branching strategies:</p>
+
+<ul>
+  <li>(A) Select the variable with largest ratio of variable degree vs. domain size</li>
+  <li>(B) Select the variable with largest ratio of Activity Cumulated value vs. domain size</li>
+  <li>(C) Select the variable with largest ratio of Accumulated Failure Count vs. domain size</li>
+</ul>
+
+<p><img class="center" src="../../../../../../images/Ecdf3.png"></p>
+
+<h2 id="conclusions">Conclusions</h2>
+<p>The new features of Gecode are very interesting and offer plenty of options.
+The LDBS is very general, and it could be easily applied to several other combinatorial optimization problems.
+Also the new branching strategies gives important enhancements, above all when combined with restart based search.</p>
+
+<blockquote>
+  <p>”…with great power there must also come – great responsibility!” (Uncle Ben, The Amazing Spider-Man, n.660, Marvel Comics) </p>
+</blockquote>
+
+<p>As a drawback, it is becoming harder and harder to find the best parameter configuration for solvers as Gecode (but this is true also for other type of solvers, e.g. Gurobi and Cplex).</p>
+
+<p>Can you find or suggest a better parameter configuration for GeCol?</p>
+
+<h2 id="references">References</h2>
+<ol>
+  <li>
+    <p>S. Gualandi and F. Malucelli.
+<span class="title">Exact Solution of Graph Coloring Problems via Constraint Programming and Column Generation</span>.
+<span class="journal">INFORMS Journal on Computing</span>. Winter 2012 vol. 24(1), pp.81-100. 
+<a href="http://joc.journal.informs.org/content/24/1/81.short">[pdf]</a>
+<a href="http://www.optimization-online.org/DB_FILE/2010/03/2568.pdf">[preprint]</a></p>
+  </li>
+  <li>
+    <p>C. Mears, M.G. de la Banda, B. Demoen, M. Wallace.
+<span class="title">Lightweight dynamic symmetry breaking</span>.
+<span class="journal">In Eighth International Workshop on Symmetry in Constraint Satisfaction Problems,
+SymCon’08, 2008.</span> 
+<a href="http://www.aloul.net/symcon/Mears2-Symcon08.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>A Mehrotra, MA Trick.
+<span class="title">A column generation approach for graph coloring</span>.
+<span class="journal">INFORMS Journal on Computing</span>. Fall 1996 vol. 8(4), pp.344-354. 
+<a href="http://joc.journal.informs.org/content/8/4/344.short ">[pdf]</a></p>
+  </li>
+  <li>
+    <p>S. Held, W. Cook, E.C. Sewell.
+<span class="title">Maximum-weight stable sets and safe lower bounds for graph coloring</span>.
+<span class="journal">Mathematical Programming Computation</span>. December 2012, Volume 4, Issue 4, pp 363-381.
+<a href="http://link.springer.com/content/pdf/10.1007%2Fs12532-012-0042-3.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>Patric R.J. Ostergard.
+<span class="title">A fast algorithm for the maximum clique problem</span>.
+<span class="journal">Discrete Applied Mathematics</span>, 
+vol. 120(1-3), pp. 197–207, 2002
+<a href="http://citeseerx.ist.psu.edu/viewdoc/similar?doi=10.1.1.28.7666&amp;type=cc">[pdf]</a>
+</p>
+  </li>
+</ol>
+]]></content>
+  </entry>
+  
+</feed>
