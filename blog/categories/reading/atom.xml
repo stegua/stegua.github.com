@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Reading | Spaghetti Optimization]]></title>
+  <link href="http://stegua.github.com/blog/categories/reading/atom.xml" rel="self"/>
+  <link href="http://stegua.github.com/"/>
+  <updated>2013-11-01T18:41:27+01:00</updated>
+  <id>http://stegua.github.com/</id>
+  <author>
+    <name><![CDATA[Stefano Gualandi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Reading Excuses]]></title>
+    <link href="http://stegua.github.com/blog/2013/11/01/reading-excuses/"/>
+    <updated>2013-11-01T15:56:00+01:00</updated>
+    <id>http://stegua.github.com/blog/2013/11/01/reading-excuses</id>
+    <content type="html"><![CDATA[<p>I love reading!</p>
+
+<p>I love reading about everything and I am glad that part of my work consists in reading.</p>
+
+<p>Unfortunately, for researchers, reading is not always that easy, as clearly explained in <strong><a href="http://homepages.inf.ed.ac.uk/bundy/how-tos/resbible.html">The Researcher’s Bible</a></strong>:</p>
+
+<blockquote>
+  <p>Reading is difficult: The difficulty seems to depend on the stage of academic development. Initially it is hard to know what to read (many documents are unpublished), later reading becomes seductive and is used as an excuse to avoid research. Finally one lacks the time and patience to keep up with reading (and fears to find evidence that one’s own work is second rate or that one is slipping behind)</p>
+</blockquote>
+
+<p>For my <em>stage of academic development</em>, reading is <strong>extremely seductive</strong>, and the situation became even worse after reading the answers to the following question raised by <a href="http://mat.tepper.cmu.edu/blog">Michael Trick</a> on <a href="https://www.or-exchange.org/">OR-exchange</a>:</p>
+
+<blockquote>
+  <p><a href="https://www.or-exchange.org/questions/681/what-paper-should-everyone-read">What paper should everyone read?</a></p>
+</blockquote>
+
+<p>If you are looking for excuses to avoid research, go through <a href="https://www.or-exchange.org/questions/681/what-paper-should-everyone-read">those answers</a> and select any paper you like, you will have <strong>outstanding</strong> and <strong>authoritative</strong> excuses!</p>
+]]></content>
+  </entry>
+  
+</feed>
