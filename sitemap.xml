@@ -2,7 +2,7 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://stegua.github.com/blog/2012/09/19/dijkstra/</loc>
-        <lastmod>2013-02-20T08:51:16+01:00</lastmod>
+        <lastmod>2013-11-17T14:12:03+01:00</lastmod>
     </url>
     <url>
         <loc>http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/</loc>
@@ -30,11 +30,11 @@
     </url>
     <url>
         <loc>http://stegua.github.com/blog/2013/11/01/reading-excuses/</loc>
-        <lastmod>2013-11-01T18:41:11+01:00</lastmod>
+        <lastmod>2013-11-01T18:41:31+01:00</lastmod>
     </url>
     <url>
         <loc>http://stegua.github.com/blog/archives/</loc>
-        <lastmod>2013-11-01T18:41:11+01:00</lastmod>
+        <lastmod>2013-11-17T14:12:03+01:00</lastmod>
     </url>
     <url>
         <loc>http://stegua.github.com/credits/</loc>
@@ -42,6 +42,6 @@
     </url>
     <url>
         <loc>http://stegua.github.com/</loc>
-        <lastmod>2013-11-01T18:41:11+01:00</lastmod>
+        <lastmod>2013-11-17T14:12:03+01:00</lastmod>
     </url>
 </urlset>
