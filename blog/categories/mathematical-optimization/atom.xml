@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mathematical Optimization | Spaghetti Optimization]]></title>
+  <link href="http://stegua.github.com/blog/categories/mathematical-optimization/atom.xml" rel="self"/>
+  <link href="http://stegua.github.com/"/>
+  <updated>2013-11-17T16:45:45+01:00</updated>
+  <id>http://stegua.github.com/</id>
+  <author>
+    <name><![CDATA[Stefano Gualandi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Public Transport and Big Data]]></title>
+    <link href="http://stegua.github.com/blog/2013/11/17/public-transport-and-big-data/"/>
+    <updated>2013-11-17T14:10:00+01:00</updated>
+    <id>http://stegua.github.com/blog/2013/11/17/public-transport-and-big-data</id>
+    <content type="html"><![CDATA[<p><strong>Big Data</strong> is nowadays a <em>buzzword</em>. A simple query for “Big Data” on Google gives about 26,700,000 results. </p>
+
+<p><strong>Public Transport</strong> is not really a <em>buzzword</em>, but still on Google you can get almost the same number as with “Big Data”: 26,400,000 results.</p>
+
+<h3 id="why-is-public-transport-so-important">Why is Public Transport so important?</h3>
+
+<p>Because <em>many</em> of us use Public Transport every day, but <em>most</em> of us still use their own car to go to work, to bring child at school, and to go shopping. This has a negative impact on the quality of life of everyone and is clearly inefficient since it does cost more: </p>
+
+<ol>
+  <li>More money.</li>
+  <li>More pollution.</li>
+  <li>More time.</li>
+</ol>
+
+<p>(Well, for time, it is not always true, but it happens more often than commonly perceived). </p>
+
+<p>Thus, an important <strong>challenge</strong> is to improve the quality of Public Transport while keeping 
+its cost competitive. The ultimate goal should be to increase the number of people that <strong>trust</strong> and use Public Transport.</p>
+
+<p>How is it possible to achieve this goal?</p>
+
+<h3 id="transport-operators-are-big-data-producers-are-they">Transport Operators are <strong>Big Data</strong> producers (are they?)</h3>
+
+<p>Modern transport operators have installed so called <em>Automatic Vehicle Monitoring (AVM)</em> systems that use several technologies to monitor the fleet of vehicles that operates the service (e.g., metro coaches, buses, metro trains, trains, …).</p>
+
+<p>The stream of data produced by an AVM might be considered as <strong>Big Data</strong> because of its <strong>volume</strong> and <strong>velocity</strong> (see <a href="https://www.ibm.com/developerworks/community/blogs/jfp/entry/big_data_for_dummies23?lang=en">Big Data For Dummies</a>, by J.F. Puget). Each vehicle produces at regular intervals (measured in seconds) data concerning its position and status. This information is stored in remote data centers. The data for a single day might not be considered as “Big”, however once you start to analyze the historical data, the volume increases significantly. For instance, a public transport operator could easily have around 2000 thousands vehicles that operate 24 hours a day, producing data potentially every second.</p>
+
+<p>At the moment, this stream of data misses the third dimension of Big Data that is <strong>variety</strong>. However, new projects that aim at integrating this information with the stream of data coming from social networks are quickly reaching maturity. One of such project is <a href="http://www.superhub-project.eu/">SuperHub</a>, a FP7 project that has recently won the best exhibit award in Cluster 2 <em>“Smart and sustainable cities for 2020+”</em>, at the <a href="http://www.superhub-project.eu/media-centre/124-ict2013-conference-best-exhibit-award-.html">ICT2013 Conference</a> in Vilnius.</p>
+
+<p>I don’t know whether transport operators are really <strong>Big Data</strong> producers or they are merely <strong>Small Data</strong> producers, but data collected using AVMs are nowadays mainly used to report and monitor the daily activities.</p>
+
+<p>In my own opinion, the data produced by transport operators, integrated with input coming from social networks, should be used to improve the quality of the public transport, for instance, by trying to better tackle <strong>Disruption Management</strong> issues.</p>
+
+<p>So, I am curious:</p>
+
+<blockquote>
+  <p>Do you know any project that uses AVM data, combined with Social Network inputs (e.g., from <a href="http://www.twitter.com">Twitter</a>), to elaborate <strong>Disruption Management</strong> strategies for Public Transport? If yes, do they use <strong>Mathematical Optimization</strong> at all?</p>
+</blockquote>
+]]></content>
+  </entry>
+  
+</feed>
