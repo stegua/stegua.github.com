@@ -10,12 +10,17 @@
 
   
 <<<<<<< HEAD
+<<<<<<< HEAD
   <meta name="description" content="Last week, more then 700,000 Italian commuters discovered the importance of Operations Research (OR).
 Nobody explicitly mentioned OR, but due to a &hellip;">
 =======
   <meta name="description" content="On the blackboard, to solve small Integer Linear Programs with 2 variables and less or equal constraints is easy,
 since they can be plotted in the &hellip;">
 >>>>>>> 1c426a23dd44e74e4e67d70cfc11643ae976f82d
+=======
+  <meta name="description" content=".title { color: #07235F; }
+.journal { font-style: italic; } Recently, I have discovered a nice tiny library (1 file!) that supports Backtrack &hellip;">
+>>>>>>> f248d51619b0df6bd9e078f233ad19f5cdee8d9c
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -34,6 +39,13 @@ since they can be plotted in the &hellip;">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- IMPORTANT PLEASE READ THIS: Delete the below line if your blog already uses jQuery in some form. Otherwise a conflict might be created and your blog might not work properly. -->
+<!-- Use the below line only if your blog doesn't already use jQuery. Please check your head.html and custom/head.html to be sure. -->
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> -->
+<!-- Below lines are necessary for Google Feeds API to work properly. Add them to your head.html or custom/head.html files in the _includes directory of your Octopress blog's source folder -->
+<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("feeds", "1");</script> -->
 
   
   <script type="text/javascript">
@@ -110,7 +122,267 @@ since they can be plotted in the &hellip;">
   <header>
     
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+      <h1 class="entry-title"><a href="/blog/2013/03/22/backtrack-programming-in-c/">Backtrack Programming in C</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-22T12:45:00+01:00" pubdate data-updated="true">Mar 22<span>nd</span>, 2013</time>
+        
+         | <a href="/blog/2013/03/22/backtrack-programming-in-c/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><style type="text/css">
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
+<p>Recently, I have discovered a nice tiny library (1 file!) that supports <a href="http://en.wikipedia.org/wiki/Backtracking">Backtrack Programming</a> in <strong>standard C</strong>.
+The library is called <a href="http://www.akira.ruc.dk/~keld/research/CBACK/">CBack</a> and 
+is developed by <a href="http://www.akira.ruc.dk/~keld/">Keld Helsgaun</a>, who is known in the Operations Research 
+and Computer Science communities for his efficient implementation of the 
+Lin-Kernighan heuristics for the <a href="http://www.akira.ruc.dk/~keld/research/LKH/">Traveling Salesman Problem</a>.</p>
+
+<p><strong>CBack</strong> offers basically two functions that are described in [1] as follows:</p>
+
+<ol>
+  <li><strong><code>Choice(N)</code></strong>: “<em>is used when a choice is to be made among a number of alternatives, where <strong>N</strong> is a positive integer denoting the number of alternatives</em>”.</li>
+  <li><strong><code>Backtrack()</code></strong>: “<em>causes the program to backtrack, that is to say, return to the most recent call of Choice, which has not yet returned all its values</em>”.</li>
+</ol>
+
+<p>With these two functions is pretty simple to develop exact enumeration algorithms.
+The <strong>CBack</strong> library comes with several examples, such as algorithms for the <a href="http://en.wikipedia.org/wiki/Eight_queens_puzzle">N-queens</a> problem and the <a href="http://en.wikipedia.org/wiki/15_puzzle">15-puzzle</a>.
+Below, I will show you how to use <strong>CBack</strong> to implement a simple algorithm that finds a <a href="http://en.wikipedia.org/wiki/Clique_problem">Maximum Clique</a> in an undirected graph.</p>
+
+<p>As usual, the source code used to write this post is publicly available on
+<a href="https://github.com/stegua/MyBlogEntries/tree/master/Backtracking">my GitHub repository</a>.</p>
+
+<h2 id="basic-use-of-cback">Basic use of CBack</h2>
+<p>The <strong>CBack</strong> documentation shows as first example the following code snippet:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span><span class="line"><span class="n">j</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span><span class="line"><span class="n">printf</span><span class="p">(</span><span class="s">&quot;i = %d, j = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">);</span>
+</span><span class="line"><span class="n">Backtrack</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The output produced by the snippet is:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If you are familiar with backtrack programming (e.g., <a href="http://en.wikipedia.org/wiki/Prolog">Prolog</a>), you should not be surprised by the output, and you can jump to the next section. Otherwise, 
+the Figure below sketches the program execution. </p>
+
+<p><img src="http://stegua.github.com/images/backtrack.png" /></p>
+
+<p>When the program executes the <code>Choice(N=3)</code> statement, that is the first call to the first choice (line 2), value 1 is assigned to variable <code>i</code>. Behind the scene, the <em>Choice</em> function stores the current execution state of the program in its own stack,
+and records the next possible choices (i.e. the other possible program branches),
+that are values <code>2</code> and <code>3</code>. Next, the second <code>Choice(N=2)</code> assigns value 1 to <code>j</code> (line 3),
+and again the state of the program is stored for later use. Then, the <code>printf</code> outputs <code>i = 1 , j = 1</code> (line 4 and first line of output). Now, it is time to <em>backtrack</em> (line 5). </p>
+
+<p>What is happening here?</p>
+
+<p>Look again at the figure above: When the <code>Backtrack()</code> function is invoked, the algorithm <em>backtracks</em> and continues the execution
+from the most recent <strong>Choice</strong> stored in its stack, i.e. it assigns to variable <code>j</code> value 2, and <code>printf</code> outputs <code>i = 1, j = 2</code>. Later, the <code>Backtrack()</code> is invoked again, and this time the algorithm backtracks until the previous possible choice that corresponds to the assignment of value 2 to variable <code>i</code>, and it executes <code>i = 2</code>. Once the second choice for variable <code>i</code> is performed, there are again two possible choices for variable <code>j</code>, since the program has backtracked to a point that precedes that statement. Thus, the program executes <code>j = 1</code>, and <code>printf</code> outputs <code>i = 2, j = 1</code>. At this point, the program <em>backtracks</em> again, and consider the next possible choice, <code>j = 2</code>. This is repeated until all possible choices for <code>Choice(3)</code> and <code>Choice(2)</code> are exhausted, yielding the 6 possible combinations of <code>i</code> and <code>j</code> that the problem gave as output.</p>
+
+<p>Indeed, during the execution, the program has implicitly visited in a depth-first manner the <em>search tree</em> of the previous figure.
+CBack supports also different search strategy, such as <em>best first</em>, but I will not cover that topic here.</p>
+
+<p>In order to store and restore the program execution state (well, more precisely the <em>calling environment</em>), <code>Choice(N)</code> and <code>Backtrack</code> use two <strong>threatening</strong> C standard functions, <code>setjmp</code> and <code>longjmp</code>. 
+For the details of their use in CBack, see [1].</p>
+
+<h2 id="a-basic-maximum-clique-algorithm">A Basic Maximum Clique Algorithm</h2>
+<p>The reason why I like this library, apart from remembering me the time I was programming with <a href="http://www.mozart-oz.org/">Mozart</a>, is that it permits to implement quickly exact algorithms based on enumeration. While enumeration is usually disregarded as <em>inefficient</em> (“<em>ehi, it is just brute force</em>!”), it is still one of the best method to solve small instances of almost any combinatorial optimization problem. In addition, many sophisticated exact algorithms use plain enumeration as a subroutine, when during the search process the size of the problem becomes small enough.</p>
+
+<p>Consider now the <strong>Maximum Clique Problem</strong>: Given an undirected graph <script type="math/tex">G=(V,E)</script>, the problem is to find the largest complete subgraph of <script type="math/tex">G</script>. More formally, you look for the largest subset <script type="math/tex">C</script> of the vertex set <script type="math/tex">V</script> such that for any pair of nodes <script type="math/tex">{i,j}</script> in <script type="math/tex">C \times C</script> there exists an arc <script type="math/tex">{i,j} \in E</script>.  </p>
+
+<p>The well-known branch-and-bound algorithm of Carraghan and Pardalos [2] is based on enumeration. The implementation of Applegate and Johnson, called <a href="ftp://dimacs.rutgers.edu/pub/dsj/clique/dfmax.c">dfmax.c</a>, is a very efficient implementation of that algorithm. Next, I show a basic implementation of the same algorithm that uses <strong>CBack</strong> for backtracking.</p>
+
+<p>The Carraghan and Pardalos algorithm uses three sets: the current clique <script type="math/tex">C</script>, the largest clique found so far <script type="math/tex">C^*</script>, and the set of candidate vertices <script type="math/tex">P</script>. The pseudo code of the algorithm is as follows (as described in [3]):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Basic Maximum Clique Algorithm</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="n">function</span> <span class="n">findClique</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+</span><span class="line">   <span class="k">if</span> <span class="o">|</span><span class="n">C</span><span class="o">|</span> <span class="o">&gt;</span> <span class="o">|</span><span class="n">C</span><span class="o">*|</span> <span class="n">then</span> <span class="n">C</span><span class="o">*</span> <span class="o">&lt;-</span> <span class="n">C</span>  <span class="c1">// store the best clique</span>
+</span><span class="line">   <span class="k">if</span> <span class="o">|</span><span class="n">C</span><span class="o">|</span> <span class="o">+</span> <span class="o">|</span><span class="n">P</span><span class="o">|</span> <span class="o">&gt;</span> <span class="o">|</span><span class="n">C</span><span class="o">*|</span> <span class="n">then</span>
+</span><span class="line">      <span class="k">for</span> <span class="n">all</span> <span class="n">v</span> <span class="n">in</span> <span class="n">P</span> <span class="c1">// the order does matter </span>
+</span><span class="line">         <span class="n">P</span> <span class="o">&lt;-</span> <span class="n">P</span> <span class="err">\</span> <span class="p">{</span><span class="n">v</span><span class="p">}</span>
+</span><span class="line">         <span class="n">C</span><span class="err">&#39;</span> <span class="o">&lt;-</span> <span class="n">C</span> <span class="n">u</span> <span class="p">{</span><span class="n">v</span><span class="p">}</span>
+</span><span class="line">         <span class="n">P</span><span class="err">&#39;</span> <span class="o">&lt;-</span> <span class="n">P</span>  <span class="err">\</span><span class="n">intersect</span> <span class="n">N</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>  <span class="c1">// neighbors of p</span>
+</span><span class="line">         <span class="n">findClique</span><span class="p">(</span><span class="n">C</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">P</span><span class="err">&#39;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="n">function</span> <span class="n">main</span><span class="p">()</span>
+</span><span class="line">   <span class="n">C</span><span class="o">*</span> <span class="o">&lt;-</span> <span class="p">{}</span>  <span class="c1">// empty set, C* global variable</span>
+</span><span class="line">   <span class="n">findClique</span><span class="p">({},</span><span class="n">V</span><span class="p">)</span>
+</span><span class="line">   <span class="k">return</span> <span class="n">C</span><span class="o">*</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>As you can see, the backtracking is here described in terms of a recursive function. However, using CBack, we can implement the same algorithm without using recursion.</p>
+
+<h2 id="maximum-clique-with-cback">Maximum Clique with CBack</h2>
+<p>We use an array <code>S</code> of <script type="math/tex">n</script> integers, one for each vertex of <script type="math/tex">V</script>.
+If <code>S[v]=0</code>, then vertex <script type="math/tex">i</script> belongs to the candidate set <script type="math/tex">P</script>; if <code>S[v]=1</code>, then vertex <script type="math/tex">i</script> is in <script type="math/tex">C</script>; if <code>S[v]=2</code>, then vertex <script type="math/tex">i</script> cannot be neither in <script type="math/tex">P</script> nor in <script type="math/tex">C</script>. The variable <code>s</code> stores the size of current clique.</p>
+
+<p>Let me show you directly the C code:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Max Clique via Branch-and-Bound</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="k">for</span> <span class="p">(</span><span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">v</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">   <span class="c1">/// If the current clique cannot be extended to a clique</span>
+</span><span class="line">   <span class="c1">/// larger than C*, where LB=|C*|, then backtrack</span>
+</span><span class="line">   <span class="k">if</span> <span class="p">(</span> <span class="n">s</span> <span class="o">+</span> <span class="n">P</span> <span class="o">&lt;=</span> <span class="n">LB</span> <span class="p">)</span>
+</span><span class="line">      <span class="n">Backtrack</span><span class="p">();</span>
+</span><span class="line">   <span class="k">if</span> <span class="p">(</span> <span class="n">S</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">{</span>  <span class="c1">/// Skip removed vertices  </span>
+</span><span class="line">      <span class="c1">/// Choice: Either v is in C (S[v]=1) or is not (S[v]=2)</span>
+</span><span class="line">      <span class="n">S</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span> <span class="n">S</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">{</span> <span class="c1">/// P &lt;- P \ {v} </span>
+</span><span class="line">         <span class="n">P</span><span class="o">--</span><span class="p">;</span>  <span class="c1">/// Decrease the size of the candidate set </span>
+</span><span class="line">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="c1">/// S[v]=1: C &lt;- C u {v}</span>
+</span><span class="line">         <span class="n">s</span><span class="o">++</span><span class="p">;</span>   <span class="c1">/// Update current clique size </span>
+</span><span class="line">         <span class="k">if</span> <span class="p">(</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="n">LB</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="n">LB</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>  <span class="c1">/// Store the new best clique</span>
+</span><span class="line">            <span class="k">for</span> <span class="p">(</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">w</span> <span class="o">&lt;=</span> <span class="n">v</span><span class="p">;</span> <span class="n">w</span><span class="o">++</span> <span class="p">)</span>
+</span><span class="line">               <span class="n">C</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">w</span><span class="p">];</span>
+</span><span class="line">         <span class="p">}</span>
+</span><span class="line">         <span class="c1">/// Restrict the candidate set </span>
+</span><span class="line">         <span class="k">for</span> <span class="p">(</span> <span class="n">w</span> <span class="o">=</span> <span class="n">V</span><span class="p">[</span><span class="n">v</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="n">V</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="p">;</span> <span class="n">w</span><span class="o">--</span> <span class="p">)</span>
+</span><span class="line">            <span class="k">if</span> <span class="p">(</span> <span class="n">S</span><span class="p">[</span><span class="n">E</span><span class="p">[</span><span class="n">w</span><span class="p">]]</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">               <span class="n">S</span><span class="p">[</span><span class="n">E</span><span class="p">[</span><span class="n">w</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class="line">               <span class="n">P</span><span class="o">--</span><span class="p">;</span> <span class="c1">/// Decrease the size of the candidate set </span>
+</span><span class="line">            <span class="p">}</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">   <span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="n">Backtrack</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Well, I like this code pretty much, despite being a “<em>plain old</em>” C program.
+The algorithm and code can be improved in several ways (ordering the vertices, improving the pruning, using upper bounds from heuristic vertex coloring, using induced degree as in [2]), but still, the main loop and the backtrack machinery is all there, in a few lines of code!</p>
+
+<p>Maybe you wonder about the efficiency of this code, but at the moment I have not a precise answer. For sure, the ordering of the vertices is crucial, and can make a huge difference on solving the <a href="http://iridia.ulb.ac.be/~fmascia/maximum_clique/DIMACS-benchmark">max-clique DIMACS instances</a>. I have used CBack to implement my own version of the Ostengard’s max-clique algorithm [4], but my implementation is somehow slower. I suspect that the difference is due to data structure used to store the graph (Ostengard’s implementation relies on bitsets), but not in the way the backtracking is achieved. Although, to answer to such question could be a subject of another post.</p>
+
+<p>In conclusion, if you need to implement an exact enumerative algorithm, <a href="http://www.akira.ruc.dk/~keld/research/CBACK/">CBack</a> could be an option to consider.</p>
+
+<h3 id="references">References</h3>
+
+<ol>
+  <li>
+    <p>Keld Helsgaun. 
+<span class="title">CBack: A Simple Tool for Backtrack Programming in C</span>. 
+<span class="journal">Software: Practice and Experience</span>, 
+vol. 25(8), pp. 905-934, 2006. 
+<a href="http://dx.doi.org/10.1002/spe.4380250805">[doi]</a>
+</p>
+  </li>
+  <li>
+    <p>Carraghan and Pardalos. 
+<span class="title">An exact algorithm for the maximum clique problem</span>. 
+<span class="journal">Operations Research Letters</span>, 
+vol. 9(6), pp. 375-382, 1990, 
+<a href="http://www.dcs.gla.ac.uk/~pat/jchoco/clique/papersClique/carraghanPardalos90.pdf">[pdf]</a>
+</p>
+  </li>
+  <li>
+    <p>Torsten Fahle. 
+<span class="title">Simple and Fast: Improving a Branch-and-Bound Algorithm</span>. 
+In Proc <span class="journal">ESA 2002</span>, LNCS 2461, pp. 485-498.
+<a href="http://dx.doi.org/10.1007/3-540-45749-6_44">[doi]</a>
+</p>
+  </li>
+  <li>
+    <p>Patric R.J. Ostergard.
+<span class="title">A fast algorithm for the maximum clique problem</span>.
+<span class="journal">Discrete Applied Mathematics</span>, 
+vol. 120(1-3), pp. 197–207, 2002
+<a href="http://citeseerx.ist.psu.edu/viewdoc/similar?doi=10.1.1.28.7666&amp;type=cc">[pdf]</a>
+</p>
+  </li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+>>>>>>> f248d51619b0df6bd9e078f233ad19f5cdee8d9c
       <h1 class="entry-title"><a href="/blog/2013/02/05/gomory-cuts-with-cplex/">From Blackboard to Code: Gomory Cuts Using CPLEX</a></h1>
     
     
@@ -141,12 +413,13 @@ since they can be plotted in the plane and the linear relaxation can be solved g
 You can draw the lattice of integer points, and once you have found a new cutting plane, 
 you show that it <em>cuts off</em> the optimum solution of the LP relaxation.</p>
 
-<p>This post presents a naive (textbook) implementation of Gomory cuts that uses the basic solution
+<p>This post presents a naive (textbook) implementation of <strong>Fractional Gomory Cuts</strong> that uses the basic solution
 computed by CPLEX, the commercial Linear Programming solver used in our lab sessions.
 In practice, this post is an online supplement to one of my last exercise session.</p>
 
-<p>In order to solve the <em>“blackboard”</em> examples with CPLEX, it is necessary to use a couple of functions
-that a few years ago were undocumented. GUROBI has very similar functions, but they are currently undocumented.</p>
+<p>In order to solve the <em>“blackboard”</em> examples with <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>,
+it is necessary to use a couple of functions
+that a few years ago were undocumented. <a href="http://www.gurobi.com">GUROBI</a> has very similar functions, but they are currently undocumented.</p>
 
 <p>As usual, all the sources used to write this post are publicly available on 
 <a href="https://github.com/stegua/MyBlogEntries/tree/master/GomoryCut">my GitHub repository</a>.</p>
@@ -158,14 +431,14 @@ that a few years ago were undocumented. GUROBI has very similar functions, but t
 
 <p>it is possible to rewrite the problem in standard form by adding slack variables:</p>
 
-<script type="math/tex; mode=display">(P) \qquad \min \{ cx \mid Ax + Ix_S = b, \, x \geq 0, \, x \mbox{ integer}, \, x_S \geq 0, \}</script>
+<script type="math/tex; mode=display">(P) \qquad \min \{ cx \mid Ax + Ix_S = b, \, x \geq 0, \, x \mbox{ integer}, \, x_S \geq 0 \}</script>
 
 <p>where <script type="math/tex">I</script> is the identity matrix and <script type="math/tex">x_S</script> is a vector of slack variables, one for each constraint in <script type="math/tex">(P)</script>.
 Let us denote by <script type="math/tex">(\bar{P})</script> the linear relaxation of <script type="math/tex">(P)</script> obtained by relaxing the integrality constraint.</p>
 
 <p>The optimum solution vector of <script type="math/tex">(\bar{P})</script>, if it exists and it is finite, it is used to derive a basis
 (for a formal definition of <strong>basis</strong>, see [1] or [3]).
-Indeed, the basis partition the columns of matrix <script type="math/tex">A</script> into two submatrices
+Indeed, the basis partitions the columns of matrix <script type="math/tex">A</script> into two submatrices
 <script type="math/tex">B</script> and <script type="math/tex">N</script>, where <script type="math/tex">B</script> is given by the columns corresponding to the basic variables,
 and <script type="math/tex">N</script> by columns corresponding to variables out of the base (they are equal to zero in the optimal solution vector).</p>
 
@@ -184,13 +457,13 @@ Using the matrices <script type="math/tex">B</script> and <script type="math/tex
 <p>where the operator <script type="math/tex">\lfloor \cdot \rfloor</script> is applied component wise to the matrix elements.
 In practice, for each fractional basic variable, it is possible to generate a valid Gomory cut.</p>
 
-<p>The key step to generate Gomory cuts is to get an optimal base or, even better, the inverse of the basis matrix <script type="math/tex">B^{-1}</script>
-multiplied with <script type="math/tex">A</script> and with <script type="math/tex">b</script>. Once we have that matrix, in order to generate a Gomory cut from a fractional
-basic variable, we just use the last previous equation row-wise.</p>
+<p>The key step to generate Gomory cuts is to get an optimal basis or, even better, the inverse of the basis matrix <script type="math/tex">B^{-1}</script>
+multiplied by <script type="math/tex">A</script> and by <script type="math/tex">b</script>. Once we have that matrix, in order to generate a Gomory cut from a fractional
+basic variable, we just use the last equation in the previous derivation, applying it to each row of the system of inequalities</p>
 
-<p>Given the optimal basis, the optimal basic vector is <script type="math/tex">x_B=B^{-1}A</script>, since the non basic variable are equal to zero.
+<p>Given the optimal basis, the optimal basic vector is <script type="math/tex">x_B=B^{-1}b</script>, since the non basic variable are equal to zero.
 Let <script type="math/tex">i</script> be the index of a fractional basic variable, and let <script type="math/tex">j</script> be the index of the constraint corresponding to
-variable <script type="math/tex">i</script> in the system <script type="math/tex">x_B=B^{-1}A</script>, then the Gomory cut for variable <script type="math/tex">i</script> is:</p>
+variable <script type="math/tex">i</script> in the equations <script type="math/tex">x_B=B^{-1}A</script>, then the Gomory cut for variable <script type="math/tex">i</script> is:</p>
 
 <script type="math/tex; mode=display">x_i + \sum_{l \in N} \lfloor (B^{-1}N)_{jl} \rfloor\,x_l \leq (B^{-1}\,b)_j</script>
 
@@ -262,9 +535,9 @@ variable <script type="math/tex">i</script> in the system <script type="math/tex
 </span><span class="line">         <span class="n">rmatbeg</span><span class="p">,</span> <span class="n">rmatind</span><span class="p">,</span> <span class="n">rmatval</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>The code reads row by row (index <em>i</em>) the inverse basis matrix <script type="math/tex">B^{-1}</script> multiplied with <script type="math/tex">A</script> (line 7),
+<p>The code reads row by row (index <em>i</em>) the inverse basis matrix <script type="math/tex">B^{-1}</script> multiplied by <script type="math/tex">A</script> (line 7),
 and stores the corresponding Gomory cut in the compact matrix given by vectors <code>rmatbeg</code>, <code>rmatind</code>, and <code>rmatval</code> (lines 8-15).
-The array <code>b_bar</code> contains the vector <script type="math/tex">B^{-1}b</script> (line 21). In lines 28-31, all the cuts are added at once to current LP data structure.</p>
+The array <code>b_bar</code> contains the vector <script type="math/tex">B^{-1}b</script> (line 21). In lines 28-31, all the cuts are added at once to the current LP data structure.</p>
 
 <p>On GitHub you find a small program that I wrote to generate Gomory cuts for problems written as <script type="math/tex">(P)</script>.
 The repository have an <a href="https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/README.md">example of execution</a> of my program.</p>
@@ -272,26 +545,37 @@ The repository have an <a href="https://github.com/stegua/MyBlogEntries/blob/mas
 <p>The code is simple only because it is designed for small IPs in the form
 <script type="math/tex"> \min\, \{\, cx \mid Ax\, \leq\,b,\, x\geq 0\}</script>.
 Otherwise, the code <strong>must</strong> consider the effects of preprocessing, different sense of the constraints,
-and additional constraints introduced because of range constraints.
-If you are interested in a <strong>real</strong> implementation of MIR Gomory cuts, please look at
-the <a href="http://scip.zib.de/doc/html/sepa__gomory_8h.shtml">SCIP source code</a>.</p>
+and additional constraints introduced because of range constraints.</p>
+
+<p>If you are interested in a <strong>real</strong> implementation of <strong>Mixed-Integer Gomory cuts</strong>, 
+that are a generalization of Fractional Gomory cuts to <strong>mixed integer linear programs</strong>, 
+please look at the <a href="http://scip.zib.de/doc/html/sepa__gomory_8h.shtml">SCIP source code</a>.</p>
 
 <h3 id="additional-readings">Additional readings</h3>
-<p>The introduction of Gomory cuts in CPLEX was <strong>The</strong> major breakthrough of CPLEX 6.5 and produced
+<p>The introduction of Mixed Integer Gomory cuts 
+in CPLEX was <strong>The</strong> major breakthrough of CPLEX 6.5 and produced
 the version-to-version speed-up given by the blue bars in the chart below
 (source: <a href="http://www.ferc.gov/eventcalendar/Files/20100609110044-Bixby,%20Gurobi%20Optimization.pdf">Bixby’s slides available on the web</a>):</p>
 
-<p><img src="images/cplex65.png" /></p>
+<p><img src="http://stegua.github.com/images/cplex65.png" /></p>
 
 <p>Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
 These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix
-requires the division by its determinant. 
-A recent paper by Cornuejols, Margot, and Nannicini deals with some of these issues [2].</p>
+requires the division by its determinant.</p>
+
+<blockquote>
+  <p>“In 1959, […] We started to experience the unpredictability of the computational results rather steadily” (Gomory, see [4]).”</p>
+</blockquote>
+
+<p>A recent paper by Cornuejols, Margot, and Nannicini deals with some of these issues [2].</p>
 
 <p>If you like to learn more about how the basis are computed in the CPLEX LP solver, there is very nice paper
 by Bixby [3]. The paper explains different approaches to get the first basic feasible solution and
 gives some hints of the CPLEX implementation of that time, i.e., 1992. Though the paper does not deal with Gomory
 cuts directly, it is a very pleasant reading.</p>
+
+<p>To conclude, for those of you interested in <a href="http://www.math.uiuc.edu/documenta/vol-ismp/vol-ismp.html">Optimization Stories</a>
+there is a nice chapter by G. Cornuejols about the <strong>Ongoing Story of Gomory Cuts</strong> [4].</p>
 
 <h2 id="references">References</h2>
 <ol>
@@ -312,8 +596,13 @@ cuts directly, it is a very pleasant reading.</p>
 <span class="journal">Journal on Computing</span> vol. 4(3), pages 267&#8211;284, 1992.
 <a href="http://joc.journal.informs.org/content/4/3/267.short">[abstract]</a></p>
   </li>
+  <li>
+    <p>G. Cornuejols.
+<span class="title">The Ongoing Story of Gomory Cuts</span>.
+<span class="journal">Documenta Mathematica - Optimization Stories.</span> Pages 221-226, 2012.
+<a href="http://www.math.uiuc.edu/documenta/vol-ismp/37_cornuejols-gerard.pdf">[preprint]</a></p>
+  </li>
 </ol>
-
 </div>
   
   
@@ -1508,7 +1797,7 @@ Lecture Notes in Computer Science, Volume 5515, pages 117-139, 2009.
     <p>Goldberg, A.V. and Harrelson, C.
 <span class="title">Computing the shortest path: A-star search meets graph theory</span>.
 <span class="journal">Proc. of the sixteenth annual ACM-SIAM symposium on Discrete algorithms</span>, 156-165, 2005.
-<a href="http://http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.136.1062&amp;rep=rep1&amp;type=pdf/">[pdf]</a></p>
+<a href="http://research.microsoft.com/apps/pubs/default.aspx?id=64511">[pdf]</a></p>
   </li>
 </ol>
 
@@ -1532,21 +1821,41 @@ Lecture Notes in Computer Science, Volume 5515, pages 117-139, 2009.
   <p>Post doctoral researcher at the Math Dept, University of Pavia.
   <nav>
   <div><a href="http://www-dimat.unipv.it/~gualandi/Home.html">My Official Home Page</a></div>
-  <div><a href="http://www-dimat.unipv.it/~gualandi/Papers.html">My Pubblications</a></div>
+  <div><a href="http://www-dimat.unipv.it/~gualandi/Papers.html">My Publications</a></div>
   </nav>
   </p>
 </section>
+
+<section>
+ <!--- <h2>Latest Tweets</h2>
+<ul id="tweets">
+   <li class="loading">Status updating&#8230;</li>
+</ul> &#8212;>
+<a class="twitter-timeline" href="https://twitter.com/famo2spaghi" data-widget-id="303485589863407617">Tweets by @famo2spaghi</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<!--- <script type="text/javascript">
+   $.domReady(function(){
+         getTwitterFeed("famo2spaghi", 3, true);
+         });
+</script>
+<script src="/javascripts/twitter.js" type="text/javascript"> </script>
+
+<a href="http://twitter.com/famo2spaghi" class="twitter-follow-button" data-show-count="true">Follow @famo2spaghi</a>
+ &#8212;>
+</section>
+
 
 <section class="googleplus">
   <h1>
     <a href="https://plus.google.com/101441650504695542578?rel=author">
       <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
-      Google+
+      My Google+ profile
     </a>
   </h1>
 </section>
 
 
+<<<<<<< HEAD
 
 <section>
 <<<<<<< HEAD
@@ -1567,13 +1876,22 @@ Lecture Notes in Computer Science, Volume 5515, pages 117-139, 2009.
   
 </section>
 
+=======
+>>>>>>> f248d51619b0df6bd9e078f233ad19f5cdee8d9c
 <section>
-  <h1>Recent Posts</h1>
+  <h2>Recent Posts</h2>
   <ul id="recent_posts">
     
       <li class="post">
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+        <a href="/blog/2013/03/22/backtrack-programming-in-c/">Backtrack Programming in c</a>
+      </li>
+    
+      <li class="post">
+>>>>>>> f248d51619b0df6bd9e078f233ad19f5cdee8d9c
         <a href="/blog/2013/02/05/gomory-cuts-with-cplex/">From blackboard to code: Gomory Cuts using CPLEX</a>
       </li>
     
@@ -1590,15 +1908,11 @@ Lecture Notes in Computer Science, Volume 5515, pages 117-139, 2009.
         <a href="/blog/2012/10/19/cp2012-je-me-souviens/">CP2012: Je me souviens</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/09/19/dijkstra/">Dijkstra, Dantzig, and Shortest Paths</a>
-      </li>
-    
   </ul>
 </section>
 
 <section>
-  <h1>GitHub Repos</h1>
+  <h2>GitHub Repos</h2>
   <ul id="gh_repos">
     <li class="loading">Status updating&#8230;</li>
   </ul>
@@ -1617,7 +1931,7 @@ Lecture Notes in Computer Science, Volume 5515, pages 117-139, 2009.
 
         github.showRepos({
             user: 'stegua',
-            count: 1,
+            count: 3,
             skip_forks: true,
             target: '#gh_repos'
         });
@@ -1626,6 +1940,20 @@ Lecture Notes in Computer Science, Volume 5515, pages 117-139, 2009.
   <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
 
+<section>
+  <h1>Blogroll</h1>
+  <!-- IMPORTANT: Do not change the below ID as it will affect the functioning of the plugin-->
+    <ul id="blogroll-list"><li><a href='http://cp-is-fun.blogspot.fr/' feedurl='' title = 'Constraint Programming is fun'>CP is fun</a></li><li><a href='http://bob4er.blogspot.com/' feedurl='http://bob4er.blogspot.com/feeds/posts/default' title = ''>disORiented</a></li><li><a href='https://www.ibm.com/developerworks/mydeveloperworks/blogs/jfp/?lang=en' feedurl='https://www.ibm.com/developerworks/mydeveloperworks/blogs/roller-ui/rendering/feed/jfp/entries/atom?lang=en' title = 'Making Mathematical Optimization Pervasive'>IT Best Kept Secret Is Optimization</a></li><li><a href='http://mat.gsia.cmu.edu/blog/' feedurl='http://feeds.feedburner.com/MichaelTricksORB' title = 'Thoughts on the world of operations research'>Michael Trick’s Operations Research Blog</a></li><li><a href='http://www.hakank.org/constraint_programming_blog/' feedurl='http://www.hakank.org/constraint_programming_blog/atom.xml' title = 'This is my blog about constraint programming and related paradigms'>My Constraint Programming Blog</a></li><li><a href='http://nathanbrixius.wordpress.com/' feedurl='http://nathanbrixius.wordpress.com/feed/' title = 'Optimization, analytics, software'>Nathan Brixius</a></li><li><a href='http://orbythebeach.wordpress.com/' feedurl='http://feeds.feedburner.com/OrByTheBeach' title = 'Operations Research, Computers, Education, and South Florida'>O.R. by the Beach</a></li><li><a href='http://orinanobworld.blogspot.it/' feedurl='http://orinanobworld.blogspot.com/feeds/posts/default' title = 'A mix of operations research items and software tricks that I'll probably forget if I don't write them down somewhere'>OR in an OB World</a></li><li><a href='http://punkrockor.wordpress.com/' feedurl='http://punkrockor.wordpress.com/feed/' title = '~*~ peace, love, and operations research ~*~'>Punk Rock Operations Research</a></li><li><a href='http://spokutta.wordpress.com/' feedurl='http://spokutta.wordpress.com/feed/' title = 'Mathematics and related topics'>Sebastian Pokutta&#8217;s blog</a></li><li><a href='http://tatu-search.posterous.com/' feedurl='http://tatu-search.posterous.com/rss.xml' title = ''>Tatu-Search Optimization</a></li><li><a href='http://org.mie.utoronto.ca/blog/' feedurl='' title = 'An Operations Research blog from the University of Toronto'>The OR Café</a></li><li><a href='http://www.thequestforoptimality.com/' feedurl='http://www.thequestforoptimality.com/feed/' title = 'OR made fun and practical'>the quest for optimality</a></li></ul>
+    
+    <script type="text/javascript">
+      $(document).ready(function(){
+        updateFeeds(true);
+      });
+    </script>
+    <script src="/javascripts/tinysort-min.js"></script>
+    <script src="/javascripts/blogroll.js"></script>
+    
+</section>
 
   
 </aside>

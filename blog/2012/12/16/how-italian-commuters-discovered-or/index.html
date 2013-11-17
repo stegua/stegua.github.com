@@ -30,6 +30,13 @@ Nobody explicitly mentioned OR, but due to a &hellip;">
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- IMPORTANT PLEASE READ THIS: Delete the below line if your blog already uses jQuery in some form. Otherwise a conflict might be created and your blog might not work properly. -->
+<!-- Use the below line only if your blog doesn't already use jQuery. Please check your head.html and custom/head.html to be sure. -->
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> -->
+<!-- Below lines are necessary for Google Feeds API to work properly. Add them to your head.html or custom/head.html files in the _includes directory of your Octopress blog's source folder -->
+<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("feeds", "1");</script> -->
+
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -244,23 +251,42 @@ help Trenord to improve the situation.</p>
   <p>Post doctoral researcher at the Math Dept, University of Pavia.
   <nav>
   <div><a href="http://www-dimat.unipv.it/~gualandi/Home.html">My Official Home Page</a></div>
-  <div><a href="http://www-dimat.unipv.it/~gualandi/Papers.html">My Pubblications</a></div>
+  <div><a href="http://www-dimat.unipv.it/~gualandi/Papers.html">My Publications</a></div>
   </nav>
   </p>
 </section>
+
+<section>
+ <!--- <h2>Latest Tweets</h2>
+<ul id="tweets">
+   <li class="loading">Status updating...</li>
+</ul> --->
+<a class="twitter-timeline" href="https://twitter.com/famo2spaghi" data-widget-id="303485589863407617">Tweets by @famo2spaghi</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<!--- <script type="text/javascript">
+   $.domReady(function(){
+         getTwitterFeed("famo2spaghi", 3, true);
+         });
+</script>
+<script src="/javascripts/twitter.js" type="text/javascript"> </script>
+
+<a href="http://twitter.com/famo2spaghi" class="twitter-follow-button" data-show-count="true">Follow @famo2spaghi</a>
+ --->
+</section>
+
 
 <section class="googleplus">
   <h1>
     <a href="https://plus.google.com/101441650504695542578?rel=author">
       <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
-      Google+
+      My Google+ profile
     </a>
   </h1>
 </section>
 
 
-
 <section>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
   <h1>Latest Tweets</h1>
@@ -286,6 +312,16 @@ help Trenord to improve the situation.</p>
       <li class="post">
 <<<<<<< HEAD
 =======
+=======
+  <h2>Recent Posts</h2>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/03/22/backtrack-programming-in-c/">Backtrack Programming in c</a>
+      </li>
+    
+      <li class="post">
+>>>>>>> f248d51619b0df6bd9e078f233ad19f5cdee8d9c
         <a href="/blog/2013/02/05/gomory-cuts-with-cplex/">From blackboard to code: Gomory Cuts using CPLEX</a>
       </li>
     
@@ -302,15 +338,11 @@ help Trenord to improve the situation.</p>
         <a href="/blog/2012/10/19/cp2012-je-me-souviens/">CP2012: Je me souviens</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/09/19/dijkstra/">Dijkstra, Dantzig, and Shortest Paths</a>
-      </li>
-    
   </ul>
 </section>
 
 <section>
-  <h1>GitHub Repos</h1>
+  <h2>GitHub Repos</h2>
   <ul id="gh_repos">
     <li class="loading">Status updating...</li>
   </ul>
@@ -329,7 +361,7 @@ help Trenord to improve the situation.</p>
 
         github.showRepos({
             user: 'stegua',
-            count: 1,
+            count: 3,
             skip_forks: true,
             target: '#gh_repos'
         });
@@ -338,6 +370,20 @@ help Trenord to improve the situation.</p>
   <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
 
+<section>
+  <h1>Blogroll</h1>
+  <!-- IMPORTANT: Do not change the below ID as it will affect the functioning of the plugin-->
+    <ul id="blogroll-list"><li><a href='http://cp-is-fun.blogspot.fr/' feedurl='' title = 'Constraint Programming is fun'>CP is fun</a></li><li><a href='http://bob4er.blogspot.com/' feedurl='http://bob4er.blogspot.com/feeds/posts/default' title = ''>disORiented</a></li><li><a href='https://www.ibm.com/developerworks/mydeveloperworks/blogs/jfp/?lang=en' feedurl='https://www.ibm.com/developerworks/mydeveloperworks/blogs/roller-ui/rendering/feed/jfp/entries/atom?lang=en' title = 'Making Mathematical Optimization Pervasive'>IT Best Kept Secret Is Optimization</a></li><li><a href='http://mat.gsia.cmu.edu/blog/' feedurl='http://feeds.feedburner.com/MichaelTricksORB' title = 'Thoughts on the world of operations research'>Michael Trick’s Operations Research Blog</a></li><li><a href='http://www.hakank.org/constraint_programming_blog/' feedurl='http://www.hakank.org/constraint_programming_blog/atom.xml' title = 'This is my blog about constraint programming and related paradigms'>My Constraint Programming Blog</a></li><li><a href='http://nathanbrixius.wordpress.com/' feedurl='http://nathanbrixius.wordpress.com/feed/' title = 'Optimization, analytics, software'>Nathan Brixius</a></li><li><a href='http://orbythebeach.wordpress.com/' feedurl='http://feeds.feedburner.com/OrByTheBeach' title = 'Operations Research, Computers, Education, and South Florida'>O.R. by the Beach</a></li><li><a href='http://orinanobworld.blogspot.it/' feedurl='http://orinanobworld.blogspot.com/feeds/posts/default' title = 'A mix of operations research items and software tricks that I'll probably forget if I don't write them down somewhere'>OR in an OB World</a></li><li><a href='http://punkrockor.wordpress.com/' feedurl='http://punkrockor.wordpress.com/feed/' title = '~*~ peace, love, and operations research ~*~'>Punk Rock Operations Research</a></li><li><a href='http://spokutta.wordpress.com/' feedurl='http://spokutta.wordpress.com/feed/' title = 'Mathematics and related topics'>Sebastian Pokutta's blog</a></li><li><a href='http://tatu-search.posterous.com/' feedurl='http://tatu-search.posterous.com/rss.xml' title = ''>Tatu-Search Optimization</a></li><li><a href='http://org.mie.utoronto.ca/blog/' feedurl='' title = 'An Operations Research blog from the University of Toronto'>The OR Café</a></li><li><a href='http://www.thequestforoptimality.com/' feedurl='http://www.thequestforoptimality.com/feed/' title = 'OR made fun and practical'>the quest for optimality</a></li></ul>
+    
+    <script type="text/javascript">
+      $(document).ready(function(){
+        updateFeeds(true);
+      });
+    </script>
+    <script src="/javascripts/tinysort-min.js"></script>
+    <script src="/javascripts/blogroll.js"></script>
+    
+</section>
 
   
 </aside>

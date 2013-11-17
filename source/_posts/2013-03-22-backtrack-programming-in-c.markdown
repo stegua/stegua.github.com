@@ -17,7 +17,7 @@ Recently, I have discovered a nice tiny library (1 file!) that supports [Backtra
 The library is called [CBack](http://www.akira.ruc.dk/~keld/research/CBACK/) and 
 is developed by [Keld Helsgaun](http://www.akira.ruc.dk/~keld/), who is known in the Operations Research 
 and Computer Science communities for his efficient implementation of the 
-Lin-Kernighan heuristics for the [Traveling Salesman Problem](http://www.akira.ruc.dk/~keld/research/LKH/).
+Lin-Kernighan heuristics for the [Travelling Salesman Problem](http://www.akira.ruc.dk/~keld/research/LKH/).
 
 **CBack** offers basically two functions that are described in [1] as follows:
 

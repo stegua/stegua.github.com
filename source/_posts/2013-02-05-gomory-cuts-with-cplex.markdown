@@ -8,6 +8,8 @@ categories: [integer programming, cutting planes, CPLEX]
 sharing: true
 ---
 
+**Edited on May 16th, 2013**: fixes due to [M. Chiarandini](http://imada.sdu.dk/~marco/)
+
 On the blackboard, to solve small Integer Linear Programs with 2 variables and _less or equal_ constraints is easy,
 since they can be plotted in the plane and the linear relaxation can be solved geometrically. 
 You can draw the lattice of integer points, and once you have found a new cutting plane, 
@@ -19,7 +21,9 @@ In practice, this post is an online supplement to one of my last exercise sessio
 
 In order to solve the *"blackboard"* examples with [CPLEX](http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/),
 it is necessary to use a couple of functions
-that a few years ago were undocumented. [GUROBI](http://www.gurobi.com) has very similar functions, but they are currently undocumented.
+that a few years ago were undocumented. [GUROBI](http://www.gurobi.com) has very similar functions,
+but they are currently undocumented. (**Edited May 16th, 2013**: From version 5.5, Gurobi has documented its 
+[advanced simplex routines](http://www.gurobi.com/documentation/5.5/reference-manual/node109))
 
 As usual, all the sources used to write this post are publicly available on 
 [my GitHub repository](https://github.com/stegua/MyBlogEntries/tree/master/GomoryCut).
@@ -60,11 +64,11 @@ The key step to generate Gomory cuts is to get an optimal basis or, even better,
 multiplied by $$A$$ and by $$b$$. Once we have that matrix, in order to generate a Gomory cut from a fractional
 basic variable, we just use the last equation in the previous derivation, applying it to each row of the system of inequalities
 
-Given the optimal basis, the optimal basic vector is $$x_B=B^{-1}b$$, since the non basic variable are equal to zero.
-Let $$i$$ be the index of a fractional basic variable, and let $$j$$ be the index of the constraint corresponding to
-variable $$i$$ in the equations $$x_B=B^{-1}A$$, then the Gomory cut for variable $$i$$ is:
+Given the optimal basis, the optimal basic vector is $$x_B=B^{-1}b$$, since the non basic variables are equal to zero.
+Let $$j$$ be the index of a fractional basic variable, and let $$i$$ be the index of the constraint corresponding to
+variable $$j$$ in the equations $$x_B=B^{-1}A$$, then the Gomory cut for variable $$j$$ is:
 
-$$x_i + \sum_{l \in N} \lfloor (B^{-1}N)_{jl} \rfloor\,x_l \leq (B^{-1}\,b)_j$$
+$$x_j + \sum_{l \in N} \lfloor (B^{-1}N)_{il} \rfloor\,x_l \leq \lfloor (B^{-1}\,b)_i \rfloor$$
 
 ### Using the CPLEX callable library
 The CPLEX callable library (written in C) has the following _advanced_ functions:
@@ -107,8 +111,9 @@ POST_CMD( CPXaddrows (env, model, 0, n_cuts, idx, gc_rhs, gc_sense,
 ```
 
 The code reads row by row (index *i*) the inverse basis matrix $$B^{-1}$$ multiplied by $$A$$ (line 7),
-and stores the corresponding Gomory cut in the compact matrix given by vectors `rmatbeg`, `rmatind`, and `rmatval` (lines 8-15).
-The array `b_bar` contains the vector $$B^{-1}b$$ (line 21). In lines 28-31, all the cuts are added at once to the current LP data structure.
+which is temporally stored in vector `z`,
+and then the code stores the corresponding Gomory cut in the compact matrix given by vectors `rmatbeg`, `rmatind`, and `rmatval` (lines 8-15).
+The array `b_bar` contains the vector $$B^{-1}b$$ (line 21). In lines 26-27, all the cuts are added at once to the current LP data structure.
 
 On GitHub you find a small program that I wrote to generate Gomory cuts for problems written as $$(P)$$.
 The repository have an [example of execution](https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/README.md) of my program.

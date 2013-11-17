@@ -18,15 +18,23 @@
     </url>
     <url>
         <loc>http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/</loc>
-        <lastmod>2013-03-22T13:52:52+01:00</lastmod>
+        <lastmod>2013-05-16T10:52:49+02:00</lastmod>
     </url>
     <url>
         <loc>http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c/</loc>
-        <lastmod>2013-03-22T19:06:33+01:00</lastmod>
+        <lastmod>2013-03-22T22:08:11+01:00</lastmod>
+    </url>
+    <url>
+        <loc>http://stegua.github.com/blog/2013/06/28/gecol/</loc>
+        <lastmod>2013-06-28T22:00:17+02:00</lastmod>
+    </url>
+    <url>
+        <loc>http://stegua.github.com/blog/2013/11/01/reading-excuses/</loc>
+        <lastmod>2013-11-01T18:41:11+01:00</lastmod>
     </url>
     <url>
         <loc>http://stegua.github.com/blog/archives/</loc>
-        <lastmod>2013-03-22T19:06:33+01:00</lastmod>
+        <lastmod>2013-11-01T18:41:11+01:00</lastmod>
     </url>
     <url>
         <loc>http://stegua.github.com/credits/</loc>
@@ -34,6 +42,6 @@
     </url>
     <url>
         <loc>http://stegua.github.com/</loc>
-        <lastmod>2013-03-22T19:06:33+01:00</lastmod>
+        <lastmod>2013-11-01T18:41:11+01:00</lastmod>
     </url>
 </urlset>
