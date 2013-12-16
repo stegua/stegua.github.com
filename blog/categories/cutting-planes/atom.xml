@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: cutting planes | Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.com/blog/categories/cutting-planes/atom.xml" rel="self"/>
-  <link href="http://stegua.github.com/"/>
-  <updated>2013-12-16T21:27:01+01:00</updated>
-  <id>http://stegua.github.com/</id>
+  <link href="http://stegua.github.io/blog/categories/cutting-planes/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2013-12-16T21:50:39+01:00</updated>
+  <id>http://stegua.github.io/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[From blackboard to code: Gomory Cuts using CPLEX]]></title>
-    <link href="http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/"/>
+    <link href="http://stegua.github.io/blog/2013/02/05/gomory-cuts-with-cplex/"/>
     <updated>2013-02-05T15:22:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex</id>
+    <id>http://stegua.github.io/blog/2013/02/05/gomory-cuts-with-cplex</id>
     <content type="html"><![CDATA[<p><strong>Edited on May 16th, 2013</strong>: fixes due to <a href="http://imada.sdu.dk/~marco/">M. Chiarandini</a></p>
 
 <p>On the blackboard, to solve small Integer Linear Programs with 2 variables and <em>less or equal</em> constraints is easy,
@@ -146,7 +146,7 @@ in CPLEX was <strong>The</strong> major breakthrough of CPLEX 6.5 and produced
 the version-to-version speed-up given by the blue bars in the chart below
 (source: <a href="http://www.ferc.gov/eventcalendar/Files/20100609110044-Bixby,%20Gurobi%20Optimization.pdf">Bixby’s slides available on the web</a>):</p>
 
-<p><img src="http://stegua.github.com/images/cplex65.png"></p>
+<p>{% img http://stegua.github.io/images/cplex65.png %}</p>
 
 <p>Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
 These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix

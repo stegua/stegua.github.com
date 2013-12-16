@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Gurobi | Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.com/blog/categories/gurobi/atom.xml" rel="self"/>
-  <link href="http://stegua.github.com/"/>
-  <updated>2013-12-16T21:27:01+01:00</updated>
-  <id>http://stegua.github.com/</id>
+  <link href="http://stegua.github.io/blog/categories/gurobi/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2013-12-16T21:50:39+01:00</updated>
+  <id>http://stegua.github.io/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Challenging MIPs instances]]></title>
-    <link href="http://stegua.github.com/blog/2012/12/13/challenging-mips/"/>
+    <link href="http://stegua.github.io/blog/2012/12/13/challenging-mips/"/>
     <updated>2012-12-13T18:11:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2012/12/13/challenging-mips</id>
+    <id>http://stegua.github.io/blog/2012/12/13/challenging-mips</id>
     <content type="html"><![CDATA[<style type="text/css">
 table { width:100%; }
 thead {
@@ -45,7 +45,7 @@ with her new model and/or method.</p>
 <p>The MIP instances I propose come from my formulation of
 the <a href="http://challenge.roadef.org/2012/en/sujet.php">Machine Reassignment Problem</a> 
 proposed for the <a href="http://roadef.org/content/index.htm">Roadef Challenge</a> sponsored by Google last year. 
-As I wrote in a <a href="http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
+As I wrote in a <a href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
 the Challenge had <strong>huge</strong> instances and a <em>micro</em> time limit of 300 seconds.
 I said <em>micro</em> because I have in mind exact methods: there is little you can do in 300 seconds when you
 have a problem with potentially as many as <script type="math/tex">50000 \times 5000</script> binary variables. 
