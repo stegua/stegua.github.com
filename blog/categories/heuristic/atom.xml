@@ -4,7 +4,7 @@
   <title><![CDATA[Category: heuristic | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/blog/categories/heuristic/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2013-11-17T16:54:11+01:00</updated>
+  <updated>2013-12-16T20:13:13+01:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -60,7 +60,7 @@ The Local Solver script used in the qualification phase is available
 
 <p>However, in my own opinion, it is interesting to try to solve at least the instances of the qualification phase
 with Integer Linear Programming (ILP) solvers such as 
-<a href="http:\\www.gurobi.com">Gurobi</a> and <a href="http:\\http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
+<a href="http://www.gurobi.com">Gurobi</a> and <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
 Can these branch-and-cut commercial solvers be competitive on such problems? </p>
 
 <h2 id="problem-overview">Problem Overview</h2>
