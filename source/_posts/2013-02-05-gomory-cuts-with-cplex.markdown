@@ -2,10 +2,13 @@
 layout: post
 title: "From blackboard to code: Gomory Cuts using CPLEX"
 date: 2013-02-05 15:22
+updated: 2013-05-16 15:15
 comments: true
 published: true
 categories: [integer programming, cutting planes, CPLEX]
 sharing: true
+description: "How to derive Gomory Cuts from the tableau computed by CPLEX"
+cover: 
 ---
 
 **Edited on May 16th, 2013**: fixes due to [M. Chiarandini](http://imada.sdu.dk/~marco/)
@@ -134,7 +137,7 @@ in CPLEX was **The** major breakthrough of CPLEX 6.5 and produced
 the version-to-version speed-up given by the blue bars in the chart below
 (source: [Bixby's slides available on the web](http://www.ferc.gov/eventcalendar/Files/20100609110044-Bixby,%20Gurobi%20Optimization.pdf)):
 
-{% img http://stegua.github.com/images/cplex65.png %}
+{% img http://stegua.github.io/images/cplex65.png %}
 
 Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
 These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix

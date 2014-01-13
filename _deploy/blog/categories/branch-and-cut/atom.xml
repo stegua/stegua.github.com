@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: branch-and-cut | Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.com/blog/categories/branch-and-cut/atom.xml" rel="self"/>
-  <link href="http://stegua.github.com/"/>
-  <updated>2013-11-01T18:41:27+01:00</updated>
-  <id>http://stegua.github.com/</id>
+  <link href="http://stegua.github.io/blog/categories/branch-and-cut/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2013-12-27T16:24:45+01:00</updated>
+  <id>http://stegua.github.io/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,25 +15,10 @@
   
   <entry>
     <title type="html"><![CDATA[Challenging MIPs instances]]></title>
-    <link href="http://stegua.github.com/blog/2012/12/13/challenging-mips/"/>
+    <link href="http://stegua.github.io/blog/2012/12/13/challenging-mips/"/>
     <updated>2012-12-13T18:11:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2012/12/13/challenging-mips</id>
-    <content type="html"><![CDATA[<style type="text/css">
-table { width:100%; }
-thead {
-   background-color: rgba(0,0,255,0.3);
-   color: black;
-   text-indent: 14px;
-   text-align: left;
-}
-td { padding:4px; }
-tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
-tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
-.title { color: #07235F; }
-.journal { font-style: italic; }
-</style>
-
-<p>Today, I share seven challenging MIP instances as 
+    <id>http://stegua.github.io/blog/2012/12/13/challenging-mips</id>
+    <content type="html"><![CDATA[<p>Today, I share seven challenging MIP instances as 
 <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps files</a>
 along with the AMPL <a href="https://github.com/stegua/MyBlogEntries/tree/master/Roadef2012">model and data files</a> 
 I used to generate them. 
@@ -45,7 +30,7 @@ with her new model and/or method.</p>
 <p>The MIP instances I propose come from my formulation of
 the <a href="http://challenge.roadef.org/2012/en/sujet.php">Machine Reassignment Problem</a> 
 proposed for the <a href="http://roadef.org/content/index.htm">Roadef Challenge</a> sponsored by Google last year. 
-As I wrote in a <a href="http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
+As I wrote in a <a href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
 the Challenge had <strong>huge</strong> instances and a <em>micro</em> time limit of 300 seconds.
 I said <em>micro</em> because I have in mind exact methods: there is little you can do in 300 seconds when you
 have a problem with potentially as many as <script type="math/tex">50000 \times 5000</script> binary variables. 
@@ -60,7 +45,7 @@ The Local Solver script used in the qualification phase is available
 
 <p>However, in my own opinion, it is interesting to try to solve at least the instances of the qualification phase
 with Integer Linear Programming (ILP) solvers such as 
-<a href="http:\\www.gurobi.com">Gurobi</a> and <a href="http:\\http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
+<a href="http://www.gurobi.com">Gurobi</a> and <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
 Can these branch-and-cut commercial solvers be competitive on such problems? </p>
 
 <h2 id="problem-overview">Problem Overview</h2>
@@ -465,6 +450,21 @@ We are almost there in proving optimality of <strong>a2-3</strong>, and we get b
 <a href="http://4c.ucc.ie/~hsimonis/reassignment.pdf">published</a> in [1].</p>
 
 <h2 id="references">References</h2>
+<style type="text/css">
+table { width:100%; }
+thead {
+   background-color: rgba(0,0,255,0.3);
+   color: black;
+   text-indent: 14px;
+   text-align: left;
+}
+td { padding:4px; }
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
 <ol>
   <li>
     <p> Deepak Mehta, Barry O’Sullivan, Helmut Simonis. 

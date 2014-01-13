@@ -2,6 +2,7 @@
 layout: post
 title: "Backtrack Programming in c"
 date: 2013-03-22 12:45
+updated: 2013-03-22 12:45
 comments: true
 categories: [branch-and-bound, combinatorial optimization, max clique, max stable set, programming, DIMACS]
 published: true
@@ -56,7 +57,7 @@ i = 3, j = 2
 If you are familiar with backtrack programming (e.g., [Prolog](http://en.wikipedia.org/wiki/Prolog)), you should not be surprised by the output, and you can jump to the next section. Otherwise, 
 the Figure below sketches the program execution. 
 
-{% img http://stegua.github.com/images/backtrack.png %}
+{% img http://stegua.github.io/images/backtrack.png %}
 
 When the program executes the ```Choice(N=3)``` statement, that is the first call to the first choice (line 2), value 1 is assigned to variable ```i```. Behind the scene, the *Choice* function stores the current execution state of the program in its own stack,
 and records the next possible choices (i.e. the other possible program branches),

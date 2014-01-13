@@ -2,6 +2,7 @@
 layout: post
 title: "GeCol: a Graph Coloring solver on top of Gecode"
 date: 2013-06-28 15:00
+updated: 2013-06-28 15:00
 published: true
 categories: [constraint programming, graph coloring, DIMACS Challenge, branching, modeling]
 sharing: true

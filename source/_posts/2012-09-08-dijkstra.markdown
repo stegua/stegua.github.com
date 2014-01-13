@@ -2,10 +2,13 @@
 layout: post
 title: "Dijkstra, Dantzig, and Shortest Paths"
 date: 2012-09-19 22:14
+updated: 2012-09-19 22:14
 comments: true
 published: true
 categories: [heap, boost, C++, duality, algorithm, data structure, implementation]
 sharing: true
+description: "A few remarks on basic implementations of Dijkstra's shortest path algorithm in C++"
+cover:
 ---
 
 <style type="text/css">

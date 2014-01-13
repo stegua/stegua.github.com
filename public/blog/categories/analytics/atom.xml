@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Analytics | Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.com/blog/categories/analytics/atom.xml" rel="self"/>
-  <link href="http://stegua.github.com/"/>
-  <updated>2013-11-17T16:38:04+01:00</updated>
-  <id>http://stegua.github.com/</id>
+  <link href="http://stegua.github.io/blog/categories/analytics/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2014-01-13T21:28:52+01:00</updated>
+  <id>http://stegua.github.io/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,16 +15,16 @@
   
   <entry>
     <title type="html"><![CDATA[Public Transport and Big Data]]></title>
-    <link href="http://stegua.github.com/blog/2013/11/17/public-transport-and-big-data/"/>
+    <link href="http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data/"/>
     <updated>2013-11-17T14:10:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2013/11/17/public-transport-and-big-data</id>
+    <id>http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data</id>
     <content type="html"><![CDATA[<p><strong>Big Data</strong> is nowadays a <em>buzzword</em>. A simple query for “Big Data” on Google gives about 26,700,000 results. </p>
 
 <p><strong>Public Transport</strong> is not really a <em>buzzword</em>, but still on Google you can get almost the same number as with “Big Data”: 26,400,000 results.</p>
 
 <h3 id="why-is-public-transport-so-important">Why is Public Transport so important?</h3>
 
-<p>Because <em>many</em> of us use Public Transport every day, but <em>most</em> of us still use their own car to go to work, to bring child at school, and to go shopping. This has a negative impact on the quality of life of everyone and is clearly inefficient since it does cost more: </p>
+<p>Because <em>many</em> of us use <a href="http://en.wikipedia.org/wiki/Public_transport">Public Transport</a> every day, but <em>most</em> of us still use their own car to go to work, to bring child at school, and to go shopping. This has a negative impact on the quality of life of everyone and is clearly inefficient since it does cost more: </p>
 
 <ol>
   <li>More money.</li>

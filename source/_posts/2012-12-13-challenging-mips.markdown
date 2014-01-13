@@ -2,26 +2,15 @@
 layout: post
 title: "Challenging MIPs instances"
 date: 2012-12-13 18:11
+updated: 2012-12-13 18:11
 comments: true
 categories: branch-and-cut heuristic AMPL Gurobi
 published: true
 comments: true
+description: "Challenging MIPs from the Google Machine Reassignment Problem"
+cover:
 ---
 
-<style type="text/css">
-table { width:100%; }
-thead {
-   background-color: rgba(0,0,255,0.3);
-   color: black;
-   text-indent: 14px;
-   text-align: left;
-}
-td { padding:4px; }
-tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
-tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
-.title { color: #07235F; }
-.journal { font-style: italic; }
-</style>
 
 Today, I share seven challenging MIP instances as 
 [.mps files](http://en.wikipedia.org/wiki/MPS_%28format%29)
@@ -35,7 +24,7 @@ with her new model and/or method.
 The MIP instances I propose come from my formulation of
 the [Machine Reassignment Problem](http://challenge.roadef.org/2012/en/sujet.php) 
 proposed for the [Roadef Challenge](http://roadef.org/content/index.htm) sponsored by Google last year. 
-As I wrote in a [previous post](http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/), 
+As I wrote in a [previous post](http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/), 
 the Challenge had **huge** instances and a _micro_ time limit of 300 seconds.
 I said _micro_ because I have in mind exact methods: there is little you can do in 300 seconds when you
 have a problem with potentially as many as $$50000 \times 5000$$ binary variables. 
@@ -50,7 +39,7 @@ The Local Solver script used in the qualification phase is available
 
 However, in my own opinion, it is interesting to try to solve at least the instances of the qualification phase
 with Integer Linear Programming (ILP) solvers such as 
-[Gurobi](http:\\www.gurobi.com) and [CPLEX](http:\\http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/).
+[Gurobi](http://www.gurobi.com) and [CPLEX](http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/).
 Can these branch-and-cut commercial solvers be competitive on such problems? 
 
 ## Problem Overview
@@ -217,6 +206,20 @@ We are almost there in proving optimality of **a2-3**, and we get better lower b
 
 
 ## References
+<style type="text/css">
+table { width:100%; }
+thead {
+   background-color: rgba(0,0,255,0.3);
+   color: black;
+   text-indent: 14px;
+   text-align: left;
+}
+td { padding:4px; }
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
 1. <p> Deepak Mehta, Barry O’Sullivan, Helmut Simonis. 
    <span class="title">Comparing Solution Methods for the Machine Reassignment Problem</span>. 
    In Proc of CP 2012, Québec City, Canada, October 8-12, 2012.

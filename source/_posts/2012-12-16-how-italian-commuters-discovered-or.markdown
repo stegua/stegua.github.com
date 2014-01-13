@@ -2,6 +2,7 @@
 layout: post
 title: "How Italian Commuters Discovered Operations Research"
 date: 2012-12-16 10:45
+updated: 2012-12-16 10:45
 published: true
 comments: true
 categories: 

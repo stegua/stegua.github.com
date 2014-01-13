@@ -1,51 +1,57 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://stegua.github.com/blog/2012/09/19/dijkstra/</loc>
-        <lastmod>2013-11-17T14:12:03+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2012/09/19/dijkstra/</loc>
+        <lastmod>2013-12-27T14:05:06+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/</loc>
-        <lastmod>2013-02-06T16:01:21+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/</loc>
+        <lastmod>2013-12-27T13:06:25+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2012/12/13/challenging-mips/</loc>
-        <lastmod>2013-02-06T16:01:21+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2012/12/13/challenging-mips/</loc>
+        <lastmod>2013-12-27T16:24:40+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2012/12/16/how-italian-commuters-discovered-or/</loc>
-        <lastmod>2013-02-06T16:01:21+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2012/12/16/how-italian-commuters-discovered-or/</loc>
+        <lastmod>2013-12-27T13:06:57+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/</loc>
-        <lastmod>2013-05-16T10:52:49+02:00</lastmod>
+        <loc>http://stegua.github.io/blog/2013/02/05/gomory-cuts-with-cplex/</loc>
+        <lastmod>2013-12-27T12:57:54+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c/</loc>
-        <lastmod>2013-03-22T22:08:11+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/</loc>
+        <lastmod>2013-12-27T13:07:26+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2013/06/28/gecol/</loc>
-        <lastmod>2013-06-28T22:00:17+02:00</lastmod>
+        <loc>http://stegua.github.io/blog/2013/06/28/gecol/</loc>
+        <lastmod>2013-12-27T13:07:43+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2013/11/01/reading-excuses/</loc>
-        <lastmod>2013-11-01T18:41:31+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2013/11/01/reading-excuses/</loc>
+        <lastmod>2013-12-27T12:59:06+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2013/11/17/public-transport-and-big-data/</loc>
-        <lastmod>2013-11-17T16:38:03+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data/</loc>
+        <lastmod>2013-12-27T16:14:00+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/archives/</loc>
-        <lastmod>2013-11-17T16:38:03+01:00</lastmod>
+        <loc>
+            http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/
+        </loc>
+        <lastmod>2014-01-13T21:28:45+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/credits/</loc>
+        <loc>http://stegua.github.io/blog/archives/</loc>
+        <lastmod>2014-01-13T21:28:45+01:00</lastmod>
+    </url>
+    <url>
+        <loc>http://stegua.github.io/credits/</loc>
         <lastmod>2013-02-07T08:47:06+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/</loc>
-        <lastmod>2013-11-17T16:38:03+01:00</lastmod>
+        <loc>http://stegua.github.io/</loc>
+        <lastmod>2014-01-13T21:28:45+01:00</lastmod>
     </url>
 </urlset>

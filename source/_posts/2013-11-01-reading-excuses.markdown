@@ -2,10 +2,13 @@
 layout: post
 title: "Reading Excuses"
 date: 2013-11-01 15:56
+updated: 2013-11-01 15:57
 comments: true
 published: true
 categories: [Reading, OR-exchange, The Researcher's Bible]
 sharing: true
+description: "I love reading about everything and I am glad that part of my work consists in reading"
+cover: 
 ---
 
 I love reading!

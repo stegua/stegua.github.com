@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: modeling | Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.com/blog/categories/modeling/atom.xml" rel="self"/>
-  <link href="http://stegua.github.com/"/>
-  <updated>2013-11-17T16:38:04+01:00</updated>
-  <id>http://stegua.github.com/</id>
+  <link href="http://stegua.github.io/blog/categories/modeling/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2014-01-13T21:28:52+01:00</updated>
+  <id>http://stegua.github.io/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[GeCol: a Graph Coloring solver on top of Gecode]]></title>
-    <link href="http://stegua.github.com/blog/2013/06/28/gecol/"/>
+    <link href="http://stegua.github.io/blog/2013/06/28/gecol/"/>
     <updated>2013-06-28T15:00:00+02:00</updated>
-    <id>http://stegua.github.com/blog/2013/06/28/gecol</id>
+    <id>http://stegua.github.io/blog/2013/06/28/gecol</id>
     <content type="html"><![CDATA[<style type="text/css">
 .title { color: #07235F; }
 .journal { font-style: italic; }

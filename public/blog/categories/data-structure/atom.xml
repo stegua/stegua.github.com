@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: data structure | Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.com/blog/categories/data-structure/atom.xml" rel="self"/>
-  <link href="http://stegua.github.com/"/>
-  <updated>2013-11-17T16:38:04+01:00</updated>
-  <id>http://stegua.github.com/</id>
+  <link href="http://stegua.github.io/blog/categories/data-structure/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2014-01-13T21:28:52+01:00</updated>
+  <id>http://stegua.github.io/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Dijkstra, Dantzig, and Shortest Paths]]></title>
-    <link href="http://stegua.github.com/blog/2012/09/19/dijkstra/"/>
+    <link href="http://stegua.github.io/blog/2012/09/19/dijkstra/"/>
     <updated>2012-09-19T22:14:00+02:00</updated>
-    <id>http://stegua.github.com/blog/2012/09/19/dijkstra</id>
+    <id>http://stegua.github.io/blog/2012/09/19/dijkstra</id>
     <content type="html"><![CDATA[<style type="text/css">
 table { width:100%; }
 thead {

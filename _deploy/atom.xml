@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.com/atom.xml" rel="self"/>
-  <link href="http://stegua.github.com/"/>
-  <updated>2013-11-01T18:41:27+01:00</updated>
-  <id>http://stegua.github.com/</id>
+  <link href="http://stegua.github.io/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2013-12-27T16:24:45+01:00</updated>
+  <id>http://stegua.github.io/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -14,10 +14,56 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Public Transport and Big Data]]></title>
+    <link href="http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data/"/>
+    <updated>2013-11-17T14:10:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data</id>
+    <content type="html"><![CDATA[<p><strong>Big Data</strong> is nowadays a <em>buzzword</em>. A simple query for “Big Data” on Google gives about 26,700,000 results. </p>
+
+<p><strong>Public Transport</strong> is not really a <em>buzzword</em>, but still on Google you can get almost the same number as with “Big Data”: 26,400,000 results.</p>
+
+<h3 id="why-is-public-transport-so-important">Why is Public Transport so important?</h3>
+
+<p>Because <em>many</em> of us use <a href="http://en.wikipedia.org/wiki/Public_transport">Public Transport</a> every day, but <em>most</em> of us still use their own car to go to work, to bring child at school, and to go shopping. This has a negative impact on the quality of life of everyone and is clearly inefficient since it does cost more: </p>
+
+<ol>
+  <li>More money.</li>
+  <li>More pollution.</li>
+  <li>More time.</li>
+</ol>
+
+<p>(Well, for time, it is not always true, but it happens more often than commonly perceived). </p>
+
+<p>Thus, an important <strong>challenge</strong> is to improve the quality of Public Transport while keeping 
+its cost competitive. The ultimate goal should be to increase the number of people that <strong>trust</strong> and use Public Transport.</p>
+
+<p>How is it possible to achieve this goal?</p>
+
+<h3 id="transport-operators-are-big-data-producers-are-they">Transport Operators are <strong>Big Data</strong> producers (are they?)</h3>
+
+<p>Modern transport operators have installed so called <em>Automatic Vehicle Monitoring (AVM)</em> systems that use several technologies to monitor the fleet of vehicles that operates the service (e.g., metro coaches, buses, metro trains, trains, …).</p>
+
+<p>The stream of data produced by an AVM might be considered as <strong>Big Data</strong> because of its <strong>volume</strong> and <strong>velocity</strong> (see <a href="https://www.ibm.com/developerworks/community/blogs/jfp/entry/big_data_for_dummies23?lang=en">Big Data For Dummies</a>, by J.F. Puget). Each vehicle produces at regular intervals (measured in seconds) data concerning its position and status. This information is stored in remote data centers. The data for a single day might not be considered as “Big”, however once you start to analyze the historical data, the volume increases significantly. For instance, a public transport operator could easily have around 2000 thousands vehicles that operate 24 hours a day, producing data potentially every second.</p>
+
+<p>At the moment, this stream of data misses the third dimension of Big Data that is <strong>variety</strong>. However, new projects that aim at integrating this information with the stream of data coming from social networks are quickly reaching maturity. One of such project is <a href="http://www.superhub-project.eu/">SuperHub</a>, a FP7 project that has recently won the best exhibit award in Cluster 2 <em>“Smart and sustainable cities for 2020+”</em>, at the <a href="http://www.superhub-project.eu/media-centre/124-ict2013-conference-best-exhibit-award-.html">ICT2013 Conference</a> in Vilnius.</p>
+
+<p>I don’t know whether transport operators are really <strong>Big Data</strong> producers or they are merely <strong>Small Data</strong> producers, but data collected using AVMs are nowadays mainly used to report and monitor the daily activities.</p>
+
+<p>In my own opinion, the data produced by transport operators, integrated with input coming from social networks, should be used to improve the quality of the public transport, for instance, by trying to better tackle <strong>Disruption Management</strong> issues.</p>
+
+<p>So, I am curious:</p>
+
+<blockquote>
+  <p>Do you know any project that uses AVM data, combined with Social Network inputs (e.g., from <a href="http://www.twitter.com">Twitter</a>), to elaborate <strong>Disruption Management</strong> strategies for Public Transport? If yes, do they use <strong>Mathematical Optimization</strong> at all?</p>
+</blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Reading Excuses]]></title>
-    <link href="http://stegua.github.com/blog/2013/11/01/reading-excuses/"/>
+    <link href="http://stegua.github.io/blog/2013/11/01/reading-excuses/"/>
     <updated>2013-11-01T15:56:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2013/11/01/reading-excuses</id>
+    <id>http://stegua.github.io/blog/2013/11/01/reading-excuses</id>
     <content type="html"><![CDATA[<p>I love reading!</p>
 
 <p>I love reading about everything and I am glad that part of my work consists in reading.</p>
@@ -40,9 +86,9 @@
   
   <entry>
     <title type="html"><![CDATA[GeCol: a Graph Coloring solver on top of Gecode]]></title>
-    <link href="http://stegua.github.com/blog/2013/06/28/gecol/"/>
+    <link href="http://stegua.github.io/blog/2013/06/28/gecol/"/>
     <updated>2013-06-28T15:00:00+02:00</updated>
-    <id>http://stegua.github.com/blog/2013/06/28/gecol</id>
+    <id>http://stegua.github.io/blog/2013/06/28/gecol</id>
     <content type="html"><![CDATA[<style type="text/css">
 .title { color: #07235F; }
 .journal { font-style: italic; }
@@ -203,9 +249,9 @@ vol. 120(1-3), pp. 197–207, 2002
   
   <entry>
     <title type="html"><![CDATA[Backtrack Programming in c]]></title>
-    <link href="http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c/"/>
+    <link href="http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/"/>
     <updated>2013-03-22T12:45:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c</id>
+    <id>http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c</id>
     <content type="html"><![CDATA[<style type="text/css">
 .title { color: #07235F; }
 .journal { font-style: italic; }
@@ -265,7 +311,7 @@ Below, I will show you how to use <strong>CBack</strong> to implement a simple a
 <p>If you are familiar with backtrack programming (e.g., <a href="http://en.wikipedia.org/wiki/Prolog">Prolog</a>), you should not be surprised by the output, and you can jump to the next section. Otherwise, 
 the Figure below sketches the program execution. </p>
 
-<p><img src="http://stegua.github.com/images/backtrack.png" /></p>
+<p><img src="http://stegua.github.io/images/backtrack.png" /></p>
 
 <p>When the program executes the <code>Choice(N=3)</code> statement, that is the first call to the first choice (line 2), value 1 is assigned to variable <code>i</code>. Behind the scene, the <em>Choice</em> function stores the current execution state of the program in its own stack,
 and records the next possible choices (i.e. the other possible program branches),
@@ -431,9 +477,9 @@ vol. 120(1-3), pp. 197–207, 2002
   
   <entry>
     <title type="html"><![CDATA[From blackboard to code: Gomory Cuts using CPLEX]]></title>
-    <link href="http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/"/>
+    <link href="http://stegua.github.io/blog/2013/02/05/gomory-cuts-with-cplex/"/>
     <updated>2013-02-05T15:22:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex</id>
+    <id>http://stegua.github.io/blog/2013/02/05/gomory-cuts-with-cplex</id>
     <content type="html"><![CDATA[<p><strong>Edited on May 16th, 2013</strong>: fixes due to <a href="http://imada.sdu.dk/~marco/">M. Chiarandini</a></p>
 
 <p>On the blackboard, to solve small Integer Linear Programs with 2 variables and <em>less or equal</em> constraints is easy,
@@ -588,7 +634,7 @@ in CPLEX was <strong>The</strong> major breakthrough of CPLEX 6.5 and produced
 the version-to-version speed-up given by the blue bars in the chart below
 (source: <a href="http://www.ferc.gov/eventcalendar/Files/20100609110044-Bixby,%20Gurobi%20Optimization.pdf">Bixby’s slides available on the web</a>):</p>
 
-<p><img src="http://stegua.github.com/images/cplex65.png" /></p>
+<p><img src="http://stegua.github.io/images/cplex65.png" /></p>
 
 <p>Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
 These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix
@@ -639,9 +685,9 @@ there is a nice chapter by G. Cornuejols about the <strong>Ongoing Story of Gomo
   
   <entry>
     <title type="html"><![CDATA[How Italian Commuters Discovered Operations Research]]></title>
-    <link href="http://stegua.github.com/blog/2012/12/16/how-italian-commuters-discovered-or/"/>
+    <link href="http://stegua.github.io/blog/2012/12/16/how-italian-commuters-discovered-or/"/>
     <updated>2012-12-16T10:45:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2012/12/16/how-italian-commuters-discovered-or</id>
+    <id>http://stegua.github.io/blog/2012/12/16/how-italian-commuters-discovered-or</id>
     <content type="html"><![CDATA[<p>Last week, more then 700,000 Italian commuters discovered the importance of Operations Research (OR).
 Nobody explicitly mentioned OR, 
 but due to a horrible crew schedule of <a href="http://www.trenord.it">Trenord</a> 
@@ -695,25 +741,10 @@ help Trenord to improve the situation.</p>
   
   <entry>
     <title type="html"><![CDATA[Challenging MIPs instances]]></title>
-    <link href="http://stegua.github.com/blog/2012/12/13/challenging-mips/"/>
+    <link href="http://stegua.github.io/blog/2012/12/13/challenging-mips/"/>
     <updated>2012-12-13T18:11:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2012/12/13/challenging-mips</id>
-    <content type="html"><![CDATA[<style type="text/css">
-table { width:100%; }
-thead {
-   background-color: rgba(0,0,255,0.3);
-   color: black;
-   text-indent: 14px;
-   text-align: left;
-}
-td { padding:4px; }
-tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
-tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
-.title { color: #07235F; }
-.journal { font-style: italic; }
-</style>
-
-<p>Today, I share seven challenging MIP instances as 
+    <id>http://stegua.github.io/blog/2012/12/13/challenging-mips</id>
+    <content type="html"><![CDATA[<p>Today, I share seven challenging MIP instances as 
 <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps files</a>
 along with the AMPL <a href="https://github.com/stegua/MyBlogEntries/tree/master/Roadef2012">model and data files</a> 
 I used to generate them. 
@@ -725,7 +756,7 @@ with her new model and/or method.</p>
 <p>The MIP instances I propose come from my formulation of
 the <a href="http://challenge.roadef.org/2012/en/sujet.php">Machine Reassignment Problem</a> 
 proposed for the <a href="http://roadef.org/content/index.htm">Roadef Challenge</a> sponsored by Google last year. 
-As I wrote in a <a href="http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
+As I wrote in a <a href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
 the Challenge had <strong>huge</strong> instances and a <em>micro</em> time limit of 300 seconds.
 I said <em>micro</em> because I have in mind exact methods: there is little you can do in 300 seconds when you
 have a problem with potentially as many as <script type="math/tex">50000 \times 5000</script> binary variables. 
@@ -740,7 +771,7 @@ The Local Solver script used in the qualification phase is available
 
 <p>However, in my own opinion, it is interesting to try to solve at least the instances of the qualification phase
 with Integer Linear Programming (ILP) solvers such as 
-<a href="http:\\www.gurobi.com">Gurobi</a> and <a href="http:\\http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
+<a href="http://www.gurobi.com">Gurobi</a> and <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
 Can these branch-and-cut commercial solvers be competitive on such problems? </p>
 
 <h2 id="problem-overview">Problem Overview</h2>
@@ -1145,6 +1176,21 @@ We are almost there in proving optimality of <strong>a2-3</strong>, and we get b
 <a href="http://4c.ucc.ie/~hsimonis/reassignment.pdf">published</a> in [1].</p>
 
 <h2 id="references">References</h2>
+<style type="text/css">
+table { width:100%; }
+thead {
+   background-color: rgba(0,0,255,0.3);
+   color: black;
+   text-indent: 14px;
+   text-align: left;
+}
+td { padding:4px; }
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
 <ol>
   <li>
     <p> Deepak Mehta, Barry O’Sullivan, Helmut Simonis. 
@@ -1163,9 +1209,9 @@ in this blog. </p>
   
   <entry>
     <title type="html"><![CDATA[CP2012: Je me souviens]]></title>
-    <link href="http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/"/>
+    <link href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/"/>
     <updated>2012-10-19T13:24:00+02:00</updated>
-    <id>http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens</id>
+    <id>http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens</id>
     <content type="html"><![CDATA[<p>Last week in Quebec City, there was the 
 <a href="http://www.cp2012.org/">18th International Conference on Principles and Practice of Constraint Programming</a>.
 This year the conference had a record of submissions (186 in total) and the program committee
@@ -1249,9 +1295,9 @@ Will you be there? I hope so…</p>
   
   <entry>
     <title type="html"><![CDATA[Dijkstra, Dantzig, and Shortest Paths]]></title>
-    <link href="http://stegua.github.com/blog/2012/09/19/dijkstra/"/>
+    <link href="http://stegua.github.io/blog/2012/09/19/dijkstra/"/>
     <updated>2012-09-19T22:14:00+02:00</updated>
-    <id>http://stegua.github.com/blog/2012/09/19/dijkstra</id>
+    <id>http://stegua.github.io/blog/2012/09/19/dijkstra</id>
     <content type="html"><![CDATA[<style type="text/css">
 table { width:100%; }
 thead {

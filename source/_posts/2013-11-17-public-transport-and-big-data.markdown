@@ -2,10 +2,13 @@
 layout: post
 title: "Public Transport and Big Data"
 date: 2013-11-17 14:10
+updated: 2013-11-17 14:10
 comments: true
-published: false
+published: true
 sharing: true
 categories: [Public Transport, Big Data, Mathematical Optimization, Analytics]
+description: "Is it possible to improve the quality of Public Transport while keeping its cost competitive?"
+cover:
 ---
 
 **Big Data** is nowadays a *buzzword*. A simple query for "Big Data" on Google gives about 26,700,000 results. 
@@ -14,7 +17,7 @@ categories: [Public Transport, Big Data, Mathematical Optimization, Analytics]
 
 ### Why is Public Transport so important?
 
-Because *many* of us use Public Transport every day, but *most* of us still use their own car to go to work, to bring child at school, and to go shopping. This has a negative impact on the quality of life of everyone and is clearly inefficient since it does cost more: 
+Because *many* of us use [Public Transport](http://en.wikipedia.org/wiki/Public_transport) every day, but *most* of us still use their own car to go to work, to bring child at school, and to go shopping. This has a negative impact on the quality of life of everyone and is clearly inefficient since it does cost more: 
 
 1. More money.
 2. More pollution.

@@ -2,7 +2,7 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://stegua.github.com
+url: http://stegua.github.io
 title: Spaghetti Optimization
 subtitle: My cookbook about Math, Algorithms, and Programming
 author: Stefano Gualandi
@@ -77,7 +77,7 @@ google_plus_one_size: small
 
 # Google Plus Profile
 # Hidden: No visible button, just add author information to search results
-googleplus_user: 101441650504695542578
+googleplus_user: +StefanoGualandi
 googleplus_hidden: false
 
 # Pinboard

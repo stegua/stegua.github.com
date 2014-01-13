@@ -2,6 +2,7 @@
 layout: post
 title: "CP2012: Je me souviens"
 date: 2012-10-19 13:24
+updated: 2012-10-19 13:24
 comments: true
 published: true
 categories: [Conference report, Constraint Programming, Optimization, Smart Grids]
