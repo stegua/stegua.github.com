@@ -4,7 +4,7 @@
   <title><![CDATA[Category: constraint programming | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.io/blog/categories/constraint-programming/atom.xml" rel="self"/>
   <link href="http://stegua.github.io/"/>
-  <updated>2014-01-13T21:30:17+01:00</updated>
+  <updated>2014-01-13T21:44:52+01:00</updated>
   <id>http://stegua.github.io/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -87,7 +87,7 @@ The plot reports the empirical cumulative distribution as function of run time (
 The tests were run with a timeout of 300 seconds on a quite old server. 
 Note that at the timeout, the version with LDBS has solved around 55% of the instances, while the version without LDBS has solved only around 48% of the instances.</p>
 
-<p><img class="center" src="../../../../../../images/Ecdf1.png"></p>
+<p>{% img center ../../../../../../images/Ecdf1.png %}</p>
 
 <h3 id="accumulated-failure-count-and-activity-based-branching">Accumulated Failure Count and Activity-based Branching</h3>
 <p>The second new feature of Gecode that we explore here is the <em>Accumulated Failure Count</em> and the <em>Activity-based</em> branching strategies.</p>
@@ -111,7 +111,7 @@ In a sense, these two strategies try to <em>learn</em> from failures and activit
 
 <p>The last strategy is tremendously efficient: it dominates the other two strategies, and it is able to solve more of the 60% of the considered instances within the timeout of 300 seconds.</p>
 
-<p><img class="center" src="../../../../../../images/Ecdf2.png"></p>
+<p>{% img center ../../../../../../images/Ecdf2.png %}</p>
 
 <p>However, it is possible to do still slightly better. Likely, at the begging of the search phase, several variables have the same value of AFC. Therefore, it is possible to improve the branching strategy by breaking ties: we can divide the ACT or the AFC value of a variable by the its domain size. The next plot shows the results with these other branching strategies:</p>
 
@@ -121,7 +121,7 @@ In a sense, these two strategies try to <em>learn</em> from failures and activit
   <li>(C) Select the variable with largest ratio of Accumulated Failure Count vs. domain size</li>
 </ul>
 
-<p><img class="center" src="../../../../../../images/Ecdf3.png"></p>
+<p>{% img center ../../../../../../images/Ecdf3.png %}</p>
 
 <h2 id="conclusions">Conclusions</h2>
 <p>The new features of Gecode are very interesting and offer plenty of options.
