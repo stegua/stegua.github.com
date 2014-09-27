@@ -47,8 +47,12 @@
         <lastmod>2014-03-22T07:23:28+01:00</lastmod>
     </url>
     <url>
+        <loc>http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization/</loc>
+        <lastmod>2014-09-27T17:35:08+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://stegua.github.io/blog/archives/</loc>
-        <lastmod>2014-03-22T07:23:28+01:00</lastmod>
+        <lastmod>2014-09-27T17:35:08+02:00</lastmod>
     </url>
     <url>
         <loc>http://stegua.github.io/credits/</loc>
@@ -56,6 +60,6 @@
     </url>
     <url>
         <loc>http://stegua.github.io/</loc>
-        <lastmod>2014-03-22T07:23:28+01:00</lastmod>
+        <lastmod>2014-09-27T17:35:08+02:00</lastmod>
     </url>
 </urlset>

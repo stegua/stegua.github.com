@@ -9,7 +9,8 @@
   <meta name="author" content="Stefano Gualandi">
 
   
-  <meta name="description" content="What do you know about preprocessing for Mixed Integer Programming (MIP) problems? After a nice chat with Bo Jensen, CEO, founder, and co-owner ( &hellip;">
+  <meta name="description" content="In the last months, I came several times across different definitions of Big Data.
+However, when someone ask me what does mean Big Data in practice, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -102,6 +103,75 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/27/big-data-and-convex-optimization/">Big Data and Convex Optimization</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+<time datetime="2014-09-27T16:38:00+02:00" pubdate data-updated="true">Sep 27<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014/09/27/big-data-and-convex-optimization/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In the last months, I came several times across different definitions of <strong>Big Data</strong>.
+However, when someone ask me what does mean Big Data in practice, I am never
+able to give a satisfactory explanation. Indeed, you can easily find a flood
+of posts on twitter, blogs, newspaper, and even scientific journals and conferences,
+but I always stayed with the feeling that <strong>Big Data</strong> is a buzzword.</p>
+
+<p>By sheer serendipity, this morning I came across <a href="http://web.stanford.edu/~boyd/papers/pdf/admm_distr_stats.pdf">three paragraphs</a> that 
+clearly state the importance of Big Data from a scientific standpoint, that I like to <strong>cross-post</strong> here (the following paragraphs appear in the introduction of [1]):</p>
+
+<p><em>In all applied fields, it is now commonplace to attack problems through data analysis, particularly through the use of statistical and machine learning algorithms on what are often large datasets. In industry, this trend has been referred to as ‘Big Data’, and it has had a significant impact in areas as varied as artificial intelligence, internet applications, computational biology, medicine, finance, marketing, journalism, network analysis, and logistics.</em></p>
+
+<p><em>Though these problems arise in diverse application domains, they share some key characteristics. First, the datasets are often extremely large, consisting of hundreds of millions or billions of training examples; second, the data is often very high-dimensional, because it is now possible to measure and store very detailed information about each example; and third, because of the large scale of many applications, the data is often stored or even collected in a distributed manner. As a result, it has become of central importance to develop algorithms that are both rich enough to capture the complexity of modern data, and scalable enough to process huge datasets in a parallelized or fully decentralized fashion. Indeed, some researchers have suggested that even highly complex and structured problems may succumb most easily to relatively simple models trained on vast datasets.</em></p>
+
+<blockquote>
+  <p>Many such problems can be posed in the framework of <strong>Convex Optimization</strong>. </p>
+</blockquote>
+
+<p><em>Given the significant work on decomposition methods and decentralized algorithms in the optimization community, it is natural to look to parallel optimization algorithms as a mechanism for solving large-scale statistical tasks. This approach also has the benefit that one algorithm could be flexible enough to solve many problems.</em></p>
+
+<p>Even if I am not an expert of Convex Optimization [2], I do have my own <strong>mathematical optimization</strong> bias. 
+Likely, you may have a different opinion (that I am always happy to hear), but, honestly, the above paragraphs
+are the best content that I have read so far about <strong>Big Data</strong>.</p>
+
+<h3 id="references">References</h3>
+
+<p>[1] S. Boyd, N. Parikh, E. Chu, B. Peleato, J. Eckstein.
+<em>Distributed Optimization and Statistical Learning via the Alternating Direction Method of Multipliers</em>.
+Foundations and Trends in Machine Learning. Vol. 3, No. 1 (2010) 1–122. <a href="http://web.stanford.edu/~boyd/papers/pdf/admm_distr_stats.pdf">[pdf]</a></p>
+
+<p>[2] If you like to have a speedy overview of <em>Convex Optimization</em>, you may read a <a href="https://www.ibm.com/developerworks/community/blogs/jfp/entry/convex_optimization?lang=en">J.F. Puget’s blog post</a>.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1716,123 +1786,6 @@ in this blog. </p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/10/19/cp2012-je-me-souviens/">CP2012: Je Me Souviens</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-<time datetime="2012-10-19T13:24:00+02:00" pubdate data-updated="true">Oct 19<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012/10/19/cp2012-je-me-souviens/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Last week in Quebec City, there was the 
-<a href="http://www.cp2012.org/">18th International Conference on Principles and Practice of Constraint Programming</a>.
-This year the conference had a record of submissions (186 in total) and the program committee
-made a vey nice job in organizing the plenary sessions and the tutorials.
-You can find <a href="http://4c.ucc.ie/~hsimonis/CP2012/index.htm">very nice pictures</a> of the conference on <a href="http://4c.ucc.ie/~hsimonis/">Helmut’s web page</a>.</p>
-
-<p>During the conference, the weather outside was pretty cold, but at the conference site
-the discussions were warm and the presentations were intriguing.</p>
-
-<p>In this post, I share an informal report of the conference as <a href="http://en.wikipedia.org/wiki/Je_me_souviens"><em>“Je me souviens”</em></a>. </p>
-
-<h3 id="challenges-in-smart-grids">Challenges in Smart Grids</h3>
-<p>The invited talks were excellent and my favorite one was given by Miguel F. Anjos
-on Optimization Challenges in Smart Grid Operations.
-Miguel is not exactly a CP programmer, he is more on discrete non linear 
-optimization, but his talk was a perfect mixed of applications, modeling, and solution techniques.
-Please, read and enjoy <a href="http://www.cp2012.org/slides/Anjos-OptChalSmartGrids-CP2012.pdf">his slides</a>.</p>
-
-<p>I like to mention just one of his observations. Nowadays, electric cars are becoming more and more
-present. What would happen when each of us will have an electric car?
-Likely, during the night, while sleeping, we will connect our car to the grid to recharge the
-car batteries. This will lead to high variability in night peaks of energy demand.</p>
-
-<p>How to manage these peaks?</p>
-
-<p>Well, what Miguel has reported as a possible challenging option is to think of the collection of cars connected to the grid as a kind of huge battery. This sort of <em>collective</em> battery could be used to better handle the peaks of energy demands. Each car would play the game with a double role: if there is not an energy demand peak, you can recharge the car battery; otherwise, the car battery could be used as a power source and it could supply energy to the grid. This is an oversimplification, but as you can image there would be great challenges and opportunities for any <em>constraint optimizer</em> in terms of modeling and solution techniques. </p>
-
-<p>I am curious to read more about, do you?</p>
-
-<h3 id="sessions-and-talks">Sessions and Talks</h3>
-<p>This year CP had the thicker conference proceedings, ever. Traditionally, the papers are presented in two parallel sessions. Two is not that much when you think that this year at <a href="http://ismp2012.mathopt.org/">ISMP</a> there were 40 parallel sessions…
-but still, you always regret that you could not attend the talk in the other session. Argh!</p>
-
-<p>Here I like to mention just two works. However, the program chair is trying 
-to make <a href="http://www.cp2012.org/accepted_papers.php">all the slides</a> available.
-Have a look at the program and at the slides: there are many good papers.</p>
-
-<p>In the application track, Deepak Mehta gave a nice talk about a joint work with Barry O’Sullivan and Helmut Simonis
-on <a href="http://4c.ucc.ie/~hsimonis/reassignment.pdf"><em>Comparing Solution Methods for the Machine Reassignment Problem</em></a>, a problem
-that Google has to solve every day in its 
-<a href="http://www.google.com/about/datacenters/gallery/#/tech">data centers</a> and that was the subject of the <a href="http://challenge.roadef.org/2012/en/sujet.php">Google/Roadef Challenge 2012</a>.
-The true challenge is given by the HUGE size of the instances and the very short timeout (300 seconds). The work presented by Deepak is really interesting and they got excellent results using CP-based Large Neighborhood Search: they classified second at the challenge.</p>
-
-<p>Related to the <strong>Machine Reassignment Problem</strong> there was a second interesting talk entitled 
-<em><a href="http://www.springerlink.com/content/52j3197311333658/">Weibull-based Benchmarks for Bin Packing</a></em>, 
-by Ignacio Castineiras, Milan De Cauwer and Barry O’Sullivan. 
-They have designed a parametric instance generator for bin packing problems based on the Weibull distribution.
-Having a parametric generator is crucial to perform exhaustive computational results and to
-identify those instances that are challenging for a particular solution technique.
-For instance, they have considered a CP-approach to bin packing problems and they have identified those Weibull shape values that yield challenging instances for such an approach.
-A nice feature is that their generator is able to create instances similar to those of the Google challenge…
-I hope they will release their generator soon!</p>
-
-<h3 id="the-doctoral-program">The Doctoral Program</h3>
-<p>Differently from other conferences (as for instance <a href="http://ipco2013.dim.uchile.cl/">IPCO</a>), CP gives PhD
-students the opportunity to present their ongoing work within a <a href="http://zivny.cz/dp12/">Doctoral Program</a>.
-The sponsors cover part of the costs for attending the conference.
-During the conference each student has a mentor who is supposed to
-help him. This year there were around 24 students and only very few of them
-had a paper accepted at the main conference. This means that without
-the Doctoral Program, most of these students would not had the opportunity to attend the conference.</p>
-
-<p>Geoffrey Chu awarded the 2012 ACP Doctoral Research Award for his thesis
-<strong><em>Improving Combinatorial Optimization</em></strong>. To give you an idea about the amount of his contributions, consider that after his thesis presentation, someone in the audience asked:</p>
-
-<p><em>“And you got only <strong>one PhD</strong> for all this work?”</em></p>
-
-<p><em>Chapeau!</em> Among other things, Chu has implemented <a href="http://www.g12.csse.unimelb.edu.au/minizinc/challenge2011/description_chuffed.txt">Chuffed</a> one of the most efficient CP solver
-that uses <em>lazy clause generation</em> and that ranked very well at the last
-<a href="http://www.g12.cs.mu.oz.au/minizinc/challenge2012/results2012.html">MiniZinc Challenge</a>, even if it was not one of the official competitors. </p>
-
-<p>For the record, the winner of the MiniZinc challenge of this year is (again) the <a href="http://www.gecode.org">Gecode team</a>. Congratulations!</p>
-
-<h3 id="next-year">Next Year</h3>
-<p>Next year CP will be held in Sweden, at Uppsala University on 16-20 September 2013.
-Will you be there? I hope so…</p>
-
-<p>In the meantime, if you were at the conference, which was your favorite talk and/or paper?</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1885,6 +1838,10 @@ Will you be there? I hope so…</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/09/27/big-data-and-convex-optimization/">Big Data and Convex Optimization</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/19/the-impact-of-preprocessing/">The Impact of Preprocessing on the MIPLIB2003</a>
       </li>
     
@@ -1898,10 +1855,6 @@ Will you be there? I hope so…</p>
     
       <li class="post">
         <a href="/blog/2013/11/01/reading-excuses/">Reading Excuses</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/06/28/gecol/">GeCol: a Graph Coloring solver on top of Gecode</a>
       </li>
     
   </ul>
