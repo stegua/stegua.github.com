@@ -1,0 +1,719 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Graph Coloring: Column Generation or Column Enumeration? - Spaghetti Optimization</title>
+  <meta name="author" content="Stefano Gualandi">
+
+  
+  <meta name="description" content="A simple idea on solving Graph Coloring using a MIP solver via Column Enumeration">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stegua.github.io/blog/2015/07/04/column-enumeration/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Spaghetti Optimization" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- IMPORTANT PLEASE READ THIS: Delete the below line if your blog already uses jQuery in some form. Otherwise a conflict might be created and your blog might not work properly. -->
+<!-- Use the below line only if your blog doesn't already use jQuery. Please check your head.html and custom/head.html to be sure. -->
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> -->
+<!-- Below lines are necessary for Google Feeds API to work properly. Add them to your head.html or custom/head.html files in the _includes directory of your Octopress blog's source folder -->
+<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("feeds", "1");</script> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34931940-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+    <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+    <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+    <meta property="og:url" content="http://stegua.github.io/blog/2015/07/04/column-enumeration/">
+<meta property="og:type" content="website" />
+
+<meta property="og:title" content="Graph Coloring: Column Generation or Column Enumeration?">
+<meta property="og:description" content="A simple idea on solving Graph Coloring using a MIP solver via Column Enumeration">
+ 
+
+ 
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+   MathJax.Hub.Config({messageStyle: "none"})
+   </script>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Spaghetti Optimization</a></h1>
+  
+    <h2>My cookbook about Math, Algorithms, and Programming</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:stegua.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/credits">Credits</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Graph Coloring: Column Generation or Column Enumeration?</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+<time datetime="2015-07-04T16:45:00+02:00" pubdate data-updated="true">Jul 4<span>th</span>, 2015</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><style type="text/css">
+table { width:100%; }
+thead {
+   background-color: rgba(0,0,255,0.3);
+   color: black;
+   text-indent: 14px;
+   text-align: left;
+}
+td { padding:4px; }
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
+<p>In this post, I like to share a simple idea on how to solve to optimality some <a href="http://www.info.univ-angers.fr/pub/porumbel/graphs/">hard instances</a> of the <a href="http://en.wikipedia.org/wiki/Graph_coloring">Graph Coloring</a> problem. This simple idea yields a “new time” record for a couple of hard instances. </p>
+
+<p>To date, the best <strong>exact</strong> approach to solve Graph Coloring 
+is based on <em><a href="http://en.wikipedia.org/wiki/Branch_and_price">Branch-and-Price</a></em> [1, 2, 3].
+The branch-and-price method is completely different from the Constraint Programming approach I discussed in a <a href="http://stegua.github.io/blog/2013/06/28/gecol/">previous post</a>. A key component of Branch-and-Price is the <em>column generation</em> phase, which is 
+intuitively quite simple, but mathematically rather involved for a short blog post.</p>
+
+<p>Here, I want to show you that a modern Mixed Integer Programming (MIP) solver, such as <a href="http://www.gurobi.com/">Gurobi</a> or <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a>, can solve a few hard instances of graph coloring with the following <em>“null implementation effort”</em>:</p>
+
+<ol>
+  <li>Enumerate all possible columns</li>
+  <li>Build a <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps</a> instance with those columns</li>
+  <li>Use a MIP solver to solve the .mps instance</li>
+</ol>
+
+<p>Indeed, in this post we try to answer to the following question:</p>
+
+<blockquote>
+  <p>Is there any hope to solve any hard graph coloring instances with this naive approach?</p>
+</blockquote>
+
+<h2 id="formulation">Formulation</h2>
+<p>Given an undirected graph <script type="math/tex">G=(V,E)</script> and a set of colors <script type="math/tex">K</script>, 
+the minimum (vertex) graph coloring problem consists of assigning a color to each vertex,
+while every pair of adjacent vertices gets a different color. The objective is to minimize the number of colors used in a solution.</p>
+
+<p>The branch-and-price approach to graph coloring is based on a <em>set covering</em> formulation.
+Let <script type="math/tex">S</script> be the collection of all the maximal stable sets of <script type="math/tex">G</script>,
+and let <script type="math/tex">S_i \subseteq S</script> be the maximal stable sets that contain the vertex <script type="math/tex">i</script>.
+Let <script type="math/tex">\lambda_s</script> be a 0-1 variable equal to 1 if all the vertices in the maximal stable set <script type="math/tex">s \in S</script> 
+get assigned the same color. Hence, the set covering model is:</p>
+
+<script type="math/tex; mode=display">\min \sum_{s \in S} \lambda_s \mbox{ such that } \sum_{s \in S_i} \lambda_s \geq 1, \forall i \in N, \lambda_s \in \{0,1\}, \forall s \in S.</script>
+
+<p>Indeed, we <em>“cover”</em> every vertex of <script type="math/tex">G</script> with the minimal number of maximal stable sets.
+The issue with this model is the total number of maximal stable sets in <script type="math/tex">G</script>, which <em>is exponential in the number of vertices of G</em>.</p>
+
+<p>Column Generation is a “mathematically elegant” method to by-pass this issue:
+it lets you to solve the set covering model by <em>generating</em> a very small subset of the elements in <script type="math/tex">S</script>. This happens by repeatedly solving an auxiliary problem,
+called the <em>pricing</em> subproblem. For graph coloring, the pricing subproblem consists of a Maximum Weighted Stable Set problem.
+If you are interested in Column Generation, I recommend you to look at the first chapter of
+the <a href="http://www.springer.com/gp/book/9780387254852">Column Generation book</a>,
+which contains a nice tutorial on the topic, and I would <strong>strongly</strong> recommend reading the nice survey “Selected Topics in Column Generation”, [4].</p>
+
+<blockquote>
+  <p>How many maximal stable sets are in a hard graph coloring instance?</p>
+</blockquote>
+
+<p>If this number were not so high, we could enumerate all the stable sets in <script type="math/tex">S</script>
+and attempt to directly solve the set covering model without resorting to column generation.
+However, <em>“high”</em> is a subjective measure, so let me do some computations on my laptop and give you some precise numbers.</p>
+
+<h2 id="hard-instances">Hard instances</h2>
+<p>Among the <a href="http://mat.gsia.cmu.edu/COLOR/instances.html">DIMACS instances</a> of Graph Coloring, there are a few instances
+proposed by David Johnson, which are still unsolved (in the sense that we have not a computational proof of optimality of the best known upper bounds).</p>
+
+<p>The table below shows the dimensions of these instances. The name of instances are DSJC{n}.{d}, where {n} is the number of vertices and {d} gives the density of the graph (e.g., DSJC125.9 has 125 vertices and 0.9 of density).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Graph</th>
+      <th style="text-align: center">Nodes</th>
+      <th style="text-align: center">Edges</th>
+      <th style="text-align: center">Max stable sets</th>
+      <th style="text-align: center">Enumeration Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">DSJC125.9</td>
+      <td style="text-align: center">125</td>
+      <td style="text-align: center">6,961</td>
+      <td style="text-align: center">524</td>
+      <td style="text-align: center">0.00</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.9</td>
+      <td style="text-align: center">250</td>
+      <td style="text-align: center">27,897</td>
+      <td style="text-align: center">2,580</td>
+      <td style="text-align: center">0.01</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.9</td>
+      <td style="text-align: center">500</td>
+      <td style="text-align: center">112,437</td>
+      <td style="text-align: center">14,560</td>
+      <td style="text-align: center">0.12</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.9</td>
+      <td style="text-align: center">1,000</td>
+      <td style="text-align: center">449,449</td>
+      <td style="text-align: center">100,389</td>
+      <td style="text-align: center">2.20</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC125.5</td>
+      <td style="text-align: center">125</td>
+      <td style="text-align: center">3,891</td>
+      <td style="text-align: center">43,268</td>
+      <td style="text-align: center">0.53</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.5</td>
+      <td style="text-align: center">250</td>
+      <td style="text-align: center">15,668</td>
+      <td style="text-align: center">1,470,363</td>
+      <td style="text-align: center">43.16</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.5</td>
+      <td style="text-align: center">500</td>
+      <td style="text-align: center">62,624</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.5</td>
+      <td style="text-align: center">1,000</td>
+      <td style="text-align: center">249,826</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC125.1</td>
+      <td style="text-align: center">125</td>
+      <td style="text-align: center">736</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.1</td>
+      <td style="text-align: center">250</td>
+      <td style="text-align: center">3,218</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.1</td>
+      <td style="text-align: center">500</td>
+      <td style="text-align: center">12,458</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.1</td>
+      <td style="text-align: center">1,000</td>
+      <td style="text-align: center">49,629</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+As you can see the number of maximal stable sets (i.e. the cardinality of <script type="math/tex">S</script>)
+of several instances is not so high, above all for very dense graphs, where the number of stables set is less than the number of edges. However, for sparse graphs, the number of maximal stable sets is too large for the memory available in my laptop.</p>
+
+<p>Now, let me re-state the main question of this post:</p>
+
+<blockquote>
+  <p>Can we <strong>enumerate</strong> all the maximal stable sets of <script type="math/tex">G</script> and use a  MIP solver such as <a href="http://www.gurobi.com/">Gurobi</a> or <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a> to solve any Johnson’s instance of Graph Coloring?</p>
+</blockquote>
+
+<h2 id="results">Results</h2>
+<p>I have written a small script which uses <a href="http://users.aalto.fi/~pat/cliquer.html">Cliquer</a> to enumerate all the maximal
+stable sets of a graph, and then I generate an <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps</a>
+instance for each of the DSJC instance where I was able to store all maximal stable sets.
+The .mps file are on my public <a href="">GitHub repository for this post</a>.</p>
+
+<p>The table below shows some numbers for the sparse instances obtained using Gurobi (v6.0.0)
+with a timeout of 10 minutes on my laptop. If you compare these numbers with the results published in the literature, you can see that they are not bad at all.</p>
+
+<p>Believe me, these number are not bad at all, and establish a new <strong>TIME RECORD</strong>.</p>
+
+<p>For example, the instance DSJC250.9 was solved to optimality only recently in
+11094 seconds by [3], while the column enumeration approach solves the same instance on a similar hardware in only 23 seconds (!), and, honestly, our work in [2] did not solve this instance to optimality at all.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Graph</th>
+      <th style="text-align: center">Best known</th>
+      <th style="text-align: center">Enum. Time</th>
+      <th style="text-align: center">Run time</th>
+      <th style="text-align: center">LB</th>
+      <th style="text-align: center">UB</th>
+      <th style="text-align: center">Time [2]</th>
+      <th style="text-align: center">LB[2]</th>
+      <th style="text-align: center">UB [2]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">DSJC125.9</td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center">0.00</td>
+      <td style="text-align: center"><strong>0.44</strong></td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center">44</td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center"><strong>44</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.9</td>
+      <td style="text-align: center"><strong>72</strong></td>
+      <td style="text-align: center">0.01</td>
+      <td style="text-align: center"><strong>23</strong></td>
+      <td style="text-align: center"><strong>72</strong></td>
+      <td style="text-align: center"><strong>72</strong></td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">71</td>
+      <td style="text-align: center">72</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.9</td>
+      <td style="text-align: center">128</td>
+      <td style="text-align: center">0.12</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">123</td>
+      <td style="text-align: center"><strong>128</strong></td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">123</td>
+      <td style="text-align: center">136</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.9</td>
+      <td style="text-align: center">222</td>
+      <td style="text-align: center">2.20</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">215</td>
+      <td style="text-align: center"><strong>229</strong></td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">215</td>
+      <td style="text-align: center">245</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC125.5</td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center">0.53</td>
+      <td style="text-align: center"><strong>70.6</strong></td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center">19033</td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center"><strong>17</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.5</td>
+      <td style="text-align: center">28</td>
+      <td style="text-align: center">43.16</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">26</td>
+      <td style="text-align: center">33</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">26</td>
+      <td style="text-align: center">31</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<blockquote>
+  <p>Can we ever solve to optimality DSJC500.9 and DSJC1000.9 via Column Enumeration?</p>
+</blockquote>
+
+<p>I would say:</p>
+
+<blockquote>
+  <p>“Yes, we can!”</p>
+</blockquote>
+
+<p>… but likely we need to be smarter while branching on the decision variables, since the default branching strategy of a generic MIP solver does not exploit the structure of the problem. If I had the time to work again on Graph Coloring, I would likely use the same branching scheme used in [2], where we combined a Zykov’s branching rule with a randomized <a href="http://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search">iterative deepening depth-first search</a> (randomised because at each restart we were using a different initial pool of columns). Another interesting option would be to tighten the set covering formulation with valid inequalities, by starting with those studied in [5]. </p>
+
+<p>In conclusion, I believe that enumerating all columns can be a simple but good starting point to attempt to solve to optimality at least the instances DSJC500.9 and DSJC1000.9.</p>
+
+<p>Do you have some spare time and are you willing to take up the challenge?</p>
+
+<h2 id="references">References</h2>
+<ol>
+  <li>
+    <p>A Mehrotra, MA Trick.
+<span class="title">A column generation approach for graph coloring</span>.
+<span class="journal">INFORMS Journal on Computing</span>. Fall 1996 vol. 8(4), pp.344-354. 
+<a href="http://joc.journal.informs.org/content/8/4/344.short ">[pdf]</a></p>
+  </li>
+  <li>
+    <p>S. Gualandi and F. Malucelli.
+<span class="title">Exact Solution of Graph Coloring Problems via Constraint Programming and Column Generation</span>.
+<span class="journal">INFORMS Journal on Computing</span>. Winter 2012 vol. 24(1), pp.81-100. 
+<a href="http://joc.journal.informs.org/content/24/1/81.short">[pdf]</a>
+<a href="http://www.optimization-online.org/DB_FILE/2010/03/2568.pdf">[preprint]</a></p>
+  </li>
+  <li>
+    <p>S. Held, W. Cook, E.C. Sewell.
+<span class="title">Maximum-weight stable sets and safe lower bounds for graph coloring</span>.
+<span class="journal">Mathematical Programming Computation</span>. December 2012, Volume 4, Issue 4, pp 363-381.
+<a href="http://link.springer.com/content/pdf/10.1007%2Fs12532-012-0042-3.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>M. Lubbecke and J. Desrosiers.
+<span class="title">Selected topics in column generation</span>.
+<span class="journal">Operations Research</span>. 2005, Volume 53, Issue 6, pp 1007-1023.
+<a href="http://pubsonline.informs.org/doi/abs/10.1287/opre.1050.0234">[pdf]</a></p>
+  </li>
+  <li>
+    <p>
+<span class="title">Set covering and packing formulations of graph coloring: algorithms and first polyhedral results</span>.
+<span class="journal">Discrete Optimization</span>. 2009, Volume 6, Issue 2, pp 135-147.
+<a href="http://www.sciencedirect.com/science/article/pii/S1572528608000716">[pdf]</a></p>
+  </li>
+</ol>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Stefano Gualandi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+<time datetime="2015-07-04T16:46:00+02:00" class="updated">Updated Jul 4<span>th</span>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cplex/'>CPLEX</a>, <a class='category' href='/blog/categories/gurobi/'>GUROBI</a>, <a class='category' href='/blog/categories/column-enumeration/'>column enumeration</a>, <a class='category' href='/blog/categories/column-generation/'>column generation</a>, <a class='category' href='/blog/categories/graph-coloring/'>graph coloring</a>, <a class='category' href='/blog/categories/integer-programming/'>integer programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stegua.github.io/blog/2015/07/04/column-enumeration/" data-via="famo2spaghi" data-counturl="http://stegua.github.io/blog/2015/07/04/column-enumeration/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="small"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/09/27/big-data-and-convex-optimization/" title="Previous Post: Big Data and Convex Optimization">&laquo; Big Data and Convex Optimization</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>Researcher at <a href="http://www.antoptima.com">AntOptima</a>.</p>
+  <p>The views expressed on this post are mine and do not necessarily reflect the views of AntOptima.</p>
+  <nav>
+  <div><a href="http://www-dimat.unipv.it/~gualandi/Home.html">My Academic Home Page</a></div>
+  <div><a href="http://www-dimat.unipv.it/~gualandi/Papers.html">My Publications</a></div>
+  </nav>
+  </p>
+</section>
+
+<section>
+ <h2>Latest Tweets</h2>
+<a class="twitter-timeline" href="https://twitter.com/famo2spaghi" data-widget-id="303485589863407617">Tweets by @famo2spaghi</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<script type="text/javascript">
+   $.domReady(function(){
+         getTwitterFeed("famo2spaghi", 3, true);
+         });
+</script>
+<script src="/javascripts/twitter.js" type="text/javascript"> </script>
+
+<a href="http://twitter.com/famo2spaghi" class="twitter-follow-button" data-show-count="true">Follow @famo2spaghi</a>
+
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/+StefanoGualandi?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      My Google+ profile
+    </a>
+  </h1>
+</section>
+
+
+<section>
+  <h2>Recent Posts</h2>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/07/04/column-enumeration/">Graph Coloring: Column Generation or Column Enumeration?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/27/big-data-and-convex-optimization/">Big Data and Convex Optimization</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/19/the-impact-of-preprocessing/">The Impact of Preprocessing on the MIPLIB2003</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/">An Informal Report from the Combinatorial Optimization Workshop @ Aussois 2014</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/17/public-transport-and-big-data/">Public Transport and Big Data</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h2>GitHub Repos</h2>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/stegua">@stegua</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'stegua',
+            count: 2,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blogroll</h1>
+  <!-- IMPORTANT: Do not change the below ID as it will affect the functioning of the plugin-->
+    <ul id="blogroll-list"><li><a href='http://bartoszmilewski.com/' feedurl='http://bartoszmilewski.com/feed/' title = 'Concurrency, C++, Haskell'>Bartosz Milewski's Programming Cafe</a></li><li><a href='http://cp-is-fun.blogspot.fr/' feedurl='' title = 'Constraint Programming is fun'>CP is fun</a></li><li><a href='http://bob4er.blogspot.com/' feedurl='http://bob4er.blogspot.com/feeds/posts/default' title = ''>disORiented</a></li><li><a href='http://erlingdandersen.blogspot.it/' feedurl='http://erlingdandersen.blogspot.com/feeds/posts/default' title = 'This blog is about my work at MOSEK ApS where I am the CEO, a computer programmer and tea maker'>Erling's blog</a></li><li><a href='http://farkasdilemma.wordpress.com' feedurl='http://farkasdilemma.wordpress.com/feed' title = 'Austin Buchanan's Blog'>Farkas' Dilemma</a></li><li><a href='https://www.ibm.com/developerworks/mydeveloperworks/blogs/jfp/?lang=en' feedurl='https://www.ibm.com/developerworks/mydeveloperworks/blogs/roller-ui/rendering/feed/jfp/entries/atom?lang=en' title = 'Making Mathematical Optimization Pervasive'>IT Best Kept Secret Is Optimization</a></li><li><a href='http://mat.gsia.cmu.edu/blog/' feedurl='http://feeds.feedburner.com/MichaelTricksORB' title = 'Thoughts on the world of operations research'>Michael Trick’s Operations Research Blog</a></li><li><a href='http://www.hakank.org/constraint_programming_blog/' feedurl='http://www.hakank.org/constraint_programming_blog/atom.xml' title = 'This is my blog about constraint programming and related paradigms'>My Constraint Programming Blog</a></li><li><a href='http://nathanbrixius.wordpress.com/' feedurl='http://nathanbrixius.wordpress.com/feed/' title = 'Optimization, analytics, software'>Nathan Brixius</a></li><li><a href='http://zverovich.net/' feedurl='http://zverovich.net/atom.xml' title = 'Victor Zverovich'>Notes of a humble developer</a></li><li><a href='http://orbythebeach.wordpress.com/' feedurl='http://feeds.feedburner.com/OrByTheBeach' title = 'Operations Research, Computers, Education, and South Florida'>O.R. by the Beach</a></li><li><a href='http://optimizationzen.com/' feedurl='http://feeds.feedburner.com/optimizationzen' title = 'The Art of Decision Making'>Optimization Zen</a></li><li><a href='http://orinanobworld.blogspot.it/' feedurl='http://orinanobworld.blogspot.com/feeds/posts/default' title = 'A mix of operations research items and software tricks that I'll probably forget if I don't write them down somewhere'>OR in an OB World</a></li><li><a href='http://punkrockor.wordpress.com/' feedurl='http://punkrockor.wordpress.com/feed/' title = '~*~ peace, love, and operations research ~*~'>Punk Rock Operations Research</a></li><li><a href='http://spokutta.wordpress.com/' feedurl='http://spokutta.wordpress.com/feed/' title = 'Mathematics and related topics'>Sebastian Pokutta's blog</a></li><li><a href='http://thiagoserra.com' feedurl='http://thiagoserra.com/feed' title = ''>Tatu-Search Optimization</a></li><li><a href='http://org.mie.utoronto.ca/blog/' feedurl='' title = 'An Operations Research blog from the University of Toronto'>The OR Café</a></li><li><a href='http://www.thequestforoptimality.com/' feedurl='http://www.thequestforoptimality.com/feed/' title = 'OR made fun and practical'>The Quest for Optimality</a></li></ul>
+    
+    <script type="text/javascript">
+      $(document).ready(function(){
+        updateFeeds(true);
+      });
+    </script>
+    <script src="/javascripts/tinysort-min.js"></script>
+    <script src="/javascripts/blogroll.js"></script>
+    
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- MyBlog -->
+    <ins class="adsbygoogle"
+       style="display:inline-block;width:120px;height:240px"
+       data-ad-client="ca-pub-4380781683351357"
+       data-ad-slot="1175542821"></ins>
+    <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Stefano Gualandi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'famo2spaghi';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://stegua.github.io/blog/2015/07/04/column-enumeration/';
+        var disqus_url = 'http://stegua.github.io/blog/2015/07/04/column-enumeration/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
