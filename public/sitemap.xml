@@ -43,8 +43,20 @@
         <lastmod>2014-01-13T21:44:32+01:00</lastmod>
     </url>
     <url>
+        <loc>http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing/</loc>
+        <lastmod>2014-03-22T07:23:28+01:00</lastmod>
+    </url>
+    <url>
+        <loc>http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization/</loc>
+        <lastmod>2014-09-28T18:53:34+02:00</lastmod>
+    </url>
+    <url>
+        <loc>http://stegua.github.io/blog/2015/07/04/column-enumeration/</loc>
+        <lastmod>2015-07-15T17:32:58+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://stegua.github.io/blog/archives/</loc>
-        <lastmod>2014-01-13T21:44:32+01:00</lastmod>
+        <lastmod>2015-07-15T17:32:58+02:00</lastmod>
     </url>
     <url>
         <loc>http://stegua.github.io/credits/</loc>
@@ -52,6 +64,6 @@
     </url>
     <url>
         <loc>http://stegua.github.io/</loc>
-        <lastmod>2014-01-13T21:44:32+01:00</lastmod>
+        <lastmod>2015-07-15T17:32:58+02:00</lastmod>
     </url>
 </urlset>

@@ -59,7 +59,7 @@ page_asides: [custom/asides/about.html, asides/twitter.html, asides/googleplus.h
 
 # Github repositories
 github_user: stegua
-github_repo_count: 3
+github_repo_count: 2
 github_show_profile_link: true
 github_skip_forks: true
 

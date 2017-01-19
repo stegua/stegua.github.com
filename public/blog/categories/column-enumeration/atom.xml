@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: column enumeration | Spaghetti Optimization]]></title>
+  <link href="http://stegua.github.io/blog/categories/column-enumeration/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2015-07-15T17:33:05+02:00</updated>
+  <id>http://stegua.github.io/</id>
+  <author>
+    <name><![CDATA[Stefano Gualandi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Graph Coloring: Column Generation or Column Enumeration?]]></title>
+    <link href="http://stegua.github.io/blog/2015/07/04/column-enumeration/"/>
+    <updated>2015-07-04T16:45:00+02:00</updated>
+    <id>http://stegua.github.io/blog/2015/07/04/column-enumeration</id>
+    <content type="html"><![CDATA[<style type="text/css">
+table { width:100%; }
+thead {
+   background-color: rgba(0,0,255,0.3);
+   color: black;
+   text-indent: 14px;
+   text-align: left;
+}
+td { padding:4px; }
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
+<p>In this post, I like to share a simple idea on how to solve to optimality some <a href="http://www.info.univ-angers.fr/pub/porumbel/graphs/">hard instances</a> of the <a href="http://en.wikipedia.org/wiki/Graph_coloring">Graph Coloring</a> problem. This simple idea yields a “new time” record for a couple of hard instances. </p>
+
+<p>To date, the best <strong>exact</strong> approach to solve Graph Coloring 
+is based on <em><a href="http://en.wikipedia.org/wiki/Branch_and_price">Branch-and-Price</a></em> [1, 2, 3].
+The branch-and-price method is completely different from the Constraint Programming approach I discussed in a <a href="http://stegua.github.io/blog/2013/06/28/gecol/">previous post</a>. A key component of Branch-and-Price is the <em>column generation</em> phase, which is 
+intuitively quite simple, but mathematically rather involved for a short blog post.</p>
+
+<p>Here, I want to show you that a modern Mixed Integer Programming (MIP) solver, such as <a href="http://www.gurobi.com/">Gurobi</a> or <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a>, can solve a few hard instances of graph coloring with the following <em>“null implementation effort”</em>:</p>
+
+<ol>
+  <li>Enumerate all possible columns</li>
+  <li>Build a <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps</a> instance with those columns</li>
+  <li>Use a MIP solver to solve the .mps instance</li>
+</ol>
+
+<p>Indeed, in this post we try to answer to the following question:</p>
+
+<blockquote>
+  <p>Is there any hope to solve any hard graph coloring instances with this naive approach?</p>
+</blockquote>
+
+<h2 id="formulation">Formulation</h2>
+<p>Given an undirected graph <script type="math/tex">G=(V,E)</script> and a set of colors <script type="math/tex">K</script>, 
+the minimum (vertex) graph coloring problem consists of assigning a color to each vertex,
+while every pair of adjacent vertices gets a different color. The objective is to minimize the number of colors used in a solution.</p>
+
+<p>The branch-and-price approach to graph coloring is based on a <em>set covering</em> formulation.
+Let <script type="math/tex">S</script> be the collection of all the maximal stable sets of <script type="math/tex">G</script>,
+and let <script type="math/tex">S_i \subseteq S</script> be the maximal stable sets that contain the vertex <script type="math/tex">i</script>.
+Let <script type="math/tex">\lambda_s</script> be a 0-1 variable equal to 1 if all the vertices in the maximal stable set <script type="math/tex">s \in S</script> 
+get assigned the same color. Hence, the set covering model is:</p>
+
+<script type="math/tex; mode=display">\min \sum_{s \in S} \lambda_s \mbox{ such that } \sum_{s \in S_i} \lambda_s \geq 1, \forall i \in N, \lambda_s \in \{0,1\}, \forall s \in S.</script>
+
+<p>Indeed, we <em>“cover”</em> every vertex of <script type="math/tex">G</script> with the minimal number of maximal stable sets.
+The issue with this model is the total number of maximal stable sets in <script type="math/tex">G</script>, which <em>is exponential in the number of vertices of G</em>.</p>
+
+<p>Column Generation is a “mathematically elegant” method to by-pass this issue:
+it lets you to solve the set covering model by <em>generating</em> a very small subset of the elements in <script type="math/tex">S</script>. This happens by repeatedly solving an auxiliary problem,
+called the <em>pricing</em> subproblem. For graph coloring, the pricing subproblem consists of a Maximum Weighted Stable Set problem.
+If you are interested in Column Generation, I recommend you to look at the first chapter of
+the <a href="http://www.springer.com/gp/book/9780387254852">Column Generation book</a>,
+which contains a nice tutorial on the topic, and I would <strong>strongly</strong> recommend reading the nice survey “Selected Topics in Column Generation”, [4].</p>
+
+<blockquote>
+  <p>How many maximal stable sets are in a hard graph coloring instance?</p>
+</blockquote>
+
+<p>If this number were not so high, we could enumerate all the stable sets in <script type="math/tex">S</script>
+and attempt to directly solve the set covering model without resorting to column generation.
+However, <em>“high”</em> is a subjective measure, so let me do some computations on my laptop and give you some precise numbers.</p>
+
+<h2 id="hard-instances">Hard instances</h2>
+<p>Among the <a href="http://mat.gsia.cmu.edu/COLOR/instances.html">DIMACS instances</a> of Graph Coloring, there are a few instances
+proposed by David Johnson, which are still unsolved (in the sense that we have not a computational proof of optimality of the best known upper bounds).</p>
+
+<p>The table below shows the dimensions of these instances. The name of instances are DSJC{n}.{d}, where {n} is the number of vertices and {d} gives the density of the graph (e.g., DSJC125.9 has 125 vertices and 0.9 of density).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Graph</th>
+      <th style="text-align: center">Nodes</th>
+      <th style="text-align: center">Edges</th>
+      <th style="text-align: center">Max stable sets</th>
+      <th style="text-align: center">Enumeration Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">DSJC125.9</td>
+      <td style="text-align: center">125</td>
+      <td style="text-align: center">6,961</td>
+      <td style="text-align: center">524</td>
+      <td style="text-align: center">0.00</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.9</td>
+      <td style="text-align: center">250</td>
+      <td style="text-align: center">27,897</td>
+      <td style="text-align: center">2,580</td>
+      <td style="text-align: center">0.01</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.9</td>
+      <td style="text-align: center">500</td>
+      <td style="text-align: center">112,437</td>
+      <td style="text-align: center">14,560</td>
+      <td style="text-align: center">0.12</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.9</td>
+      <td style="text-align: center">1,000</td>
+      <td style="text-align: center">449,449</td>
+      <td style="text-align: center">100,389</td>
+      <td style="text-align: center">2.20</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC125.5</td>
+      <td style="text-align: center">125</td>
+      <td style="text-align: center">3,891</td>
+      <td style="text-align: center">43,268</td>
+      <td style="text-align: center">0.53</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.5</td>
+      <td style="text-align: center">250</td>
+      <td style="text-align: center">15,668</td>
+      <td style="text-align: center">1,470,363</td>
+      <td style="text-align: center">43.16</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.5</td>
+      <td style="text-align: center">500</td>
+      <td style="text-align: center">62,624</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.5</td>
+      <td style="text-align: center">1,000</td>
+      <td style="text-align: center">249,826</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC125.1</td>
+      <td style="text-align: center">125</td>
+      <td style="text-align: center">736</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.1</td>
+      <td style="text-align: center">250</td>
+      <td style="text-align: center">3,218</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.1</td>
+      <td style="text-align: center">500</td>
+      <td style="text-align: center">12,458</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.1</td>
+      <td style="text-align: center">1,000</td>
+      <td style="text-align: center">49,629</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+As you can see the number of maximal stable sets (i.e. the cardinality of <script type="math/tex">S</script>)
+of several instances is not so high, above all for very dense graphs, where the number of stables set is less than the number of edges. However, for sparse graphs, the number of maximal stable sets is too large for the memory available in my laptop.</p>
+
+<p>Now, let me re-state the main question of this post:</p>
+
+<blockquote>
+  <p>Can we <strong>enumerate</strong> all the maximal stable sets of <script type="math/tex">G</script> and use a  MIP solver such as <a href="http://www.gurobi.com/">Gurobi</a> or <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a> to solve any Johnson’s instance of Graph Coloring?</p>
+</blockquote>
+
+<h2 id="results">Results</h2>
+<p>I have written a small script which uses <a href="http://users.aalto.fi/~pat/cliquer.html">Cliquer</a> to enumerate all the maximal
+stable sets of a graph, and then I generate an <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps</a>
+instance for each of the DSJC instance where I was able to store all maximal stable sets.
+The .mps file are on my public <a href="https://github.com/stegua/MyBlogEntries/tree/master/Coloring">GitHub repository for this post</a>.</p>
+
+<p>The table below shows some numbers for the sparse instances obtained using Gurobi (v6.0.0)
+with a timeout of 10 minutes on my laptop. If you compare these numbers with the results published in the literature, you can see that they are not bad at all.</p>
+
+<p>Believe me, these number are not bad at all, and establish a new <strong>TIME RECORD</strong>.</p>
+
+<p>For example, the instance DSJC250.9 was solved to optimality only recently in
+11094 seconds by [3], while the column enumeration approach solves the same instance on a similar hardware in only 23 seconds (!), and, honestly, our work in [2] did not solve this instance to optimality at all.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Graph</th>
+      <th style="text-align: center">Best known</th>
+      <th style="text-align: center">Enum. Time</th>
+      <th style="text-align: center">Run time</th>
+      <th style="text-align: center">LB</th>
+      <th style="text-align: center">UB</th>
+      <th style="text-align: center">Time [2]</th>
+      <th style="text-align: center">LB[2]</th>
+      <th style="text-align: center">UB [2]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">DSJC125.9</td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center">0.00</td>
+      <td style="text-align: center"><strong>0.44</strong></td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center">44</td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center"><strong>44</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.9</td>
+      <td style="text-align: center"><strong>72</strong></td>
+      <td style="text-align: center">0.01</td>
+      <td style="text-align: center"><strong>23</strong></td>
+      <td style="text-align: center"><strong>72</strong></td>
+      <td style="text-align: center"><strong>72</strong></td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">71</td>
+      <td style="text-align: center">72</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.9</td>
+      <td style="text-align: center">128</td>
+      <td style="text-align: center">0.12</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">123</td>
+      <td style="text-align: center"><strong>128</strong></td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">123</td>
+      <td style="text-align: center">136</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.9</td>
+      <td style="text-align: center">222</td>
+      <td style="text-align: center">2.20</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">215</td>
+      <td style="text-align: center"><strong>229</strong></td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">215</td>
+      <td style="text-align: center">245</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC125.5</td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center">0.53</td>
+      <td style="text-align: center"><strong>70.6</strong></td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center">19033</td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center"><strong>17</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.5</td>
+      <td style="text-align: center">28</td>
+      <td style="text-align: center">43.16</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">26</td>
+      <td style="text-align: center">33</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">26</td>
+      <td style="text-align: center">31</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<blockquote>
+  <p>Can we ever solve to optimality DSJC500.9 and DSJC1000.9 via Column Enumeration?</p>
+</blockquote>
+
+<p>I would say:</p>
+
+<blockquote>
+  <p>“Yes, we can!”</p>
+</blockquote>
+
+<p>… but likely we need to be smarter while branching on the decision variables, since the default branching strategy of a generic MIP solver does not exploit the structure of the problem. If I had the time to work again on Graph Coloring, I would likely use the same branching scheme used in [2], where we combined a Zykov’s branching rule with a randomized <a href="http://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search">iterative deepening depth-first search</a> (randomised because at each restart we were using a different initial pool of columns). Another interesting option would be to tighten the set covering formulation with valid inequalities, by starting with those studied in [5]. </p>
+
+<p>In conclusion, I believe that enumerating all columns can be a simple but good starting point to attempt to solve to optimality at least the instances DSJC500.9 and DSJC1000.9.</p>
+
+<p>Do you have some spare time and are you willing to take up the challenge?</p>
+
+<h2 id="references">References</h2>
+<ol>
+  <li>
+    <p>A Mehrotra, MA Trick.
+<span class="title">A column generation approach for graph coloring</span>.
+<span class="journal">INFORMS Journal on Computing</span>. Fall 1996 vol. 8(4), pp.344-354. 
+<a href="http://joc.journal.informs.org/content/8/4/344.short ">[pdf]</a></p>
+  </li>
+  <li>
+    <p>S. Gualandi and F. Malucelli.
+<span class="title">Exact Solution of Graph Coloring Problems via Constraint Programming and Column Generation</span>.
+<span class="journal">INFORMS Journal on Computing</span>. Winter 2012 vol. 24(1), pp.81-100. 
+<a href="http://joc.journal.informs.org/content/24/1/81.short">[pdf]</a>
+<a href="http://www.optimization-online.org/DB_FILE/2010/03/2568.pdf">[preprint]</a></p>
+  </li>
+  <li>
+    <p>S. Held, W. Cook, E.C. Sewell.
+<span class="title">Maximum-weight stable sets and safe lower bounds for graph coloring</span>.
+<span class="journal">Mathematical Programming Computation</span>. December 2012, Volume 4, Issue 4, pp 363-381.
+<a href="http://link.springer.com/content/pdf/10.1007%2Fs12532-012-0042-3.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>M. Lubbecke and J. Desrosiers.
+<span class="title">Selected topics in column generation</span>.
+<span class="journal">Operations Research</span>. 2005, Volume 53, Issue 6, pp 1007-1023.
+<a href="http://pubsonline.informs.org/doi/abs/10.1287/opre.1050.0234">[pdf]</a></p>
+  </li>
+  <li>
+    <p>
+<span class="title">Set covering and packing formulations of graph coloring: algorithms and first polyhedral results</span>.
+<span class="journal">Discrete Optimization</span>. 2009, Volume 6, Issue 2, pp 135-147.
+<a href="http://www.sciencedirect.com/science/article/pii/S1572528608000716">[pdf]</a></p>
+  </li>
+</ol>
+]]></content>
+  </entry>
+  
+</feed>
