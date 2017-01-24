@@ -4,7 +4,7 @@
   <title><![CDATA[Category: basic algorithms | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.io/blog/categories/basic-algorithms/atom.xml" rel="self"/>
   <link href="http://stegua.github.io/"/>
-  <updated>2017-01-24T18:35:29+01:00</updated>
+  <updated>2017-01-24T18:39:15+01:00</updated>
   <id>http://stegua.github.io/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -18,7 +18,7 @@
     <link href="http://stegua.github.io/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/"/>
     <updated>2017-01-24T16:51:00+01:00</updated>
     <id>http://stegua.github.io/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings</id>
-    <content type="html"><![CDATA[<p>This morning, after reading <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">this very nice post</a>, I decided to challenge myself in Python and to have a look at the impact of <strong>mispredicted branches</strong> in a language different from C/C++. The basic idea was to use only Python builtins: external libraries are not allowed!</p>
+    <content type="html"><![CDATA[<p>This morning, after reading <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">this very nice post</a>, I decided to challenge myself in Python and to have a look at the impact of <a href="https://en.wikipedia.org/wiki/Branch_misprediction">mispredicted branches</a> in a language different from C/C++. The basic idea was to use only Python builtins: external libraries are not allowed!</p>
 
 <p>As a benchmark, I grabbed a large text file from <a href="http://norvig.com/big.txt">P. Norvig’s website</a>, which is 6’488’666 byte long.</p>
 
