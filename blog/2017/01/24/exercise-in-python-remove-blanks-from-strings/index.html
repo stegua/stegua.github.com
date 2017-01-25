@@ -138,10 +138,13 @@
 
 <p><strong>The final answer?</strong> Yes, <strong>mispredicted branches</strong> have a huge impact in Python too.</p>
 
-<p><strong>The hidden answer?</strong> Python dictionaries does ever stop to surprise me: they are REALLY efficient.</p>
+<p><strong>The hidden answer?</strong> Python dictionaries ever stop to surprise me: they are REALLY efficient.</p>
 
 <p><strong>NOTE</strong>: The followig code snippets were executed in a Python 3.5 notebook, on a windows machine, running Windows 10 and <a href="https://www.continuum.io/downloads">Anaconda Python 3.5 64 bits</a>.
 You can find my notebook on my <a href="https://github.com/stegua/MyBlogEntries">Blog GitHub repo</a>. Don’t ask me why, but this blog entry is better visualized directly on <a href="https://github.com/stegua/MyBlogEntries/blob/master/Remove%2Bblanks%2Bfrom%2Ba%2Bstring.ipynb">GitHub</a>.</p>
+
+<p><strong>UPDATE</strong>: Well, most of the time I would use my first implementation based on the <code>filter</code> builtin function, and I would try for alternative implementations only after a profiler has shown
+that removing blanks is a true bottleneck of my whole program. As written in the title, this post is meant as a basic exercise in Python.</p>
 
 <h3 id="first-attempt-functional-style">First attempt: Functional style</h3>
 <p>In Python, I prefer to write as much code in functional style as possible, relying on the 3 basic functions:</p>
@@ -499,7 +502,7 @@ You can find my notebook on my <a href="https://github.com/stegua/MyBlogEntries"
 
 
   
-<time datetime="2017-01-24T16:59:00+01:00" class="updated">Updated Jan 24<span>th</span>, 2017</time>
+<time datetime="2017-01-25T08:51:00+01:00" class="updated">Updated Jan 25<span>th</span>, 2017</time>
       
 
 <span class="categories">
