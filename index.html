@@ -135,7 +135,7 @@
   </header>
 
 
-  <div class="entry-content"><p>This morning, after reading <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">this very nice post</a>, I decided to challenge myself in Python and to have a look at the impact of <a href="https://en.wikipedia.org/wiki/Branch_misprediction">mispredicted branches</a> in a language different from C/C++. The basic idea was to use only Python builtins: external libraries are not allowed!</p>
+  <div class="entry-content"><p>This morning, after reading <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">this very nice post</a>, I decided to challenge myself in Python and to have a look at the impact of <a href="https://en.wikipedia.org/wiki/Branch_misprediction">mispredicted branches</a> in a language different from C/C++. The basic idea was to use only <a href="https://docs.python.org/3.6/library/functions.html">Python builtins</a>: external libraries are not allowed!</p>
 
 <p>As a benchmark, I grabbed a large text file from <a href="http://norvig.com/big.txt">P. Norvig’s website</a>, which is 6’488’666 byte long.</p>
 
@@ -153,9 +153,9 @@ that removing blanks is a true bottleneck of my whole program. As written in the
 <p>In Python, I prefer to write as much code in functional style as possible, relying on the 3 basic functions:</p>
 
 <ol>
-  <li>map</li>
-  <li>filter</li>
-  <li>reduce</li>
+  <li><a href="https://docs.python.org/3/library/functions.html#map"><code>map</code></a></li>
+  <li><a href="https://docs.python.org/3/library/functions.html#filter"><code>filter</code></a></li>
+  <li><a href="https://docs.python.org/3/library/functools.html#functools.reduce"><code>reduce</code></a> (this is in the functools module and it is not a true builtin)</li>
 </ol>
 
 <p>Therefore, after few preliminaries, here is my first code snippet:</p>
