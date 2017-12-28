@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: max stable set | Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.com/blog/categories/max-stable-set/atom.xml" rel="self"/>
-  <link href="http://stegua.github.com/"/>
-  <updated>2013-03-22T19:17:11+01:00</updated>
-  <id>http://stegua.github.com/</id>
+  <link href="http://stegua.github.io/blog/categories/max-stable-set/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2017-01-25T09:07:59+01:00</updated>
+  <id>http://stegua.github.io/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Backtrack Programming in c]]></title>
-    <link href="http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c/"/>
+    <link href="http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/"/>
     <updated>2013-03-22T12:45:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c</id>
+    <id>http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c</id>
     <content type="html"><![CDATA[<style type="text/css">
 .title { color: #07235F; }
 .journal { font-style: italic; }
@@ -27,7 +27,7 @@
 The library is called <a href="http://www.akira.ruc.dk/~keld/research/CBACK/">CBack</a> and 
 is developed by <a href="http://www.akira.ruc.dk/~keld/">Keld Helsgaun</a>, who is known in the Operations Research 
 and Computer Science communities for his efficient implementation of the 
-Lin-Kernighan heuristics for the <a href="http://www.akira.ruc.dk/~keld/research/LKH/">Traveling Salesman Problem</a>.</p>
+Lin-Kernighan heuristics for the <a href="http://www.akira.ruc.dk/~keld/research/LKH/">Travelling Salesman Problem</a>.</p>
 
 <p><strong>CBack</strong> offers basically two functions that are described in [1] as follows:</p>
 
@@ -68,7 +68,7 @@ i = 3, j = 2
 <p>If you are familiar with backtrack programming (e.g., <a href="http://en.wikipedia.org/wiki/Prolog">Prolog</a>), you should not be surprised by the output, and you can jump to the next section. Otherwise, 
 the Figure below sketches the program execution. </p>
 
-<p><img src="http://stegua.github.com/images/backtrack.png"></p>
+<p><img src="http://stegua.github.io/images/backtrack.png"></p>
 
 <p>When the program executes the <code>Choice(N=3)</code> statement, that is the first call to the first choice (line 2), value 1 is assigned to variable <code>i</code>. Behind the scene, the <em>Choice</em> function stores the current execution state of the program in its own stack,
 and records the next possible choices (i.e. the other possible program branches),

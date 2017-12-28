@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
+<<<<<<< HEAD
         <loc>http://stegua.github.com/blog/2012/09/19/dijkstra/</loc>
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -30,36 +31,41 @@
 =======
         <lastmod>2013-02-20T08:51:16+01:00</lastmod>
 >>>>>>> f248d51619b0df6bd9e078f233ad19f5cdee8d9c
+=======
+        <loc>http://stegua.github.io/blog/2012/09/19/dijkstra/</loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
+>>>>>>> 509de1952a962043efaa091fd866eaa2f6f948c4
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/</loc>
-        <lastmod>2013-02-06T16:01:21+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/</loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2012/12/13/challenging-mips/</loc>
-        <lastmod>2013-02-06T16:01:21+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2012/12/13/challenging-mips/</loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2012/12/16/how-italian-commuters-discovered-or/</loc>
-        <lastmod>2013-02-06T16:01:21+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2012/12/16/how-italian-commuters-discovered-or/</loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/</loc>
-        <lastmod>2013-03-22T13:52:52+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2013/02/05/gomory-cuts-with-cplex/</loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c/</loc>
-        <lastmod>2013-03-22T19:17:03+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/</loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/blog/archives/</loc>
-        <lastmod>2013-03-22T19:17:03+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2013/06/28/gecol/</loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
     </url>
     <url>
-        <loc>http://stegua.github.com/credits/</loc>
-        <lastmod>2013-02-07T08:47:06+01:00</lastmod>
+        <loc>http://stegua.github.io/blog/2013/11/01/reading-excuses/</loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
     </url>
     <url>
+<<<<<<< HEAD
         <loc>http://stegua.github.com/</loc>
 <<<<<<< HEAD
         <lastmod>2013-02-06T16:01:21+01:00</lastmod>
@@ -67,5 +73,45 @@
 =======
         <lastmod>2013-03-22T19:17:03+01:00</lastmod>
 >>>>>>> f248d51619b0df6bd9e078f233ad19f5cdee8d9c
+=======
+        <loc>http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data/</loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/
+        </loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
+    </url>
+    <url>
+        <loc>http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing/</loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
+    </url>
+    <url>
+        <loc>http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization/</loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
+    </url>
+    <url>
+        <loc>http://stegua.github.io/blog/2015/07/04/column-enumeration/</loc>
+        <lastmod>2017-01-24T18:32:34+01:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://stegua.github.io/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/
+        </loc>
+        <lastmod>2017-01-25T09:03:28+01:00</lastmod>
+    </url>
+    <url>
+        <loc>http://stegua.github.io/blog/archives/</loc>
+        <lastmod>2017-01-25T09:03:28+01:00</lastmod>
+    </url>
+    <url>
+        <loc>http://stegua.github.io/credits/</loc>
+        <lastmod>2017-01-24T18:32:25+01:00</lastmod>
+    </url>
+    <url>
+        <loc>http://stegua.github.io/</loc>
+        <lastmod>2017-01-25T09:03:28+01:00</lastmod>
+>>>>>>> 509de1952a962043efaa091fd866eaa2f6f948c4
     </url>
 </urlset>

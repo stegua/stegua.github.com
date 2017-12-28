@@ -2,6 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Optimization | Spaghetti Optimization]]></title>
+<<<<<<< HEAD
   <link href="http://stegua.github.com/blog/categories/optimization/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
 <<<<<<< HEAD
@@ -14,6 +15,12 @@
   <updated>2013-03-22T19:17:11+01:00</updated>
 >>>>>>> f248d51619b0df6bd9e078f233ad19f5cdee8d9c
   <id>http://stegua.github.com/</id>
+=======
+  <link href="http://stegua.github.io/blog/categories/optimization/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2017-01-25T09:07:59+01:00</updated>
+  <id>http://stegua.github.io/</id>
+>>>>>>> 509de1952a962043efaa091fd866eaa2f6f948c4
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -23,9 +30,9 @@
   
   <entry>
     <title type="html"><![CDATA[CP2012: Je me souviens]]></title>
-    <link href="http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/"/>
+    <link href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/"/>
     <updated>2012-10-19T13:24:00+02:00</updated>
-    <id>http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens</id>
+    <id>http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens</id>
     <content type="html"><![CDATA[<p>Last week in Quebec City, there was the 
 <a href="http://www.cp2012.org/">18th International Conference on Principles and Practice of Constraint Programming</a>.
 This year the conference had a record of submissions (186 in total) and the program committee

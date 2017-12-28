@@ -9,11 +9,7 @@
   <meta name="author" content="Stefano Gualandi">
 
   
-  <meta name="description" content="table { width:100%; }
-thead { background-color: rgba(0,0,255,0.3); color: black; text-indent: 14px; text-align: left;
-}
-td { padding:4px; }
-tbody tr &hellip;">
+  <meta name="description" content="Challenging MIPs from the Google Machine Reassignment Problem">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -22,7 +18,7 @@ tbody tr &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://stegua.github.com/blog/2012/12/13/challenging-mips/">
+  <link rel="canonical" href="http://stegua.github.io/blog/2012/12/13/challenging-mips/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -65,6 +61,14 @@ tbody tr &hellip;">
     <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+    <meta property="og:url" content="http://stegua.github.io/blog/2012/12/13/challenging-mips/">
+<meta property="og:type" content="website" />
+
+<meta property="og:title" content="Challenging MIPs instances">
+<meta property="og:description" content="Challenging MIPs from the Google Machine Reassignment Problem">
+ 
+
+ 
 
 <script type="text/javascript"
    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -89,7 +93,7 @@ tbody tr &hellip;">
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:stegua.github.com" />
+    <input type="hidden" name="q" value="site:stegua.github.io" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -108,7 +112,7 @@ tbody tr &hellip;">
     <div id="content">
       <div>
 <article class="hentry" role="article">
-  
+   
   <header>
     
       <h1 class="entry-title">Challenging MIPs Instances</h1>
@@ -127,6 +131,8 @@ tbody tr &hellip;">
   
 
 
+
+  
 <time datetime="2012-12-13T18:11:00+01:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time>
         
          | <a href="#disqus_thread">Comments</a>
@@ -136,22 +142,7 @@ tbody tr &hellip;">
   </header>
 
 
-<div class="entry-content"><style type="text/css">
-table { width:100%; }
-thead {
-   background-color: rgba(0,0,255,0.3);
-   color: black;
-   text-indent: 14px;
-   text-align: left;
-}
-td { padding:4px; }
-tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
-tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
-.title { color: #07235F; }
-.journal { font-style: italic; }
-</style>
-
-<p>Today, I share seven challenging MIP instances as 
+<div class="entry-content"><p>Today, I share seven challenging MIP instances as 
 <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps files</a>
 along with the AMPL <a href="https://github.com/stegua/MyBlogEntries/tree/master/Roadef2012">model and data files</a> 
 I used to generate them. 
@@ -163,7 +154,7 @@ with her new model and/or method.</p>
 <p>The MIP instances I propose come from my formulation of
 the <a href="http://challenge.roadef.org/2012/en/sujet.php">Machine Reassignment Problem</a> 
 proposed for the <a href="http://roadef.org/content/index.htm">Roadef Challenge</a> sponsored by Google last year. 
-As I wrote in a <a href="http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
+As I wrote in a <a href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
 the Challenge had <strong>huge</strong> instances and a <em>micro</em> time limit of 300 seconds.
 I said <em>micro</em> because I have in mind exact methods: there is little you can do in 300 seconds when you
 have a problem with potentially as many as <script type="math/tex">50000 \times 5000</script> binary variables. 
@@ -178,7 +169,7 @@ The Local Solver script used in the qualification phase is available
 
 <p>However, in my own opinion, it is interesting to try to solve at least the instances of the qualification phase
 with Integer Linear Programming (ILP) solvers such as 
-<a href="http:\\www.gurobi.com">Gurobi</a> and <a href="http:\\http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
+<a href="http://www.gurobi.com">Gurobi</a> and <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
 Can these branch-and-cut commercial solvers be competitive on such problems? </p>
 
 <h2 id="problem-overview">Problem Overview</h2>
@@ -583,6 +574,21 @@ We are almost there in proving optimality of <strong>a2-3</strong>, and we get b
 <a href="http://4c.ucc.ie/~hsimonis/reassignment.pdf">published</a> in [1].</p>
 
 <h2 id="references">References</h2>
+<style type="text/css">
+table { width:100%; }
+thead {
+   background-color: rgba(0,0,255,0.3);
+   color: black;
+   text-indent: 14px;
+   text-align: left;
+}
+td { padding:4px; }
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
 <ol>
   <li>
     <p> Deepak Mehta, Barry O’Sullivan, Helmut Simonis. 
@@ -618,7 +624,9 @@ in this blog. </p>
   
 
 
-<time datetime="2012-12-13T18:11:00+01:00" pubdate data-updated="true">Dec 13<span>th</span>, 2012</time>
+
+  
+<time datetime="2012-12-13T18:11:00+01:00" class="updated">Updated Dec 13<span>th</span>, 2012</time>
       
 
 <span class="categories">
@@ -632,7 +640,7 @@ in this blog. </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stegua.github.com/blog/2012/12/13/challenging-mips/" data-via="famo2spaghi" data-counturl="http://stegua.github.com/blog/2012/12/13/challenging-mips/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stegua.github.io/blog/2012/12/13/challenging-mips/" data-via="famo2spaghi" data-counturl="http://stegua.github.io/blog/2012/12/13/challenging-mips/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="small"></div>
@@ -666,22 +674,19 @@ in this blog. </p>
   
     <section>
   <h1>About Me</h1>
-  <p>Post doctoral researcher at the Math Dept, University of Pavia.
+  <p>The views expressed on this blog are mine and do not necessarily reflect the views of my employers.</p>
   <nav>
-  <div><a href="http://www-dimat.unipv.it/~gualandi/Home.html">My Official Home Page</a></div>
-  <div><a href="http://www-dimat.unipv.it/~gualandi/Papers.html">My Publications</a></div>
+  <div><a href="http://matematica.unipv.it/gualandi/">My Academic Home Page</a></div>
+  <div><a href="http://matematica.unipv.it/gualandi/research/">My Publications</a></div>
   </nav>
   </p>
 </section>
 
 <section>
- <!--- <h2>Latest Tweets</h2>
-<ul id="tweets">
-   <li class="loading">Status updating...</li>
-</ul> --->
+ <h2>Latest Tweets</h2>
 <a class="twitter-timeline" href="https://twitter.com/famo2spaghi" data-widget-id="303485589863407617">Tweets by @famo2spaghi</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-<!--- <script type="text/javascript">
+<script type="text/javascript">
    $.domReady(function(){
          getTwitterFeed("famo2spaghi", 3, true);
          });
@@ -689,13 +694,13 @@ in this blog. </p>
 <script src="/javascripts/twitter.js" type="text/javascript"> </script>
 
 <a href="http://twitter.com/famo2spaghi" class="twitter-follow-button" data-show-count="true">Follow @famo2spaghi</a>
- --->
+
 </section>
 
 
 <section class="googleplus">
   <h1>
-    <a href="https://plus.google.com/101441650504695542578?rel=author">
+    <a href="https://plus.google.com/+StefanoGualandi?rel=author">
       <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
       My Google+ profile
     </a>
@@ -735,10 +740,11 @@ in this blog. </p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013/03/22/backtrack-programming-in-c/">Backtrack Programming in c</a>
+        <a href="/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/">Exercise in Python: remove blanks from strings</a>
       </li>
     
       <li class="post">
+<<<<<<< HEAD
 >>>>>>> f248d51619b0df6bd9e078f233ad19f5cdee8d9c
         <a href="/blog/2013/02/05/gomory-cuts-with-cplex/">From blackboard to code: Gomory Cuts using CPLEX</a>
       </li>
@@ -746,14 +752,21 @@ in this blog. </p>
       <li class="post">
 >>>>>>> 1c426a23dd44e74e4e67d70cfc11643ae976f82d
         <a href="/blog/2012/12/16/how-italian-commuters-discovered-or/">How Italian Commuters Discovered Operations Research</a>
+=======
+        <a href="/blog/2015/07/04/column-enumeration/">Graph Coloring: Column Generation or Column Enumeration?</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/12/13/challenging-mips/">Challenging MIPs instances</a>
+        <a href="/blog/2014/09/27/big-data-and-convex-optimization/">Big Data and Convex Optimization</a>
+>>>>>>> 509de1952a962043efaa091fd866eaa2f6f948c4
       </li>
     
       <li class="post">
-        <a href="/blog/2012/10/19/cp2012-je-me-souviens/">CP2012: Je me souviens</a>
+        <a href="/blog/2014/03/19/the-impact-of-preprocessing/">The Impact of Preprocessing on the MIPLIB2003</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/">An Informal Report from the Combinatorial Optimization Workshop @ Aussois 2014</a>
       </li>
     
   </ul>
@@ -779,7 +792,7 @@ in this blog. </p>
 
         github.showRepos({
             user: 'stegua',
-            count: 3,
+            count: 2,
             skip_forks: true,
             target: '#gh_repos'
         });
@@ -791,7 +804,7 @@ in this blog. </p>
 <section>
   <h1>Blogroll</h1>
   <!-- IMPORTANT: Do not change the below ID as it will affect the functioning of the plugin-->
-    <ul id="blogroll-list"><li><a href='http://cp-is-fun.blogspot.fr/' feedurl='' title = 'Constraint Programming is fun'>CP is fun</a></li><li><a href='http://bob4er.blogspot.com/' feedurl='http://bob4er.blogspot.com/feeds/posts/default' title = ''>disORiented</a></li><li><a href='https://www.ibm.com/developerworks/mydeveloperworks/blogs/jfp/?lang=en' feedurl='https://www.ibm.com/developerworks/mydeveloperworks/blogs/roller-ui/rendering/feed/jfp/entries/atom?lang=en' title = 'Making Mathematical Optimization Pervasive'>IT Best Kept Secret Is Optimization</a></li><li><a href='http://mat.gsia.cmu.edu/blog/' feedurl='http://feeds.feedburner.com/MichaelTricksORB' title = 'Thoughts on the world of operations research'>Michael Trick’s Operations Research Blog</a></li><li><a href='http://www.hakank.org/constraint_programming_blog/' feedurl='http://www.hakank.org/constraint_programming_blog/atom.xml' title = 'This is my blog about constraint programming and related paradigms'>My Constraint Programming Blog</a></li><li><a href='http://nathanbrixius.wordpress.com/' feedurl='http://nathanbrixius.wordpress.com/feed/' title = 'Optimization, analytics, software'>Nathan Brixius</a></li><li><a href='http://orbythebeach.wordpress.com/' feedurl='http://feeds.feedburner.com/OrByTheBeach' title = 'Operations Research, Computers, Education, and South Florida'>O.R. by the Beach</a></li><li><a href='http://orinanobworld.blogspot.it/' feedurl='http://orinanobworld.blogspot.com/feeds/posts/default' title = 'A mix of operations research items and software tricks that I'll probably forget if I don't write them down somewhere'>OR in an OB World</a></li><li><a href='http://punkrockor.wordpress.com/' feedurl='http://punkrockor.wordpress.com/feed/' title = '~*~ peace, love, and operations research ~*~'>Punk Rock Operations Research</a></li><li><a href='http://spokutta.wordpress.com/' feedurl='http://spokutta.wordpress.com/feed/' title = 'Mathematics and related topics'>Sebastian Pokutta's blog</a></li><li><a href='http://tatu-search.posterous.com/' feedurl='http://tatu-search.posterous.com/rss.xml' title = ''>Tatu-Search Optimization</a></li><li><a href='http://org.mie.utoronto.ca/blog/' feedurl='' title = 'An Operations Research blog from the University of Toronto'>The OR Café</a></li><li><a href='http://www.thequestforoptimality.com/' feedurl='http://www.thequestforoptimality.com/feed/' title = 'OR made fun and practical'>the quest for optimality</a></li></ul>
+    <ul id="blogroll-list"><li><a href='http://bartoszmilewski.com/' feedurl='http://bartoszmilewski.com/feed/' title = 'Concurrency, C++, Haskell'>Bartosz Milewski's Programming Cafe</a></li><li><a href='http://cp-is-fun.blogspot.fr/' feedurl='' title = 'Constraint Programming is fun'>CP is fun</a></li><li><a href='http://bob4er.blogspot.com/' feedurl='http://bob4er.blogspot.com/feeds/posts/default' title = ''>disORiented</a></li><li><a href='http://erlingdandersen.blogspot.it/' feedurl='http://erlingdandersen.blogspot.com/feeds/posts/default' title = 'This blog is about my work at MOSEK ApS where I am the CEO, a computer programmer and tea maker'>Erling's blog</a></li><li><a href='http://farkasdilemma.wordpress.com' feedurl='http://farkasdilemma.wordpress.com/feed' title = 'Austin Buchanan's Blog'>Farkas' Dilemma</a></li><li><a href='https://www.ibm.com/developerworks/mydeveloperworks/blogs/jfp/?lang=en' feedurl='https://www.ibm.com/developerworks/mydeveloperworks/blogs/roller-ui/rendering/feed/jfp/entries/atom?lang=en' title = 'Making Mathematical Optimization Pervasive'>IT Best Kept Secret Is Optimization</a></li><li><a href='http://mat.gsia.cmu.edu/blog/' feedurl='http://feeds.feedburner.com/MichaelTricksORB' title = 'Thoughts on the world of operations research'>Michael Trick’s Operations Research Blog</a></li><li><a href='http://www.hakank.org/constraint_programming_blog/' feedurl='http://www.hakank.org/constraint_programming_blog/atom.xml' title = 'This is my blog about constraint programming and related paradigms'>My Constraint Programming Blog</a></li><li><a href='http://nathanbrixius.wordpress.com/' feedurl='http://nathanbrixius.wordpress.com/feed/' title = 'Optimization, analytics, software'>Nathan Brixius</a></li><li><a href='http://zverovich.net/' feedurl='http://zverovich.net/atom.xml' title = 'Victor Zverovich'>Notes of a humble developer</a></li><li><a href='http://orbythebeach.wordpress.com/' feedurl='http://feeds.feedburner.com/OrByTheBeach' title = 'Operations Research, Computers, Education, and South Florida'>O.R. by the Beach</a></li><li><a href='http://optimizationzen.com/' feedurl='http://feeds.feedburner.com/optimizationzen' title = 'The Art of Decision Making'>Optimization Zen</a></li><li><a href='http://orinanobworld.blogspot.it/' feedurl='http://orinanobworld.blogspot.com/feeds/posts/default' title = 'A mix of operations research items and software tricks that I'll probably forget if I don't write them down somewhere'>OR in an OB World</a></li><li><a href='http://punkrockor.wordpress.com/' feedurl='http://punkrockor.wordpress.com/feed/' title = '~*~ peace, love, and operations research ~*~'>Punk Rock Operations Research</a></li><li><a href='http://spokutta.wordpress.com/' feedurl='http://spokutta.wordpress.com/feed/' title = 'Mathematics and related topics'>Sebastian Pokutta's blog</a></li><li><a href='http://thiagoserra.com' feedurl='http://thiagoserra.com/feed' title = ''>Tatu-Search Optimization</a></li><li><a href='http://org.mie.utoronto.ca/blog/' feedurl='' title = 'An Operations Research blog from the University of Toronto'>The OR Café</a></li><li><a href='http://www.thequestforoptimality.com/' feedurl='http://www.thequestforoptimality.com/feed/' title = 'OR made fun and practical'>The Quest for Optimality</a></li></ul>
     
     <script type="text/javascript">
       $(document).ready(function(){
@@ -811,10 +824,14 @@ in this blog. </p>
   </div>
   <footer role="contentinfo"><p>
 <<<<<<< HEAD
+<<<<<<< HEAD
   Copyright &copy; 2012 - Stefano Gualandi -
 =======
   Copyright &copy; 2013 - Stefano Gualandi -
 >>>>>>> 1c426a23dd44e74e4e67d70cfc11643ae976f82d
+=======
+  Copyright &copy; 2017 - Stefano Gualandi -
+>>>>>>> 509de1952a962043efaa091fd866eaa2f6f948c4
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
@@ -826,8 +843,8 @@ in this blog. </p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://stegua.github.com/blog/2012/12/13/challenging-mips/';
-        var disqus_url = 'http://stegua.github.com/blog/2012/12/13/challenging-mips/';
+        var disqus_identifier = 'http://stegua.github.io/blog/2012/12/13/challenging-mips/';
+        var disqus_url = 'http://stegua.github.io/blog/2012/12/13/challenging-mips/';
         var disqus_script = 'embed.js';
       
     (function () {

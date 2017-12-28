@@ -1,0 +1,419 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>An Informal Report from the Combinatorial Optimization Workshop @ Aussois 2014 - Spaghetti Optimization</title>
+  <meta name="author" content="Stefano Gualandi">
+
+  
+  <meta name="description" content="An Informal Report from the Combinatorial Optimization Workshop at Aussois 2014">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Spaghetti Optimization" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- IMPORTANT PLEASE READ THIS: Delete the below line if your blog already uses jQuery in some form. Otherwise a conflict might be created and your blog might not work properly. -->
+<!-- Use the below line only if your blog doesn't already use jQuery. Please check your head.html and custom/head.html to be sure. -->
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> -->
+<!-- Below lines are necessary for Google Feeds API to work properly. Add them to your head.html or custom/head.html files in the _includes directory of your Octopress blog's source folder -->
+<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("feeds", "1");</script> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34931940-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+    <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+    <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+    <meta property="og:url" content="http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/">
+<meta property="og:type" content="website" />
+
+<meta property="og:title" content="An Informal Report from the Combinatorial Optimization Workshop @ Aussois 2014">
+<meta property="og:description" content="An Informal Report from the Combinatorial Optimization Workshop at Aussois 2014">
+ 
+
+ 
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+   MathJax.Hub.Config({messageStyle: "none"})
+   </script>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Spaghetti Optimization</a></h1>
+  
+    <h2>My cookbook about Math, Algorithms, and Programming</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:stegua.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/credits">Credits</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+   
+  <header>
+    
+      <h1 class="entry-title">An Informal Report From the Combinatorial Optimization Workshop @ Aussois 2014</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-13T18:30:00+01:00" pubdate data-updated="true">Jan 13<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>It is very hard to report about the <a href="http://www.iasi.cnr.it/aussois/web/home">Combinatorial Optimization Workshop</a> in <a href="http://www.aussois.com/hiver/">Aussois</a>. It was like an “informal” <a href="http://www.or.uni-bonn.de/ipco/">IPCO</a> with <em>Super Heroes researchers</em> in the audience, leaded by <em>Captain Egon</em>, who appears at work in the following photo-tweet:</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>Egon talks intersection cuts at <a href="https://twitter.com/search?q=%23aussois&amp;src=hash">#aussois</a>. Still the man. <a href="http://t.co/7KMcNyJYV0">pic.twitter.com/7KMcNyJYV0</a></p>&mdash; Jeff Linderoth (@JeffLinderoth) <a href="https://twitter.com/JeffLinderoth/statuses/420852308583276544">January 8, 2014</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>The Captain gave an inspiring talk by questioning the recursive paradigm of cutting planes algorithms. With a very basic example, <a href="http://public.tepper.cmu.edu/facultydirectory/FacultyDirectoryProfile.aspx?id=39">Balas</a> has shown how a non basic vertex (solution) can produce a much deeper cut than a cut generated by an optimal basis. Around this intuition, Balas has presented a very nice <a href="http://link.springer.com/article/10.1007%2Fs10107-011-0483-x">generalization of Intersection Cuts</a>… a new paper enters my “PAPERS-TO-BE-READ” folder.</p>
+
+<p>To stay on the subject of cutting planes, the talk by Marco Molinaro in the first day of the workshop was really nice. He raises the fundamental question on how important are <strong>sparse cuts</strong> versus <strong>dense cuts</strong>. The importance of sparse cuts comes from linear algebra: when solving the simplex it is better to have small determinants in the coefficient matrix of the Linear Programming relaxation in order to avoid numerical issues; sparse cuts implicitly help in keeping small the determinants (intuitively, you have more zeros in the matrix). Dense cuts play the opposite role, but they can be really important to improve the bound of the LP relaxation.
+In his talk, Molinaro has shown and proofed, for three particular cases, when sparse cuts are enough, and when they are not. 
+Another paper goes on the “PAPERS-TO-BE-READ” folder.</p>
+
+<p>In the same day of Molinaro, it was really inspiring the talk by Sebastian Pokutta, who really gave a completely new (for me) perspective on <strong>Extended Formulations</strong> by using <a href="http://en.wikipedia.org/wiki/Information_theory">Information Theory</a>. Sebastian is the author of a <a href="http://spokutta.wordpress.com/">blog</a>, and I hope he will post about his talk.</p>
+
+<p>Andrea Lodi has discussed about an Optimization problem that arises in Supervised Learning.  For this problem, the COIN-OR solver <a href="http://www.coin-or.org/Couenne/">Couenne</a>, developed by Pietro Belotti, significantly outperforms <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a>. The issues seem to come from on a number of basic big-M (indicator) constraints. To make a long story short, if you have to solve a hard problem, it does pay off to try different solvers, since there is not a “win-all” solver. </p>
+
+<blockquote>
+  <p>Do you have an original new idea for developing solvers? Do not be intimidated by <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a> or <a href="http://www.gurobi.com/">Gurobi</a> and go for it!</p>
+</blockquote>
+
+<p>The presentation by Marco Senatore was brilliant and his work looks very interesting. I have particularly enjoyed the application in Public Transport that he has mentioned at the end of his talk.</p>
+
+<p>I recommend to have a look at the presentation of Stephan Held about the <strong>Reach-aware Steiner Tree Problem</strong>. He has an interesting Steiner tree-like problem with a very important application in chip design. The presentation has impressive pictures of what optimal solutions look like in chip design.</p>
+
+<p>At the end of talk, Stephan announced the <a href="http://dimacs11.cs.princeton.edu/">11th DIMACS challenge on Steiner Tree Problems</a>.</p>
+
+<p>Eduardo Uchoa gave another impressive presentation on recent progresses on the classical <strong>Capacitated Vehicle Routing Problem</strong> (CVRP). He has a very sophisticated branch-and-price-and-cut algorithm, which comes with a very efficient implementation of every possible idea developed for CVRP, plus new ideas on solving efficiently the pricing sub problems (my understanding, but I might be wrong, is that they have a very efficient dominance rule for solving a shortest path sub problem). 
++1 item in the “PAPERS-TO-BE-READ” folder.</p>
+
+<p>The last day of the workshop, I have enjoyed the two talks by Simge Kucukyavuz and Jim Luedtke on <strong>Stochastic Integer Programming</strong>: for me is a completely new topic, but the two presentations were really inspiring.</p>
+
+<p>To conclude, Domenico Salvagnin has shown how far it is possible to go by carefully using MIP technologies such as <strong>cutting planes</strong>, <strong>symmetry handling</strong>, and <strong>problem decomposition</strong>. Unfortunately, it does happen too often that when someone (typically a non OR expert) has a difficult application problem, he writes down a more or less complicated Integer Programming model, tries a solver, sees it takes too much time, and gives up with exact methods. Domenico, by solving the largest unsolved instance for the 3-dimensional assignment problem, has shown that </p>
+
+<blockquote>
+  <p>there are potentially no limits for MIP solvers!</p>
+</blockquote>
+
+<p>In this post, I have only mentioned a few talks, which somehow overlap with my research interests. However, every talk was really interesting. Fortunately, Francois Margot has strongly encouraged all of the speakers to upload their slides and/or papers, so you can find (almost) all of them on the <a href="http://www.iasi.cnr.it/aussois/web/home/program/year/2014">program web page of the workshop</a>. Visit the website and have a nice reading!</p>
+
+<p>To conclude, let me steal another nice picture from twitter: </p>
+
+<blockquote class="twitter-tweet" lang="en"><p>Goodbye <a href="https://twitter.com/search?q=%23aussois2014&amp;src=hash">#aussois2014</a> <a href="http://t.co/ODupKKmGTZ">pic.twitter.com/ODupKKmGTZ</a></p>&mdash; Matteo Fischetti (@MFischetti) <a href="https://twitter.com/MFischetti/statuses/421642338759618560">January 10, 2014</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Stefano Gualandi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-13T18:30:00+01:00" pubdate data-updated="true">Jan 13<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/combinatorial-optimization/'>Combinatorial Optimization</a>, <a class='category' href='/blog/categories/conference-report/'>Conference Report</a>, <a class='category' href='/blog/categories/couenne/'>Couenne</a>, <a class='category' href='/blog/categories/cplex/'>Cplex</a>, <a class='category' href='/blog/categories/cutting-planes/'>Cutting Planes</a>, <a class='category' href='/blog/categories/gurobi/'>Gurobi</a>, <a class='category' href='/blog/categories/integer-nonlinear-programming/'>Integer Nonlinear Programming</a>, <a class='category' href='/blog/categories/integer-programming/'>Integer Programming</a>, <a class='category' href='/blog/categories/linear-programming/'>Linear Programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/" data-via="famo2spaghi" data-counturl="http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="small"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/11/17/public-transport-and-big-data/" title="Previous Post: Public Transport and Big Data">&laquo; Public Transport and Big Data</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/03/19/the-impact-of-preprocessing/" title="Next Post: The Impact of Preprocessing on the MIPLIB2003">The Impact of Preprocessing on the MIPLIB2003 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>The views expressed on this blog are mine and do not necessarily reflect the views of my employers.</p>
+  <nav>
+  <div><a href="http://matematica.unipv.it/gualandi/">My Academic Home Page</a></div>
+  <div><a href="http://matematica.unipv.it/gualandi/research/">My Publications</a></div>
+  </nav>
+  </p>
+</section>
+
+<section>
+ <h2>Latest Tweets</h2>
+<a class="twitter-timeline" href="https://twitter.com/famo2spaghi" data-widget-id="303485589863407617">Tweets by @famo2spaghi</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<script type="text/javascript">
+   $.domReady(function(){
+         getTwitterFeed("famo2spaghi", 3, true);
+         });
+</script>
+<script src="/javascripts/twitter.js" type="text/javascript"> </script>
+
+<a href="http://twitter.com/famo2spaghi" class="twitter-follow-button" data-show-count="true">Follow @famo2spaghi</a>
+
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/+StefanoGualandi?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      My Google+ profile
+    </a>
+  </h1>
+</section>
+
+
+<section>
+  <h2>Recent Posts</h2>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/">Exercise in Python: remove blanks from strings</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/04/column-enumeration/">Graph Coloring: Column Generation or Column Enumeration?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/27/big-data-and-convex-optimization/">Big Data and Convex Optimization</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/19/the-impact-of-preprocessing/">The Impact of Preprocessing on the MIPLIB2003</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/">An Informal Report from the Combinatorial Optimization Workshop @ Aussois 2014</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h2>GitHub Repos</h2>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/stegua">@stegua</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'stegua',
+            count: 2,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blogroll</h1>
+  <!-- IMPORTANT: Do not change the below ID as it will affect the functioning of the plugin-->
+    <ul id="blogroll-list"><li><a href='http://bartoszmilewski.com/' feedurl='http://bartoszmilewski.com/feed/' title = 'Concurrency, C++, Haskell'>Bartosz Milewski's Programming Cafe</a></li><li><a href='http://cp-is-fun.blogspot.fr/' feedurl='' title = 'Constraint Programming is fun'>CP is fun</a></li><li><a href='http://bob4er.blogspot.com/' feedurl='http://bob4er.blogspot.com/feeds/posts/default' title = ''>disORiented</a></li><li><a href='http://erlingdandersen.blogspot.it/' feedurl='http://erlingdandersen.blogspot.com/feeds/posts/default' title = 'This blog is about my work at MOSEK ApS where I am the CEO, a computer programmer and tea maker'>Erling's blog</a></li><li><a href='http://farkasdilemma.wordpress.com' feedurl='http://farkasdilemma.wordpress.com/feed' title = 'Austin Buchanan's Blog'>Farkas' Dilemma</a></li><li><a href='https://www.ibm.com/developerworks/mydeveloperworks/blogs/jfp/?lang=en' feedurl='https://www.ibm.com/developerworks/mydeveloperworks/blogs/roller-ui/rendering/feed/jfp/entries/atom?lang=en' title = 'Making Mathematical Optimization Pervasive'>IT Best Kept Secret Is Optimization</a></li><li><a href='http://mat.gsia.cmu.edu/blog/' feedurl='http://feeds.feedburner.com/MichaelTricksORB' title = 'Thoughts on the world of operations research'>Michael Trick’s Operations Research Blog</a></li><li><a href='http://www.hakank.org/constraint_programming_blog/' feedurl='http://www.hakank.org/constraint_programming_blog/atom.xml' title = 'This is my blog about constraint programming and related paradigms'>My Constraint Programming Blog</a></li><li><a href='http://nathanbrixius.wordpress.com/' feedurl='http://nathanbrixius.wordpress.com/feed/' title = 'Optimization, analytics, software'>Nathan Brixius</a></li><li><a href='http://zverovich.net/' feedurl='http://zverovich.net/atom.xml' title = 'Victor Zverovich'>Notes of a humble developer</a></li><li><a href='http://orbythebeach.wordpress.com/' feedurl='http://feeds.feedburner.com/OrByTheBeach' title = 'Operations Research, Computers, Education, and South Florida'>O.R. by the Beach</a></li><li><a href='http://optimizationzen.com/' feedurl='http://feeds.feedburner.com/optimizationzen' title = 'The Art of Decision Making'>Optimization Zen</a></li><li><a href='http://orinanobworld.blogspot.it/' feedurl='http://orinanobworld.blogspot.com/feeds/posts/default' title = 'A mix of operations research items and software tricks that I'll probably forget if I don't write them down somewhere'>OR in an OB World</a></li><li><a href='http://punkrockor.wordpress.com/' feedurl='http://punkrockor.wordpress.com/feed/' title = '~*~ peace, love, and operations research ~*~'>Punk Rock Operations Research</a></li><li><a href='http://spokutta.wordpress.com/' feedurl='http://spokutta.wordpress.com/feed/' title = 'Mathematics and related topics'>Sebastian Pokutta's blog</a></li><li><a href='http://thiagoserra.com' feedurl='http://thiagoserra.com/feed' title = ''>Tatu-Search Optimization</a></li><li><a href='http://org.mie.utoronto.ca/blog/' feedurl='' title = 'An Operations Research blog from the University of Toronto'>The OR Café</a></li><li><a href='http://www.thequestforoptimality.com/' feedurl='http://www.thequestforoptimality.com/feed/' title = 'OR made fun and practical'>The Quest for Optimality</a></li></ul>
+    
+    <script type="text/javascript">
+      $(document).ready(function(){
+        updateFeeds(true);
+      });
+    </script>
+    <script src="/javascripts/tinysort-min.js"></script>
+    <script src="/javascripts/blogroll.js"></script>
+    
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Stefano Gualandi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'famo2spaghi';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/';
+        var disqus_url = 'http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

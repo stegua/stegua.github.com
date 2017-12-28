@@ -2,6 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Spaghetti Optimization]]></title>
+<<<<<<< HEAD
   <link href="http://stegua.github.com/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
 <<<<<<< HEAD
@@ -14,6 +15,12 @@
   <updated>2013-03-22T19:17:11+01:00</updated>
 >>>>>>> f248d51619b0df6bd9e078f233ad19f5cdee8d9c
   <id>http://stegua.github.com/</id>
+=======
+  <link href="http://stegua.github.io/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2017-01-25T09:07:59+01:00</updated>
+  <id>http://stegua.github.io/</id>
+>>>>>>> 509de1952a962043efaa091fd866eaa2f6f948c4
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -24,12 +31,1122 @@
   <entry>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
+=======
+    <title type="html"><![CDATA[Exercise in Python: remove blanks from strings]]></title>
+    <link href="http://stegua.github.io/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/"/>
+    <updated>2017-01-24T16:51:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings</id>
+    <content type="html"><![CDATA[<p>This morning, after reading <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">this very nice post</a>, I decided to challenge myself in Python and to have a look at the impact of <a href="https://en.wikipedia.org/wiki/Branch_misprediction">mispredicted branches</a> in a language different from C/C++. The basic idea was to use only <a href="https://docs.python.org/3.6/library/functions.html">Python builtins</a>: external libraries are not allowed!</p>
+
+<p>As a benchmark, I grabbed a large text file from <a href="http://norvig.com/big.txt">P. Norvig’s website</a>, which is 6’488’666 byte long.</p>
+
+<p><strong>The final answer?</strong> Yes, <strong>mispredicted branches</strong> have a huge impact in Python too.</p>
+
+<p><strong>The hidden answer?</strong> Python dictionaries ever stop to surprise me: they are REALLY efficient.</p>
+
+<p><strong>NOTE</strong>: The followig code snippets were executed in a Python 3.5 notebook, on a windows machine, running Windows 10 and <a href="https://www.continuum.io/downloads">Anaconda Python 3.5 64 bits</a>.
+You can find my notebook on my <a href="https://github.com/stegua/MyBlogEntries">Blog GitHub repo</a>. Don’t ask me why, but this blog entry is better visualized directly on <a href="https://github.com/stegua/MyBlogEntries/blob/master/Remove%2Bblanks%2Bfrom%2Ba%2Bstring.ipynb">GitHub</a>.</p>
+
+<p><strong>UPDATE</strong>: Well, most of the time I would use my first implementation based on the <code>filter</code> builtin function, and I would try for alternative implementations only after a profiler has shown
+that removing blanks is a true bottleneck of my whole program. As written in the title, this post is meant as a basic exercise in Python.</p>
+
+<h3 id="first-attempt-functional-style">First attempt: Functional style</h3>
+<p>In Python, I prefer to write as much code in functional style as possible, relying on the 3 basic functions:</p>
+
+<ol>
+  <li><a href="https://docs.python.org/3/library/functions.html#map"><code>map</code></a></li>
+  <li><a href="https://docs.python.org/3/library/functions.html#filter"><code>filter</code></a></li>
+  <li><a href="https://docs.python.org/3/library/functools.html#functools.reduce"><code>reduce</code></a> (this is in the functools module and it is not a true builtin)</li>
+</ol>
+
+<p>Therefore, after few preliminaries, here is my first code snippet:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="kn">import</span> <span class="nn">cProfile</span>
+</span><span class="line">
+</span><span class="line"><span class="c"># Download file from: &#39;http://norvig.com/big.txt&#39;</span>
+</span><span class="line"><span class="n">big</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;big.txt&#39;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c"># Read the while file</span>
+</span><span class="line"><span class="n">test</span> <span class="o">=</span> <span class="n">big</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span class="line">
+</span><span class="line"><span class="k">def</span> <span class="nf">RemoveBlanksFilter</span><span class="p">(</span><span class="n">in_str</span><span class="p">):</span>
+</span><span class="line">    <span class="n">result</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span> <span class="o">!=</span> <span class="s">&#39;</span><span class="se">\r</span><span class="s">&#39;</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="s">&#39; &#39;</span><span class="p">,</span> <span class="n">in_str</span><span class="p">)</span>
+</span><span class="line">    <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="n">test_result</span> <span class="o">=</span> <span class="n">RemoveBlanksFilter</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s">&#39;RemoveBlanksFilter(test)&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>         6488671 function calls in 1.956 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    1.955    1.955 &lt;ipython-input-3-eeb7d3495697&gt;:1(RemoveBlanksFilter)
+  6488666    0.870    0.000    0.870    0.000 &lt;ipython-input-3-eeb7d3495697&gt;:2(&lt;lambda&gt;)
+        1    0.000    0.000    1.956    1.956 &lt;string&gt;:1(&lt;module&gt;)
+        1    0.000    0.000    1.956    1.956 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    1.085    1.085    1.955    1.955 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Wow, I didn’t realize that I would have call the lambda function for every single byte of my input file. This is clearly too much overhead.</p>
+
+<h3 id="nd-attempt-remove-function-calls-overhead">2nd attempt: remove function calls overhead</h3>
+<p>Let me drop my functional style, and write a plain old for-loop:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="k">def</span> <span class="nf">RemoveBlanks</span><span class="p">(</span><span class="n">in_str</span><span class="p">):</span>
+</span><span class="line">    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class="line">    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">in_str</span><span class="p">:</span>
+</span><span class="line">        <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="s">&#39;</span><span class="se">\r</span><span class="s">&#39;</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="s">&#39; &#39;</span><span class="p">:</span>
+</span><span class="line">            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</span><span class="line">    <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="k">print</span><span class="p">(</span><span class="s">&#39;Is test passed:&#39;</span><span class="p">,</span> <span class="n">test_result</span> <span class="o">==</span> <span class="n">RemoveBlanks</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s">&#39;RemoveBlanks(test)&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>         5452148 function calls in 1.566 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    1.210    1.210    1.553    1.553 &lt;ipython-input-6-5e45e3056bc2&gt;:1(RemoveBlanks)
+        1    0.012    0.012    1.566    1.566 &lt;string&gt;:1(&lt;module&gt;)
+        1    0.000    0.000    1.566    1.566 {built-in method builtins.exec}
+  5452143    0.310    0.000    0.310    0.000 {method 'append' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.033    0.033    0.033    0.033 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Mmm… we just shift the problem to the list append function calls. Maybe we can do better by working in place.</p>
+
+<h3 id="rd-attempt-work-in-place">3rd attempt: work in place</h3>
+<p>Well, almost in place: Python string are immutable; therefore, we first copy the string into a list, and then we work in place over the copied list.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="k">def</span> <span class="nf">RemoveBlanksInPlace</span><span class="p">(</span><span class="n">in_str</span><span class="p">):</span>
+</span><span class="line">    <span class="nb">buffer</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">in_str</span><span class="p">)</span>
+</span><span class="line">    <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class="line">    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">in_str</span><span class="p">:</span>
+</span><span class="line">        <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="s">&#39;</span><span class="se">\r</span><span class="s">&#39;</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="s">&#39; &#39;</span><span class="p">:</span>
+</span><span class="line">            <span class="nb">buffer</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+</span><span class="line">            <span class="n">pos</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class="line">    <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">buffer</span><span class="p">[:</span><span class="n">pos</span><span class="p">])</span>
+</span><span class="line">
+</span><span class="line"><span class="k">print</span><span class="p">(</span><span class="s">&#39;Is test passed:&#39;</span><span class="p">,</span> <span class="n">test_result</span> <span class="o">==</span> <span class="n">RemoveBlanksInPlace</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s">&#39;RemoveBlanksInPlace(test)&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>         5 function calls in 1.158 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    1.113    1.113    1.145    1.145 &lt;ipython-input-9-99d36ae6359e&gt;:1(RemoveBlanksInPlace)
+        1    0.013    0.013    1.158    1.158 &lt;string&gt;:1(&lt;module&gt;)
+        1    0.000    0.000    1.158    1.158 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.032    0.032    0.032    0.032 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Ok, working in place does have an impact. Let me go on the true point: avoiding <em>mispredicted branches</em>.</p>
+
+<h3 id="th-attempt-to-avoid-mispredicted-branches">4th attempt: to avoid mispredicted branches</h3>
+<p>As in the <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">original blog post</a>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="k">def</span> <span class="nf">RemoveBlanksNoBranch</span><span class="p">(</span><span class="n">in_str</span><span class="p">):</span>
+</span><span class="line">    <span class="c"># Build table</span>
+</span><span class="line">    <span class="n">table</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class="line">    <span class="k">for</span> <span class="n">ic</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+</span><span class="line">        <span class="n">c</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span>
+</span><span class="line">        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s">&#39;</span><span class="se">\r</span><span class="s">&#39;</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="s">&#39; &#39;</span><span class="p">:</span>
+</span><span class="line">            <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class="line">        <span class="k">else</span><span class="p">:</span>
+</span><span class="line">            <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">    <span class="c"># Removal</span>
+</span><span class="line">    <span class="nb">buffer</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">in_str</span><span class="p">)</span>
+</span><span class="line">    <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class="line">    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">in_str</span><span class="p">:</span>
+</span><span class="line">        <span class="nb">buffer</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+</span><span class="line">        <span class="n">pos</span> <span class="o">+=</span> <span class="n">table</span><span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span>  <span class="c"># ord() is a function --&gt; bottleneck</span>
+</span><span class="line">    <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">buffer</span><span class="p">[:</span><span class="n">pos</span><span class="p">])</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="k">print</span><span class="p">(</span><span class="s">&#39;Is test passed:&#39;</span><span class="p">,</span> <span class="n">test_result</span> <span class="o">==</span> <span class="n">RemoveBlanksNoBranch</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s">&#39;RemoveBlanksNoBranch(test)&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>         6489183 function calls in 1.474 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    1.235    1.235    1.460    1.460 &lt;ipython-input-12-1bd75a3de21d&gt;:1(RemoveBlanksNoBranch)
+        1    0.014    0.014    1.474    1.474 &lt;string&gt;:1(&lt;module&gt;)
+      256    0.000    0.000    0.000    0.000 {built-in method builtins.chr}
+        1    0.000    0.000    1.474    1.474 {built-in method builtins.exec}
+  6488666    0.192    0.000    0.192    0.000 {built-in method builtins.ord}
+      256    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.033    0.033    0.033    0.033 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Ouch!!! These are getting even worse! Why? Well, ‘ord’ is a function, so we are getting back the overhead of function calls. Can we do better by using a dictionary instead of an array?</p>
+
+<h3 id="th-attempt-use-a-dictionary">5th attempt: use a dictionary</h3>
+<p>Let me use a dictionary in order to avoid the ‘ord’ function calls.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="k">def</span> <span class="nf">RemoveBlanksNoBranchDict</span><span class="p">(</span><span class="n">in_str</span><span class="p">):</span>
+</span><span class="line">    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">in_str</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">:</span>
+</span><span class="line">        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;This function works only for strings&#39;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">    <span class="c"># Build table</span>
+</span><span class="line">    <span class="n">table</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class="line">    <span class="k">for</span> <span class="n">ic</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+</span><span class="line">        <span class="n">c</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span>
+</span><span class="line">        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s">&#39;</span><span class="se">\r</span><span class="s">&#39;</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="s">&#39; &#39;</span><span class="p">:</span>
+</span><span class="line">            <span class="n">table</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class="line">        <span class="k">else</span><span class="p">:</span>
+</span><span class="line">            <span class="n">table</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="line">
+</span><span class="line">    <span class="c"># Removal</span>
+</span><span class="line">    <span class="nb">buffer</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">in_str</span><span class="p">)</span>
+</span><span class="line">    <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class="line">    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">in_str</span><span class="p">:</span>
+</span><span class="line">        <span class="nb">buffer</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+</span><span class="line">        <span class="n">pos</span> <span class="o">+=</span> <span class="n">table</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+</span><span class="line">    <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">buffer</span><span class="p">[:</span><span class="n">pos</span><span class="p">])</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="k">print</span><span class="p">(</span><span class="s">&#39;Is test passed:&#39;</span><span class="p">,</span> <span class="n">test_result</span> <span class="o">==</span> <span class="n">RemoveBlanksNoBranchDict</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s">&#39;RemoveBlanksNoBranchDict(test)&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>         261 function calls in 0.771 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.724    0.724    0.758    0.758 &lt;ipython-input-15-46ad4c3f0b26&gt;:1(RemoveBlanksNoBranchDict)
+        1    0.013    0.013    0.771    0.771 &lt;string&gt;:1(&lt;module&gt;)
+      256    0.000    0.000    0.000    0.000 {built-in method builtins.chr}
+        1    0.000    0.000    0.771    0.771 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.034    0.034    0.034    0.034 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Oooh, yes! Now we can see that without <strong>mispredicted branches</strong> we can really speed up our algorithm.</p>
+
+<p>Is this the best pythonic solution? No, surely not, but still it is an interesting remark to keep in mind when coding.</p>
+
+<h3 id="final-remark-a-simple-pythonic-solution">Final remark: a simple pythonic solution</h3>
+<p>Likely, the simplest pythonic solution is just to use the ‘replace’ string function as follows:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="k">def</span> <span class="nf">RemoveBlanksBuiltin</span><span class="p">(</span><span class="n">in_str</span><span class="p">):</span>
+</span><span class="line">    <span class="n">s1</span> <span class="o">=</span> <span class="n">in_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\r</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+</span><span class="line">    <span class="n">s2</span> <span class="o">=</span> <span class="n">s1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">s2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="k">print</span><span class="p">(</span><span class="s">&#39;Is test passed:&#39;</span><span class="p">,</span> <span class="n">test_result</span> <span class="o">==</span> <span class="n">RemoveBlanksBuiltin</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s">&#39;RemoveBlanksBuiltin(test)&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>         7 function calls in 0.065 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.001    0.001    0.064    0.064 &lt;ipython-input-18-58fd6655cfba&gt;:1(RemoveBlanksBuiltin)
+        1    0.001    0.001    0.065    0.065 &lt;string&gt;:1(&lt;module&gt;)
+        1    0.000    0.000    0.065    0.065 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        3    0.063    0.021    0.063    0.021 {method 'replace' of 'str' objects}
+</code></pre>
+
+<p>Here we are, the best solution is indeed to use a builtin function, whenever it is possible, even if this was not the real aim of this exercise.</p>
+
+<p>Please, let me know if you have some comments or a different solution in Python.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Graph Coloring: Column Generation or Column Enumeration?]]></title>
+    <link href="http://stegua.github.io/blog/2015/07/04/column-enumeration/"/>
+    <updated>2015-07-04T16:45:00+02:00</updated>
+    <id>http://stegua.github.io/blog/2015/07/04/column-enumeration</id>
+    <content type="html"><![CDATA[<style type="text/css">
+table { width:100%; }
+thead {
+   background-color: rgba(0,0,255,0.3);
+   color: black;
+   text-indent: 14px;
+   text-align: left;
+}
+td { padding:4px; }
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
+<p>In this post, I like to share a simple idea on how to solve to optimality some <a href="http://www.info.univ-angers.fr/pub/porumbel/graphs/">hard instances</a> of the <a href="http://en.wikipedia.org/wiki/Graph_coloring">Graph Coloring</a> problem. This simple idea yields a “new time” record for a couple of hard instances. </p>
+
+<p>To date, the best <strong>exact</strong> approach to solve Graph Coloring 
+is based on <em><a href="http://en.wikipedia.org/wiki/Branch_and_price">Branch-and-Price</a></em> [1, 2, 3].
+The branch-and-price method is completely different from the Constraint Programming approach I discussed in a <a href="http://stegua.github.io/blog/2013/06/28/gecol/">previous post</a>. A key component of Branch-and-Price is the <em>column generation</em> phase, which is 
+intuitively quite simple, but mathematically rather involved for a short blog post.</p>
+
+<p>Here, I want to show you that a modern Mixed Integer Programming (MIP) solver, such as <a href="http://www.gurobi.com/">Gurobi</a> or <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a>, can solve a few hard instances of graph coloring with the following <em>“null implementation effort”</em>:</p>
+
+<ol>
+  <li>Enumerate all possible columns</li>
+  <li>Build a <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps</a> instance with those columns</li>
+  <li>Use a MIP solver to solve the .mps instance</li>
+</ol>
+
+<p>Indeed, in this post we try to answer to the following question:</p>
+
+<blockquote>
+  <p>Is there any hope to solve any hard graph coloring instances with this naive approach?</p>
+</blockquote>
+
+<h2 id="formulation">Formulation</h2>
+<p>Given an undirected graph <script type="math/tex">G=(V,E)</script> and a set of colors <script type="math/tex">K</script>, 
+the minimum (vertex) graph coloring problem consists of assigning a color to each vertex,
+while every pair of adjacent vertices gets a different color. The objective is to minimize the number of colors used in a solution.</p>
+
+<p>The branch-and-price approach to graph coloring is based on a <em>set covering</em> formulation.
+Let <script type="math/tex">S</script> be the collection of all the maximal stable sets of <script type="math/tex">G</script>,
+and let <script type="math/tex">S_i \subseteq S</script> be the maximal stable sets that contain the vertex <script type="math/tex">i</script>.
+Let <script type="math/tex">\lambda_s</script> be a 0-1 variable equal to 1 if all the vertices in the maximal stable set <script type="math/tex">s \in S</script> 
+get assigned the same color. Hence, the set covering model is:</p>
+
+<script type="math/tex; mode=display">\min \sum_{s \in S} \lambda_s \mbox{ such that } \sum_{s \in S_i} \lambda_s \geq 1, \forall i \in N, \lambda_s \in \{0,1\}, \forall s \in S.</script>
+
+<p>Indeed, we <em>“cover”</em> every vertex of <script type="math/tex">G</script> with the minimal number of maximal stable sets.
+The issue with this model is the total number of maximal stable sets in <script type="math/tex">G</script>, which <em>is exponential in the number of vertices of G</em>.</p>
+
+<p>Column Generation is a “mathematically elegant” method to by-pass this issue:
+it lets you to solve the set covering model by <em>generating</em> a very small subset of the elements in <script type="math/tex">S</script>. This happens by repeatedly solving an auxiliary problem,
+called the <em>pricing</em> subproblem. For graph coloring, the pricing subproblem consists of a Maximum Weighted Stable Set problem.
+If you are interested in Column Generation, I recommend you to look at the first chapter of
+the <a href="http://www.springer.com/gp/book/9780387254852">Column Generation book</a>,
+which contains a nice tutorial on the topic, and I would <strong>strongly</strong> recommend reading the nice survey “Selected Topics in Column Generation”, [4].</p>
+
+<blockquote>
+  <p>How many maximal stable sets are in a hard graph coloring instance?</p>
+</blockquote>
+
+<p>If this number were not so high, we could enumerate all the stable sets in <script type="math/tex">S</script>
+and attempt to directly solve the set covering model without resorting to column generation.
+However, <em>“high”</em> is a subjective measure, so let me do some computations on my laptop and give you some precise numbers.</p>
+
+<h2 id="hard-instances">Hard instances</h2>
+<p>Among the <a href="http://mat.gsia.cmu.edu/COLOR/instances.html">DIMACS instances</a> of Graph Coloring, there are a few instances
+proposed by David Johnson, which are still unsolved (in the sense that we have not a computational proof of optimality of the best known upper bounds).</p>
+
+<p>The table below shows the dimensions of these instances. The name of instances are DSJC{n}.{d}, where {n} is the number of vertices and {d} gives the density of the graph (e.g., DSJC125.9 has 125 vertices and 0.9 of density).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Graph</th>
+      <th style="text-align: center">Nodes</th>
+      <th style="text-align: center">Edges</th>
+      <th style="text-align: center">Max stable sets</th>
+      <th style="text-align: center">Enumeration Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">DSJC125.9</td>
+      <td style="text-align: center">125</td>
+      <td style="text-align: center">6,961</td>
+      <td style="text-align: center">524</td>
+      <td style="text-align: center">0.00</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.9</td>
+      <td style="text-align: center">250</td>
+      <td style="text-align: center">27,897</td>
+      <td style="text-align: center">2,580</td>
+      <td style="text-align: center">0.01</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.9</td>
+      <td style="text-align: center">500</td>
+      <td style="text-align: center">112,437</td>
+      <td style="text-align: center">14,560</td>
+      <td style="text-align: center">0.12</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.9</td>
+      <td style="text-align: center">1,000</td>
+      <td style="text-align: center">449,449</td>
+      <td style="text-align: center">100,389</td>
+      <td style="text-align: center">2.20</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC125.5</td>
+      <td style="text-align: center">125</td>
+      <td style="text-align: center">3,891</td>
+      <td style="text-align: center">43,268</td>
+      <td style="text-align: center">0.53</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.5</td>
+      <td style="text-align: center">250</td>
+      <td style="text-align: center">15,668</td>
+      <td style="text-align: center">1,470,363</td>
+      <td style="text-align: center">43.16</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.5</td>
+      <td style="text-align: center">500</td>
+      <td style="text-align: center">62,624</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.5</td>
+      <td style="text-align: center">1,000</td>
+      <td style="text-align: center">249,826</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC125.1</td>
+      <td style="text-align: center">125</td>
+      <td style="text-align: center">736</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.1</td>
+      <td style="text-align: center">250</td>
+      <td style="text-align: center">3,218</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.1</td>
+      <td style="text-align: center">500</td>
+      <td style="text-align: center">12,458</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.1</td>
+      <td style="text-align: center">1,000</td>
+      <td style="text-align: center">49,629</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+As you can see the number of maximal stable sets (i.e. the cardinality of <script type="math/tex">S</script>)
+of several instances is not so high, above all for very dense graphs, where the number of stables set is less than the number of edges. However, for sparse graphs, the number of maximal stable sets is too large for the memory available in my laptop.</p>
+
+<p>Now, let me re-state the main question of this post:</p>
+
+<blockquote>
+  <p>Can we <strong>enumerate</strong> all the maximal stable sets of <script type="math/tex">G</script> and use a  MIP solver such as <a href="http://www.gurobi.com/">Gurobi</a> or <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a> to solve any Johnson’s instance of Graph Coloring?</p>
+</blockquote>
+
+<h2 id="results">Results</h2>
+<p>I have written a small script which uses <a href="http://users.aalto.fi/~pat/cliquer.html">Cliquer</a> to enumerate all the maximal
+stable sets of a graph, and then I generate an <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps</a>
+instance for each of the DSJC instance where I was able to store all maximal stable sets.
+The .mps file are on my public <a href="https://github.com/stegua/MyBlogEntries/tree/master/Coloring">GitHub repository for this post</a>.</p>
+
+<p>The table below shows some numbers for the sparse instances obtained using Gurobi (v6.0.0)
+with a timeout of 10 minutes on my laptop. If you compare these numbers with the results published in the literature, you can see that they are not bad at all.</p>
+
+<p>Believe me, these number are not bad at all, and establish a new <strong>TIME RECORD</strong>.</p>
+
+<p>For example, the instance DSJC250.9 was solved to optimality only recently in
+11094 seconds by [3], while the column enumeration approach solves the same instance on a similar hardware in only 23 seconds (!), and, honestly, our work in [2] did not solve this instance to optimality at all.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Graph</th>
+      <th style="text-align: center">Best known</th>
+      <th style="text-align: center">Enum. Time</th>
+      <th style="text-align: center">Run time</th>
+      <th style="text-align: center">LB</th>
+      <th style="text-align: center">UB</th>
+      <th style="text-align: center">Time [2]</th>
+      <th style="text-align: center">LB[2]</th>
+      <th style="text-align: center">UB [2]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">DSJC125.9</td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center">0.00</td>
+      <td style="text-align: center"><strong>0.44</strong></td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center">44</td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center"><strong>44</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.9</td>
+      <td style="text-align: center"><strong>72</strong></td>
+      <td style="text-align: center">0.01</td>
+      <td style="text-align: center"><strong>23</strong></td>
+      <td style="text-align: center"><strong>72</strong></td>
+      <td style="text-align: center"><strong>72</strong></td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">71</td>
+      <td style="text-align: center">72</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.9</td>
+      <td style="text-align: center">128</td>
+      <td style="text-align: center">0.12</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">123</td>
+      <td style="text-align: center"><strong>128</strong></td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">123</td>
+      <td style="text-align: center">136</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.9</td>
+      <td style="text-align: center">222</td>
+      <td style="text-align: center">2.20</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">215</td>
+      <td style="text-align: center"><strong>229</strong></td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">215</td>
+      <td style="text-align: center">245</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC125.5</td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center">0.53</td>
+      <td style="text-align: center"><strong>70.6</strong></td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center">19033</td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center"><strong>17</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.5</td>
+      <td style="text-align: center">28</td>
+      <td style="text-align: center">43.16</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">26</td>
+      <td style="text-align: center">33</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">26</td>
+      <td style="text-align: center">31</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<blockquote>
+  <p>Can we ever solve to optimality DSJC500.9 and DSJC1000.9 via Column Enumeration?</p>
+</blockquote>
+
+<p>I would say:</p>
+
+<blockquote>
+  <p>“Yes, we can!”</p>
+</blockquote>
+
+<p>… but likely we need to be smarter while branching on the decision variables, since the default branching strategy of a generic MIP solver does not exploit the structure of the problem. If I had the time to work again on Graph Coloring, I would likely use the same branching scheme used in [2], where we combined a Zykov’s branching rule with a randomized <a href="http://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search">iterative deepening depth-first search</a> (randomised because at each restart we were using a different initial pool of columns). Another interesting option would be to tighten the set covering formulation with valid inequalities, by starting with those studied in [5]. </p>
+
+<p>In conclusion, I believe that enumerating all columns can be a simple but good starting point to attempt to solve to optimality at least the instances DSJC500.9 and DSJC1000.9.</p>
+
+<p>Do you have some spare time and are you willing to take up the challenge?</p>
+
+<h2 id="references">References</h2>
+<ol>
+  <li>
+    <p>A Mehrotra, MA Trick.
+<span class="title">A column generation approach for graph coloring</span>.
+<span class="journal">INFORMS Journal on Computing</span>. Fall 1996 vol. 8(4), pp.344-354. 
+<a href="http://joc.journal.informs.org/content/8/4/344.short ">[pdf]</a></p>
+  </li>
+  <li>
+    <p>S. Gualandi and F. Malucelli.
+<span class="title">Exact Solution of Graph Coloring Problems via Constraint Programming and Column Generation</span>.
+<span class="journal">INFORMS Journal on Computing</span>. Winter 2012 vol. 24(1), pp.81-100. 
+<a href="http://joc.journal.informs.org/content/24/1/81.short">[pdf]</a>
+<a href="http://www.optimization-online.org/DB_FILE/2010/03/2568.pdf">[preprint]</a></p>
+  </li>
+  <li>
+    <p>S. Held, W. Cook, E.C. Sewell.
+<span class="title">Maximum-weight stable sets and safe lower bounds for graph coloring</span>.
+<span class="journal">Mathematical Programming Computation</span>. December 2012, Volume 4, Issue 4, pp 363-381.
+<a href="http://link.springer.com/content/pdf/10.1007%2Fs12532-012-0042-3.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>M. Lubbecke and J. Desrosiers.
+<span class="title">Selected topics in column generation</span>.
+<span class="journal">Operations Research</span>. 2005, Volume 53, Issue 6, pp 1007-1023.
+<a href="http://pubsonline.informs.org/doi/abs/10.1287/opre.1050.0234">[pdf]</a></p>
+  </li>
+  <li>
+    <p>
+<span class="title">Set covering and packing formulations of graph coloring: algorithms and first polyhedral results</span>.
+<span class="journal">Discrete Optimization</span>. 2009, Volume 6, Issue 2, pp 135-147.
+<a href="http://www.sciencedirect.com/science/article/pii/S1572528608000716">[pdf]</a></p>
+  </li>
+</ol>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Big Data and Convex Optimization]]></title>
+    <link href="http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization/"/>
+    <updated>2014-09-27T16:38:00+02:00</updated>
+    <id>http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization</id>
+    <content type="html"><![CDATA[<p>In the last months, I came several times across different definitions of <strong>Big Data</strong>.
+However, when someone asks me what Big Data means in practice, I am never
+able to give a satisfactory explanation. Indeed, you can easily find a flood
+of posts on twitter, blogs, newspaper, and even scientific journals and conferences,
+but I always kept feeling that <strong>Big Data</strong> is a buzzword.</p>
+
+<p>By sheer serendipity, this morning I came across <a href="http://web.stanford.edu/~boyd/papers/pdf/admm_distr_stats.pdf">three paragraphs</a> clearly
+stating the importance of Big Data from a scientific standpoint, that I like to <strong>cross-post</strong> here (the following paragraphs appear in the introduction of [1]):</p>
+
+<p><em>In all applied fields, it is now commonplace to attack problems through data analysis, particularly through the use of statistical and machine learning algorithms on what are often large datasets. In industry, this trend has been referred to as ‘Big Data’, and it has had a significant impact in areas as varied as artificial intelligence, internet applications, computational biology, medicine, finance, marketing, journalism, network analysis, and logistics.</em></p>
+
+<p><em>Though these problems arise in diverse application domains, they share some key characteristics. First, the datasets are often extremely large, consisting of hundreds of millions or billions of training examples; second, the data is often very high-dimensional, because it is now possible to measure and store very detailed information about each example; and third, because of the large scale of many applications, the data is often stored or even collected in a distributed manner. As a result, it has become of central importance to develop algorithms that are both rich enough to capture the complexity of modern data, and scalable enough to process huge datasets in a parallelized or fully decentralized fashion. Indeed, some researchers have suggested that even highly complex and structured problems may succumb most easily to relatively simple models trained on vast datasets.</em></p>
+
+<blockquote>
+  <p>Many such problems can be posed in the framework of <strong>Convex Optimization</strong>. </p>
+</blockquote>
+
+<p><em>Given the significant work on decomposition methods and decentralized algorithms in the optimization community, it is natural to look to parallel optimization algorithms as a mechanism for solving large-scale statistical tasks. This approach also has the benefit that one algorithm could be flexible enough to solve many problems.</em></p>
+
+<p>Even if I am not an expert of Convex Optimization [2], I do have my own <strong>mathematical optimization</strong> bias. 
+Likely, you may have a different opinion (that I am always happy to hear), but, honestly, the above paragraphs
+are the best content that I have read so far about <strong>Big Data</strong>.</p>
+
+<h3 id="references">References</h3>
+
+<p>[1] S. Boyd, N. Parikh, E. Chu, B. Peleato, J. Eckstein.
+<em>Distributed Optimization and Statistical Learning via the Alternating Direction Method of Multipliers</em>.
+Foundations and Trends in Machine Learning. Vol. 3, No. 1 (2010) 1–122. <a href="http://web.stanford.edu/~boyd/papers/pdf/admm_distr_stats.pdf">[pdf]</a></p>
+
+<p>[2] If you like to have a speedy overview of <em>Convex Optimization</em>, you may read a <a href="https://www.ibm.com/developerworks/community/blogs/jfp/entry/convex_optimization?lang=en">J.F. Puget’s blog post</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Impact of Preprocessing on the MIPLIB2003]]></title>
+    <link href="http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing/"/>
+    <updated>2014-03-19T22:38:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing</id>
+    <content type="html"><![CDATA[<p>What do you know about <strong>preprocessing</strong> for <em>Mixed Integer Programming (MIP)</em> problems?</p>
+
+<p>After a nice chat with <a href="http://dk.linkedin.com/in/bojensen">Bo Jensen</a>, CEO, founder, and co-owner (really, he is a Rocket Scientist!) at <a href="http://www.sulumoptimization.com/">Sulum Optimization</a>, I realised that I know barely anything.</p>
+
+<p>By definition, we have that:</p>
+
+<blockquote>
+  <p>“Presolving is a way to transform the given problem instance into an equivalent instance that is (hopefully) easier to solve.” (see, chap. 10 in <a href="http://nbn-resolving.de/urn:nbn:de:0297-zib-11129">Tobias Achterberg’s Thesis</a>)</p>
+</blockquote>
+
+<p>All I know is that every MIP solver has a <strong>Presolve</strong> parameter, which can take different values.
+For instance, <a href="http://www.gurobi.com">Gurobi</a> has three possible values for that parameter (you can find more details on the <a href="http://www.gurobi.com/documentation/5.0/reference-manual/node718#parameter:Presolve">Gurobi online manual</a>):</p>
+
+<ul>
+  <li><em>Presolve=0</em>: no presolve at all</li>
+  <li><em>Presolve=1</em>: standard presolve </li>
+  <li><em>Presolve=2</em>: aggressive presolve: “More aggressive application of presolve takes more time, but can sometimes lead to a significantly tighter model.”</li>
+</ul>
+
+<p>However, I can’t tell you the real <strong>impact</strong> of that parameter on the overall solution process of a MIP instance. Thus, here we go: let me write a new post that addresses this basic question!</p>
+
+<h2 id="how-to-measure-the-impact-of-preprocessing">How to measure the Impact of Preprocessing?</h2>
+<p>To measure the impact of preprocessing we need four ingredients:</p>
+
+<ol>
+  <li>A MIP solver</li>
+  <li>A Data set</li>
+  <li>Computer power</li>
+  <li>A method to <strong>measure</strong> the impact of preprocessing</li>
+</ol>
+
+<p>Changing one of the ingredients could give you different results, but, hopefully, the big picture will not change too much.</p>
+
+<p>As a solver, I have selected the current release of Gurobi (i.e., version 5.6.2). For the data set, likely the most critical ingredient, I have used the <a href="http://miplib.zib.de/miplib2003/">MIPLIB2003</a>, basically because I had already all the 60 instances on my server. For running the test I have used an old cluster from the <a href="http://www-dimat.unipv.it">Math Department</a> of University of Pavia.</p>
+
+<p>The <strong>measure of impact</strong> I have decided to use (after considering other alternatives) is quite conservative: the fraction of closed instances as a function of runtime.</p>
+
+<p>During the last weekend, I have collected a bunch of logs for the 60 instances of the MIPLIB2003, and, then, using <a href="http://www.rstudio.com">RStudio</a>, I have draw the following cumulative plot:</p>
+
+<p><img class="center" src="../../../../../../images/preprocessing.png" /></p>
+
+<p>The picture is as simple as clear: </p>
+
+<blockquote>
+  <p>Preprocessing does always pay-off and permits to solve around 10% more of the instances within the same time limit!</p>
+</blockquote>
+
+<p>In this post, I will not discuss additional technical details, but I just want to add two observations:</p>
+
+<ol>
+  <li>Standard preprocessing has removed in average 20.3% of nonzero entries of the original model, while aggressive preprocessing has removed 22.5% of nonzero entries, only a few more.</li>
+  <li>The average MIP gaps as reported by Gurobi at timeout are: no-presolve = 13.44%, standard = 9.08%, and aggressive = 11.02%.</li>
+</ol>
+
+<p>Likely, the aggressive presolve setting has been decided by Gurobi using a different, much larger, and customer-oriented dataset.</p>
+
+<h2 id="open-questions">Open Questions</h2>
+<p>Indeed, preprocessing is a very important feature of a modern MIP solver as Gurobi. Investing few seconds before starting the branch-and-bound MIP search can save a significant amount of runtime. However, a more aggressive preprocessing strategy does not seem to payoff, in average, on the MIPLIB2003.</p>
+
+<p>Unfortunately, preprocessing is somehow disregarded from the research community. There are few recent papers dealing with preprocessing (<em>“ehi! if you do have one, please, let me know about it, ok?”</em>).
+Most of papers are from the 90s and about Linear Programming, i.e., without integer variables, which mess up everything.</p>
+
+<p>Here a list of basic questions I have in mind:</p>
+
+<ul>
+  <li>If cutting planes are used to approximate the convex hull of an Integer Problem, preprocessing for what is used for, really?</li>
+  <li>Preprocessing techniques have been designed considering a trade-off between <strong>efficiency</strong> and <strong>efficacy</strong> (see, MWP Savelsbergh, <em>Preprocessing and Probing Techniques for MIP problems</em>, Journal of Computing, vol6(4) 445-454, 1995). With recent progress in software and hardware technologies, can we revise this trade-off in favor of efficacy?</li>
+  <li>Preprocessing techniques used for Linear Programming are effective when applied to LP relaxations of Integer Problems?</li>
+  <li>Should preprocessing sparsify the coefficient matrix?</li>
+  <li>Using the more recent <a href="http://miplib.zib.de/">MIPLIB2010</a> should we expect much different results?</li>
+  <li>Which is a better method to measure the impact of preprocessing on a collection of instances?</li>
+</ul>
+
+<p>If you want to share your idea, experience, or opinion, with respect to these questions, you could comment below or send me an email.</p>
+
+<p>Now, to conclude, my bonus question:</p>
+
+<blockquote>
+  <p>Do you have any new smart idea for improving preprocessing?</p>
+</blockquote>
+
+<p>Well, if you had, I guess you would at least write a paper about, but, do not go for a patent, please!</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[An Informal Report from the Combinatorial Optimization Workshop @ Aussois 2014]]></title>
+    <link href="http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/"/>
+    <updated>2014-01-13T18:30:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014</id>
+    <content type="html"><![CDATA[<p>It is very hard to report about the <a href="http://www.iasi.cnr.it/aussois/web/home">Combinatorial Optimization Workshop</a> in <a href="http://www.aussois.com/hiver/">Aussois</a>. It was like an “informal” <a href="http://www.or.uni-bonn.de/ipco/">IPCO</a> with <em>Super Heroes researchers</em> in the audience, leaded by <em>Captain Egon</em>, who appears at work in the following photo-tweet:</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>Egon talks intersection cuts at <a href="https://twitter.com/search?q=%23aussois&amp;src=hash">#aussois</a>. Still the man. <a href="http://t.co/7KMcNyJYV0">pic.twitter.com/7KMcNyJYV0</a></p>&mdash; Jeff Linderoth (@JeffLinderoth) <a href="https://twitter.com/JeffLinderoth/statuses/420852308583276544">January 8, 2014</a></blockquote>
+<script async="" src="http://stegua.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>The Captain gave an inspiring talk by questioning the recursive paradigm of cutting planes algorithms. With a very basic example, <a href="http://public.tepper.cmu.edu/facultydirectory/FacultyDirectoryProfile.aspx?id=39">Balas</a> has shown how a non basic vertex (solution) can produce a much deeper cut than a cut generated by an optimal basis. Around this intuition, Balas has presented a very nice <a href="http://link.springer.com/article/10.1007%2Fs10107-011-0483-x">generalization of Intersection Cuts</a>… a new paper enters my “PAPERS-TO-BE-READ” folder.</p>
+
+<p>To stay on the subject of cutting planes, the talk by Marco Molinaro in the first day of the workshop was really nice. He raises the fundamental question on how important are <strong>sparse cuts</strong> versus <strong>dense cuts</strong>. The importance of sparse cuts comes from linear algebra: when solving the simplex it is better to have small determinants in the coefficient matrix of the Linear Programming relaxation in order to avoid numerical issues; sparse cuts implicitly help in keeping small the determinants (intuitively, you have more zeros in the matrix). Dense cuts play the opposite role, but they can be really important to improve the bound of the LP relaxation.
+In his talk, Molinaro has shown and proofed, for three particular cases, when sparse cuts are enough, and when they are not. 
+Another paper goes on the “PAPERS-TO-BE-READ” folder.</p>
+
+<p>In the same day of Molinaro, it was really inspiring the talk by Sebastian Pokutta, who really gave a completely new (for me) perspective on <strong>Extended Formulations</strong> by using <a href="http://en.wikipedia.org/wiki/Information_theory">Information Theory</a>. Sebastian is the author of a <a href="http://spokutta.wordpress.com/">blog</a>, and I hope he will post about his talk.</p>
+
+<p>Andrea Lodi has discussed about an Optimization problem that arises in Supervised Learning.  For this problem, the COIN-OR solver <a href="http://www.coin-or.org/Couenne/">Couenne</a>, developed by Pietro Belotti, significantly outperforms <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a>. The issues seem to come from on a number of basic big-M (indicator) constraints. To make a long story short, if you have to solve a hard problem, it does pay off to try different solvers, since there is not a “win-all” solver. </p>
+
+<blockquote>
+  <p>Do you have an original new idea for developing solvers? Do not be intimidated by <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a> or <a href="http://www.gurobi.com/">Gurobi</a> and go for it!</p>
+</blockquote>
+
+<p>The presentation by Marco Senatore was brilliant and his work looks very interesting. I have particularly enjoyed the application in Public Transport that he has mentioned at the end of his talk.</p>
+
+<p>I recommend to have a look at the presentation of Stephan Held about the <strong>Reach-aware Steiner Tree Problem</strong>. He has an interesting Steiner tree-like problem with a very important application in chip design. The presentation has impressive pictures of what optimal solutions look like in chip design.</p>
+
+<p>At the end of talk, Stephan announced the <a href="http://dimacs11.cs.princeton.edu/">11th DIMACS challenge on Steiner Tree Problems</a>.</p>
+
+<p>Eduardo Uchoa gave another impressive presentation on recent progresses on the classical <strong>Capacitated Vehicle Routing Problem</strong> (CVRP). He has a very sophisticated branch-and-price-and-cut algorithm, which comes with a very efficient implementation of every possible idea developed for CVRP, plus new ideas on solving efficiently the pricing sub problems (my understanding, but I might be wrong, is that they have a very efficient dominance rule for solving a shortest path sub problem). 
++1 item in the “PAPERS-TO-BE-READ” folder.</p>
+
+<p>The last day of the workshop, I have enjoyed the two talks by Simge Kucukyavuz and Jim Luedtke on <strong>Stochastic Integer Programming</strong>: for me is a completely new topic, but the two presentations were really inspiring.</p>
+
+<p>To conclude, Domenico Salvagnin has shown how far it is possible to go by carefully using MIP technologies such as <strong>cutting planes</strong>, <strong>symmetry handling</strong>, and <strong>problem decomposition</strong>. Unfortunately, it does happen too often that when someone (typically a non OR expert) has a difficult application problem, he writes down a more or less complicated Integer Programming model, tries a solver, sees it takes too much time, and gives up with exact methods. Domenico, by solving the largest unsolved instance for the 3-dimensional assignment problem, has shown that </p>
+
+<blockquote>
+  <p>there are potentially no limits for MIP solvers!</p>
+</blockquote>
+
+<p>In this post, I have only mentioned a few talks, which somehow overlap with my research interests. However, every talk was really interesting. Fortunately, Francois Margot has strongly encouraged all of the speakers to upload their slides and/or papers, so you can find (almost) all of them on the <a href="http://www.iasi.cnr.it/aussois/web/home/program/year/2014">program web page of the workshop</a>. Visit the website and have a nice reading!</p>
+
+<p>To conclude, let me steal another nice picture from twitter: </p>
+
+<blockquote class="twitter-tweet" lang="en"><p>Goodbye <a href="https://twitter.com/search?q=%23aussois2014&amp;src=hash">#aussois2014</a> <a href="http://t.co/ODupKKmGTZ">pic.twitter.com/ODupKKmGTZ</a></p>&mdash; Matteo Fischetti (@MFischetti) <a href="https://twitter.com/MFischetti/statuses/421642338759618560">January 10, 2014</a></blockquote>
+<script async="" src="http://stegua.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Public Transport and Big Data]]></title>
+    <link href="http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data/"/>
+    <updated>2013-11-17T14:10:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data</id>
+    <content type="html"><![CDATA[<p><strong>Big Data</strong> is nowadays a <em>buzzword</em>. A simple query for “Big Data” on Google gives about 26,700,000 results. </p>
+
+<p><strong>Public Transport</strong> is not really a <em>buzzword</em>, but still on Google you can get almost the same number as with “Big Data”: 26,400,000 results.</p>
+
+<h3 id="why-is-public-transport-so-important">Why is Public Transport so important?</h3>
+
+<p>Because <em>many</em> of us use <a href="http://en.wikipedia.org/wiki/Public_transport">Public Transport</a> every day, but <em>most</em> of us still use their own car to go to work, to bring child at school, and to go shopping. This has a negative impact on the quality of life of everyone and is clearly inefficient since it does cost more: </p>
+
+<ol>
+  <li>More money.</li>
+  <li>More pollution.</li>
+  <li>More time.</li>
+</ol>
+
+<p>(Well, for time, it is not always true, but it happens more often than commonly perceived). </p>
+
+<p>Thus, an important <strong>challenge</strong> is to improve the quality of Public Transport while keeping 
+its cost competitive. The ultimate goal should be to increase the number of people that <strong>trust</strong> and use Public Transport.</p>
+
+<p>How is it possible to achieve this goal?</p>
+
+<h3 id="transport-operators-are-big-data-producers-are-they">Transport Operators are <strong>Big Data</strong> producers (are they?)</h3>
+
+<p>Modern transport operators have installed so called <em>Automatic Vehicle Monitoring (AVM)</em> systems that use several technologies to monitor the fleet of vehicles that operates the service (e.g., metro coaches, buses, metro trains, trains, …).</p>
+
+<p>The stream of data produced by an AVM might be considered as <strong>Big Data</strong> because of its <strong>volume</strong> and <strong>velocity</strong> (see <a href="https://www.ibm.com/developerworks/community/blogs/jfp/entry/big_data_for_dummies23?lang=en">Big Data For Dummies</a>, by J.F. Puget). Each vehicle produces at regular intervals (measured in seconds) data concerning its position and status. This information is stored in remote data centers. The data for a single day might not be considered as “Big”, however once you start to analyze the historical data, the volume increases significantly. For instance, a public transport operator could easily have around 2000 thousands vehicles that operate 24 hours a day, producing data potentially every second.</p>
+
+<p>At the moment, this stream of data misses the third dimension of Big Data that is <strong>variety</strong>. However, new projects that aim at integrating this information with the stream of data coming from social networks are quickly reaching maturity. One of such project is <a href="http://www.superhub-project.eu/">SuperHub</a>, a FP7 project that has recently won the best exhibit award in Cluster 2 <em>“Smart and sustainable cities for 2020+”</em>, at the <a href="http://www.superhub-project.eu/media-centre/124-ict2013-conference-best-exhibit-award-.html">ICT2013 Conference</a> in Vilnius.</p>
+
+<p>I don’t know whether transport operators are really <strong>Big Data</strong> producers or they are merely <strong>Small Data</strong> producers, but data collected using AVMs are nowadays mainly used to report and monitor the daily activities.</p>
+
+<p>In my own opinion, the data produced by transport operators, integrated with input coming from social networks, should be used to improve the quality of the public transport, for instance, by trying to better tackle <strong>Disruption Management</strong> issues.</p>
+
+<p>So, I am curious:</p>
+
+<blockquote>
+  <p>Do you know any project that uses AVM data, combined with Social Network inputs (e.g., from <a href="http://www.twitter.com">Twitter</a>), to elaborate <strong>Disruption Management</strong> strategies for Public Transport? If yes, do they use <strong>Mathematical Optimization</strong> at all?</p>
+</blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Reading Excuses]]></title>
+    <link href="http://stegua.github.io/blog/2013/11/01/reading-excuses/"/>
+    <updated>2013-11-01T15:56:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2013/11/01/reading-excuses</id>
+    <content type="html"><![CDATA[<p>I love reading!</p>
+
+<p>I love reading about everything and I am glad that part of my work consists in reading.</p>
+
+<p>Unfortunately, for researchers, reading is not always that easy, as clearly explained in <strong><a href="http://homepages.inf.ed.ac.uk/bundy/how-tos/resbible.html">The Researcher’s Bible</a></strong>:</p>
+
+<blockquote>
+  <p>Reading is difficult: The difficulty seems to depend on the stage of academic development. Initially it is hard to know what to read (many documents are unpublished), later reading becomes seductive and is used as an excuse to avoid research. Finally one lacks the time and patience to keep up with reading (and fears to find evidence that one’s own work is second rate or that one is slipping behind)</p>
+</blockquote>
+
+<p>For my <em>stage of academic development</em>, reading is <strong>extremely seductive</strong>, and the situation became even worse after reading the answers to the following question raised by <a href="http://mat.tepper.cmu.edu/blog">Michael Trick</a> on <a href="https://www.or-exchange.org/">OR-exchange</a>:</p>
+
+<blockquote>
+  <p><a href="https://www.or-exchange.org/questions/681/what-paper-should-everyone-read">What paper should everyone read?</a></p>
+</blockquote>
+
+<p>If you are looking for excuses to avoid research, go through <a href="https://www.or-exchange.org/questions/681/what-paper-should-everyone-read">those answers</a> and select any paper you like, you will have <strong>outstanding</strong> and <strong>authoritative</strong> excuses!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GeCol: a Graph Coloring solver on top of Gecode]]></title>
+    <link href="http://stegua.github.io/blog/2013/06/28/gecol/"/>
+    <updated>2013-06-28T15:00:00+02:00</updated>
+    <id>http://stegua.github.io/blog/2013/06/28/gecol</id>
+    <content type="html"><![CDATA[<style type="text/css">
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
+<p>This post is about solving the classical <strong>Graph Coloring</strong> problem by using a simple solver, named here <strong>GeCol</strong>, that is built on top of the Constraint Programming (CP) solver <a href="http://www.gecode.org">Gecode</a>. The approach of GeCol is based on the CP model described in [1]. Here, we want to explore some of the new features of the last version of Gecode (version 4.0.0), namely: </p>
+
+<ul>
+  <li><em>Lightweight Dynamic Symmetry Breaking (LDSB)</em> [2]</li>
+  <li><em>Accumulated Failure Count (AFC)</em> and <em>Activity-based</em> strategies for variable selection while branching, combined with <em>Restart Based Search</em></li>
+</ul>
+
+<p>We are going to present computational results using these features to solve the <a href="https://sites.google.com/site/graphcoloring/vertex-coloring">instances</a> of the <a href="http://dimacs.rutgers.edu/Challenges/">Graph Coloring DIMACS Challenge</a>. However, this post is not going to describe in great details what these features are: please, for this purpose, refer to the <a href="http://www.gecode.org/doc-latest/MPG.pdf">Modeling and Programming with Gecode</a> book.</p>
+
+<p>As usual, all the sources used to write this post are publicly available on 
+<a href="https://github.com/stegua/MyBlogEntries/tree/master/Coloring">my GitHub repository</a>.</p>
+
+<h3 id="modeling-graph-coloring-with-constraint-programming">Modeling Graph Coloring with Constraint Programming</h3>
+
+<p>Given an undirected graph <script type="math/tex">G=(V,E)</script> and a set of colors <script type="math/tex">K</script>, the minimum (vertex) graph coloring problem consists of assigning a color to each vertex, while every pair of adjacent vertices gets a different color. The objective is to minimize the number of colors.</p>
+
+<p>To model this problem with CP, we can use for each vertex <script type="math/tex">i</script> an integer variable <script type="math/tex">x_i</script> with domain equals to <script type="math/tex">K</script>: if <script type="math/tex">x_i=k</script>, then color <script type="math/tex">k</script> is assigned to vertex <script type="math/tex">i</script>.
+Using (inclusion-wise) <em>maximal cliques</em>, it is possible to post constraints on subsets of adjacent vertices: every subset of vertices belonging to the same clique must get a different color. In CP, we can use the well-known <code>alldifferent</code> constraint for posting these constraints.</p>
+
+<p>In practice, to build our CP model, first, we find a collection of maximal cliques <script type="math/tex">C</script>, such that for every edge <script type="math/tex">(i,j) \in E</script> there exists at least a clique <script type="math/tex">c \in C</script> that contains both vertices <script type="math/tex">i</script> and <script type="math/tex">j</script>. Second, we post the following constraints:</p>
+
+<script type="math/tex; mode=display">\mbox{alldifferent}([x_c]) \qquad \forall c \in C</script>
+
+<p>where <script type="math/tex">x_c</script> denotes the subset of variables corresponding to the vertices that belong to the clique <script type="math/tex">c</script>.</p>
+
+<p>In order to minimize the number of colors, we use a simple iterative procedure. Every time we found a coloring with <script type="math/tex">k</script> colors, we restart the search by restricting the cardinality of <script type="math/tex">K</script> to <script type="math/tex">k-1</script>. If no feasible coloring exists with <script type="math/tex">k-1</script> colors, we have proved optimality for the last feasible coloring found, i.e. <script type="math/tex">\chi(G)=k</script>.</p>
+
+<p>In addition, we apply a few basic preprocessing steps that are described in [1].
+The maximal cliques are computed using <strong>Cliquer v1.21</strong> [5].</p>
+
+<h3 id="lightweight-dynamic-symmetry-breaking">Lightweight Dynamic Symmetry Breaking</h3>
+
+<p>The Graph Coloring problem is an optimization problem that has several equivalent optimum solutions: for instance, given an optimal assignment of colors to vertices, any permutation of the colors, gives a solution with the same optimum value.</p>
+
+<p>While this property is implicitly considered in <em>Column Generation approaches</em> to Graph Coloring (e.g., see [3], [1], and [4]), the CP model we have just presented, suffers from symmetries issues: the values of the domains of the integer variables are symmetric.</p>
+
+<p>The <strong>Lightweight Dynamic Symmetry Breaking</strong> is a strategy for dealing with this issue [2].
+In Gecode, you can define a set of values that are symmetric as follows:</p>
+
+<p><code>Symmetries syms;
+ syms &lt;&lt; ValueSymmetry(IntArgs::create(k,1));</code></p>
+
+<p>and then when posting the branching strategy you just write (just note that use of object <code>syms</code>):</p>
+
+<p><code>branch(*this, x, INT_VAR_SIZE_MIN(), INT_VAL_MIN(), syms);</code></p>
+
+<p>With <strong><em>three lines of code</em></strong>, you have solved (some of) the symmetry issues.</p>
+
+<blockquote>
+  <p>How efficient is <em>Lightweight Dynamic Symmetry Breaking</em> for Graph Coloring?</p>
+</blockquote>
+
+<p>We try to answer to this question with the plot below that shows the results for two versions of GeCol:</p>
+
+<ul>
+  <li>(A) The first version without any breaking symmetry strategy</li>
+  <li>(B) The second version with the Lightweight Dynamic Breaking Symmetry</li>
+</ul>
+
+<p>Both versions select for branching the variable with the smallest domain size.
+The plot reports the empirical cumulative distribution as function of run time (in log-scale).
+The tests were run with a timeout of 300 seconds on a quite old server. 
+Note that at the timeout, the version with LDBS has solved around 55% of the instances, while the version without LDBS has solved only around 48% of the instances.</p>
+
+<p><img class="center" src="../../../../../../images/Ecdf1.png" /></p>
+
+<h3 id="accumulated-failure-count-and-activity-based-branching">Accumulated Failure Count and Activity-based Branching</h3>
+<p>The second new feature of Gecode that we explore here is the <em>Accumulated Failure Count</em> and the <em>Activity-based</em> branching strategies.</p>
+
+<p>While solving any CP model, the strategy used to select the next variable to branch over is very important. The <em>Accumulated Failure Count</em> strategy stores the cumulative number of failures for each variable (for details see Section 8.5 in <a href="http://www.gecode.org/doc-latest/MPG.pdf">MPG</a>). The <em>Activity-based</em> search does something similar, but instead of counting failures, measures the activity of each variable.
+In a sense, these two strategies try to <em>learn</em> from failures and activities as they occur during the search process. </p>
+
+<p>These two branching strategies are more effective when combined with <em>Restart Based Search</em>: the solver performs the search with increasing cutoff values on the number of failures. Gecode offers several optional strategies to improve the cutoff. In our tests, we have used a geometric cutoff sequence (Section 9.4 in <a href="http://www.gecode.org/doc-latest/MPG.pdf">MPG</a>).</p>
+
+<blockquote>
+  <p>How effective are the <strong>Accumulated Failure Count</strong> and the <strong>Activity-based</strong> strategies for Graph Coloring when combined with <strong>Restart Based Search</strong>?</p>
+</blockquote>
+
+<p>The second plot below shows a comparison of 3 versions of GeCol, with 3 different branching strategies:</p>
+
+<ul>
+  <li>(A) Select the variable with smallest domain size</li>
+  <li>(B) Select the variable with largest Activity Cumulated value</li>
+  <li>(C) Select the variable with largest Accumulated Failure Count (AFC) value</li>
+</ul>
+
+<p>The last strategy is tremendously efficient: it dominates the other two strategies, and it is able to solve more of the 60% of the considered instances within the timeout of 300 seconds.</p>
+
+<p><img class="center" src="../../../../../../images/Ecdf2.png" /></p>
+
+<p>However, it is possible to do still slightly better. Likely, at the begging of the search phase, several variables have the same value of AFC. Therefore, it is possible to improve the branching strategy by breaking ties: we can divide the ACT or the AFC value of a variable by the its domain size. The next plot shows the results with these other branching strategies:</p>
+
+<ul>
+  <li>(A) Select the variable with largest ratio of variable degree vs. domain size</li>
+  <li>(B) Select the variable with largest ratio of Activity Cumulated value vs. domain size</li>
+  <li>(C) Select the variable with largest ratio of Accumulated Failure Count vs. domain size</li>
+</ul>
+
+<p><img class="center" src="../../../../../../images/Ecdf3.png" /></p>
+
+<h2 id="conclusions">Conclusions</h2>
+<p>The new features of Gecode are very interesting and offer plenty of options.
+The LDBS is very general, and it could be easily applied to several other combinatorial optimization problems.
+Also the new branching strategies gives important enhancements, above all when combined with restart based search.</p>
+
+<blockquote>
+  <p>”…with great power there must also come – great responsibility!” (Uncle Ben, The Amazing Spider-Man, n.660, Marvel Comics) </p>
+</blockquote>
+
+<p>As a drawback, it is becoming harder and harder to find the best parameter configuration for solvers as Gecode (but this is true also for other type of solvers, e.g. Gurobi and Cplex).</p>
+
+<p>Can you find or suggest a better parameter configuration for GeCol?</p>
+
+<h2 id="references">References</h2>
+<ol>
+  <li>
+    <p>S. Gualandi and F. Malucelli.
+<span class="title">Exact Solution of Graph Coloring Problems via Constraint Programming and Column Generation</span>.
+<span class="journal">INFORMS Journal on Computing</span>. Winter 2012 vol. 24(1), pp.81-100. 
+<a href="http://joc.journal.informs.org/content/24/1/81.short">[pdf]</a>
+<a href="http://www.optimization-online.org/DB_FILE/2010/03/2568.pdf">[preprint]</a></p>
+  </li>
+  <li>
+    <p>C. Mears, M.G. de la Banda, B. Demoen, M. Wallace.
+<span class="title">Lightweight dynamic symmetry breaking</span>.
+<span class="journal">In Eighth International Workshop on Symmetry in Constraint Satisfaction Problems,
+SymCon’08, 2008.</span> 
+<a href="http://www.aloul.net/symcon/Mears2-Symcon08.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>A Mehrotra, MA Trick.
+<span class="title">A column generation approach for graph coloring</span>.
+<span class="journal">INFORMS Journal on Computing</span>. Fall 1996 vol. 8(4), pp.344-354. 
+<a href="http://joc.journal.informs.org/content/8/4/344.short ">[pdf]</a></p>
+  </li>
+  <li>
+    <p>S. Held, W. Cook, E.C. Sewell.
+<span class="title">Maximum-weight stable sets and safe lower bounds for graph coloring</span>.
+<span class="journal">Mathematical Programming Computation</span>. December 2012, Volume 4, Issue 4, pp 363-381.
+<a href="http://link.springer.com/content/pdf/10.1007%2Fs12532-012-0042-3.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>Patric R.J. Ostergard.
+<span class="title">A fast algorithm for the maximum clique problem</span>.
+<span class="journal">Discrete Applied Mathematics</span>, 
+vol. 120(1-3), pp. 197–207, 2002
+<a href="http://citeseerx.ist.psu.edu/viewdoc/similar?doi=10.1.1.28.7666&amp;type=cc">[pdf]</a>
+</p>
+  </li>
+</ol>
+]]></content>
+  </entry>
+  
+  <entry>
+>>>>>>> 509de1952a962043efaa091fd866eaa2f6f948c4
     <title type="html"><![CDATA[Backtrack Programming in c]]></title>
-    <link href="http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c/"/>
+    <link href="http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/"/>
     <updated>2013-03-22T12:45:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c</id>
+    <id>http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c</id>
     <content type="html"><![CDATA[<style type="text/css">
 .title { color: #07235F; }
 .journal { font-style: italic; }
@@ -39,7 +1156,7 @@
 The library is called <a href="http://www.akira.ruc.dk/~keld/research/CBACK/">CBack</a> and 
 is developed by <a href="http://www.akira.ruc.dk/~keld/">Keld Helsgaun</a>, who is known in the Operations Research 
 and Computer Science communities for his efficient implementation of the 
-Lin-Kernighan heuristics for the <a href="http://www.akira.ruc.dk/~keld/research/LKH/">Traveling Salesman Problem</a>.</p>
+Lin-Kernighan heuristics for the <a href="http://www.akira.ruc.dk/~keld/research/LKH/">Travelling Salesman Problem</a>.</p>
 
 <p><strong>CBack</strong> offers basically two functions that are described in [1] as follows:</p>
 
@@ -89,7 +1206,7 @@ Below, I will show you how to use <strong>CBack</strong> to implement a simple a
 <p>If you are familiar with backtrack programming (e.g., <a href="http://en.wikipedia.org/wiki/Prolog">Prolog</a>), you should not be surprised by the output, and you can jump to the next section. Otherwise, 
 the Figure below sketches the program execution. </p>
 
-<p><img src="http://stegua.github.com/images/backtrack.png" /></p>
+<p><img src="http://stegua.github.io/images/backtrack.png" /></p>
 
 <p>When the program executes the <code>Choice(N=3)</code> statement, that is the first call to the first choice (line 2), value 1 is assigned to variable <code>i</code>. Behind the scene, the <em>Choice</em> function stores the current execution state of the program in its own stack,
 and records the next possible choices (i.e. the other possible program branches),
@@ -256,10 +1373,12 @@ vol. 120(1-3), pp. 197–207, 2002
   <entry>
 >>>>>>> f248d51619b0df6bd9e078f233ad19f5cdee8d9c
     <title type="html"><![CDATA[From blackboard to code: Gomory Cuts using CPLEX]]></title>
-    <link href="http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/"/>
+    <link href="http://stegua.github.io/blog/2013/02/05/gomory-cuts-with-cplex/"/>
     <updated>2013-02-05T15:22:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex</id>
-    <content type="html"><![CDATA[<p>On the blackboard, to solve small Integer Linear Programs with 2 variables and <em>less or equal</em> constraints is easy,
+    <id>http://stegua.github.io/blog/2013/02/05/gomory-cuts-with-cplex</id>
+    <content type="html"><![CDATA[<p><strong>Edited on May 16th, 2013</strong>: fixes due to <a href="http://imada.sdu.dk/~marco/">M. Chiarandini</a></p>
+
+<p>On the blackboard, to solve small Integer Linear Programs with 2 variables and <em>less or equal</em> constraints is easy,
 since they can be plotted in the plane and the linear relaxation can be solved geometrically. 
 You can draw the lattice of integer points, and once you have found a new cutting plane, 
 you show that it <em>cuts off</em> the optimum solution of the LP relaxation.</p>
@@ -270,7 +1389,9 @@ In practice, this post is an online supplement to one of my last exercise sessio
 
 <p>In order to solve the <em>“blackboard”</em> examples with <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>,
 it is necessary to use a couple of functions
-that a few years ago were undocumented. <a href="http://www.gurobi.com">GUROBI</a> has very similar functions, but they are currently undocumented.</p>
+that a few years ago were undocumented. <a href="http://www.gurobi.com">GUROBI</a> has very similar functions,
+but they are currently undocumented. (<strong>Edited May 16th, 2013</strong>: From version 5.5, Gurobi has documented its 
+<a href="http://www.gurobi.com/documentation/5.5/reference-manual/node109">advanced simplex routines</a>)</p>
 
 <p>As usual, all the sources used to write this post are publicly available on 
 <a href="https://github.com/stegua/MyBlogEntries/tree/master/GomoryCut">my GitHub repository</a>.</p>
@@ -312,11 +1433,11 @@ In practice, for each fractional basic variable, it is possible to generate a va
 multiplied by <script type="math/tex">A</script> and by <script type="math/tex">b</script>. Once we have that matrix, in order to generate a Gomory cut from a fractional
 basic variable, we just use the last equation in the previous derivation, applying it to each row of the system of inequalities</p>
 
-<p>Given the optimal basis, the optimal basic vector is <script type="math/tex">x_B=B^{-1}b</script>, since the non basic variable are equal to zero.
-Let <script type="math/tex">i</script> be the index of a fractional basic variable, and let <script type="math/tex">j</script> be the index of the constraint corresponding to
-variable <script type="math/tex">i</script> in the equations <script type="math/tex">x_B=B^{-1}A</script>, then the Gomory cut for variable <script type="math/tex">i</script> is:</p>
+<p>Given the optimal basis, the optimal basic vector is <script type="math/tex">x_B=B^{-1}b</script>, since the non basic variables are equal to zero.
+Let <script type="math/tex">j</script> be the index of a fractional basic variable, and let <script type="math/tex">i</script> be the index of the constraint corresponding to
+variable <script type="math/tex">j</script> in the equations <script type="math/tex">x_B=B^{-1}A</script>, then the Gomory cut for variable <script type="math/tex">j</script> is:</p>
 
-<script type="math/tex; mode=display">x_i + \sum_{l \in N} \lfloor (B^{-1}N)_{jl} \rfloor\,x_l \leq (B^{-1}\,b)_j</script>
+<script type="math/tex; mode=display">x_j + \sum_{l \in N} \lfloor (B^{-1}N)_{il} \rfloor\,x_l \leq \lfloor (B^{-1}\,b)_i \rfloor</script>
 
 <h3 id="using-the-cplex-callable-library">Using the CPLEX callable library</h3>
 <p>The CPLEX callable library (written in C) has the following <em>advanced</em> functions:</p>
@@ -387,8 +1508,9 @@ variable <script type="math/tex">i</script> in the equations <script type="math/
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>The code reads row by row (index <em>i</em>) the inverse basis matrix <script type="math/tex">B^{-1}</script> multiplied by <script type="math/tex">A</script> (line 7),
-and stores the corresponding Gomory cut in the compact matrix given by vectors <code>rmatbeg</code>, <code>rmatind</code>, and <code>rmatval</code> (lines 8-15).
-The array <code>b_bar</code> contains the vector <script type="math/tex">B^{-1}b</script> (line 21). In lines 28-31, all the cuts are added at once to the current LP data structure.</p>
+which is temporally stored in vector <code>z</code>,
+and then the code stores the corresponding Gomory cut in the compact matrix given by vectors <code>rmatbeg</code>, <code>rmatind</code>, and <code>rmatval</code> (lines 8-15).
+The array <code>b_bar</code> contains the vector <script type="math/tex">B^{-1}b</script> (line 21). In lines 26-27, all the cuts are added at once to the current LP data structure.</p>
 
 <p>On GitHub you find a small program that I wrote to generate Gomory cuts for problems written as <script type="math/tex">(P)</script>.
 The repository have an <a href="https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/README.md">example of execution</a> of my program.</p>
@@ -408,7 +1530,7 @@ in CPLEX was <strong>The</strong> major breakthrough of CPLEX 6.5 and produced
 the version-to-version speed-up given by the blue bars in the chart below
 (source: <a href="http://www.ferc.gov/eventcalendar/Files/20100609110044-Bixby,%20Gurobi%20Optimization.pdf">Bixby’s slides available on the web</a>):</p>
 
-<p><img src="http://stegua.github.com/images/cplex65.png" /></p>
+<p><img src="http://stegua.github.io/images/cplex65.png" /></p>
 
 <p>Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
 These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix
@@ -460,9 +1582,9 @@ there is a nice chapter by G. Cornuejols about the <strong>Ongoing Story of Gomo
   <entry>
 >>>>>>> 1c426a23dd44e74e4e67d70cfc11643ae976f82d
     <title type="html"><![CDATA[How Italian Commuters Discovered Operations Research]]></title>
-    <link href="http://stegua.github.com/blog/2012/12/16/how-italian-commuters-discovered-or/"/>
+    <link href="http://stegua.github.io/blog/2012/12/16/how-italian-commuters-discovered-or/"/>
     <updated>2012-12-16T10:45:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2012/12/16/how-italian-commuters-discovered-or</id>
+    <id>http://stegua.github.io/blog/2012/12/16/how-italian-commuters-discovered-or</id>
     <content type="html"><![CDATA[<p>Last week, more then 700,000 Italian commuters discovered the importance of Operations Research (OR).
 Nobody explicitly mentioned OR, 
 but due to a horrible crew schedule of <a href="http://www.trenord.it">Trenord</a> 
@@ -516,25 +1638,10 @@ help Trenord to improve the situation.</p>
   
   <entry>
     <title type="html"><![CDATA[Challenging MIPs instances]]></title>
-    <link href="http://stegua.github.com/blog/2012/12/13/challenging-mips/"/>
+    <link href="http://stegua.github.io/blog/2012/12/13/challenging-mips/"/>
     <updated>2012-12-13T18:11:00+01:00</updated>
-    <id>http://stegua.github.com/blog/2012/12/13/challenging-mips</id>
-    <content type="html"><![CDATA[<style type="text/css">
-table { width:100%; }
-thead {
-   background-color: rgba(0,0,255,0.3);
-   color: black;
-   text-indent: 14px;
-   text-align: left;
-}
-td { padding:4px; }
-tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
-tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
-.title { color: #07235F; }
-.journal { font-style: italic; }
-</style>
-
-<p>Today, I share seven challenging MIP instances as 
+    <id>http://stegua.github.io/blog/2012/12/13/challenging-mips</id>
+    <content type="html"><![CDATA[<p>Today, I share seven challenging MIP instances as 
 <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps files</a>
 along with the AMPL <a href="https://github.com/stegua/MyBlogEntries/tree/master/Roadef2012">model and data files</a> 
 I used to generate them. 
@@ -546,7 +1653,7 @@ with her new model and/or method.</p>
 <p>The MIP instances I propose come from my formulation of
 the <a href="http://challenge.roadef.org/2012/en/sujet.php">Machine Reassignment Problem</a> 
 proposed for the <a href="http://roadef.org/content/index.htm">Roadef Challenge</a> sponsored by Google last year. 
-As I wrote in a <a href="http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
+As I wrote in a <a href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
 the Challenge had <strong>huge</strong> instances and a <em>micro</em> time limit of 300 seconds.
 I said <em>micro</em> because I have in mind exact methods: there is little you can do in 300 seconds when you
 have a problem with potentially as many as <script type="math/tex">50000 \times 5000</script> binary variables. 
@@ -561,7 +1668,7 @@ The Local Solver script used in the qualification phase is available
 
 <p>However, in my own opinion, it is interesting to try to solve at least the instances of the qualification phase
 with Integer Linear Programming (ILP) solvers such as 
-<a href="http:\\www.gurobi.com">Gurobi</a> and <a href="http:\\http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
+<a href="http://www.gurobi.com">Gurobi</a> and <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
 Can these branch-and-cut commercial solvers be competitive on such problems? </p>
 
 <h2 id="problem-overview">Problem Overview</h2>
@@ -966,6 +2073,21 @@ We are almost there in proving optimality of <strong>a2-3</strong>, and we get b
 <a href="http://4c.ucc.ie/~hsimonis/reassignment.pdf">published</a> in [1].</p>
 
 <h2 id="references">References</h2>
+<style type="text/css">
+table { width:100%; }
+thead {
+   background-color: rgba(0,0,255,0.3);
+   color: black;
+   text-indent: 14px;
+   text-align: left;
+}
+td { padding:4px; }
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
 <ol>
   <li>
     <p> Deepak Mehta, Barry O’Sullivan, Helmut Simonis. 
@@ -984,9 +2106,9 @@ in this blog. </p>
   
   <entry>
     <title type="html"><![CDATA[CP2012: Je me souviens]]></title>
-    <link href="http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/"/>
+    <link href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/"/>
     <updated>2012-10-19T13:24:00+02:00</updated>
-    <id>http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens</id>
+    <id>http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens</id>
     <content type="html"><![CDATA[<p>Last week in Quebec City, there was the 
 <a href="http://www.cp2012.org/">18th International Conference on Principles and Practice of Constraint Programming</a>.
 This year the conference had a record of submissions (186 in total) and the program committee
@@ -1070,9 +2192,9 @@ Will you be there? I hope so…</p>
   
   <entry>
     <title type="html"><![CDATA[Dijkstra, Dantzig, and Shortest Paths]]></title>
-    <link href="http://stegua.github.com/blog/2012/09/19/dijkstra/"/>
+    <link href="http://stegua.github.io/blog/2012/09/19/dijkstra/"/>
     <updated>2012-09-19T22:14:00+02:00</updated>
-    <id>http://stegua.github.com/blog/2012/09/19/dijkstra</id>
+    <id>http://stegua.github.io/blog/2012/09/19/dijkstra</id>
     <content type="html"><![CDATA[<style type="text/css">
 table { width:100%; }
 thead {
