@@ -9,11 +9,7 @@
   <meta name="author" content="Stefano Gualandi">
 
   
-  <meta name="description" content="table { width:100%; }
-thead { background-color: rgba(0,0,255,0.3); color: black; text-indent: 14px; text-align: left;
-}
-td { padding:4px; }
-tbody tr &hellip;">
+  <meta name="description" content="This morning, after reading this very nice post, I decided to challenge myself in Python and to have a look at the impact of mispredicted branches in &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -106,6 +102,391 @@ tbody tr &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/">Exercise in Python: Remove Blanks From Strings</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+<time datetime="2017-01-24T16:51:00+01:00" pubdate data-updated="true">Jan 24<span>th</span>, 2017</time>
+        
+         | <a href="/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This morning, after reading <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">this very nice post</a>, I decided to challenge myself in Python and to have a look at the impact of <a href="https://en.wikipedia.org/wiki/Branch_misprediction">mispredicted branches</a> in a language different from C/C++. The basic idea was to use only <a href="https://docs.python.org/3.6/library/functions.html">Python builtins</a>: external libraries are not allowed!</p>
+
+<p>As a benchmark, I grabbed a large text file from <a href="http://norvig.com/big.txt">P. Norvig’s website</a>, which is 6’488’666 byte long.</p>
+
+<p><strong>The final answer?</strong> Yes, <strong>mispredicted branches</strong> have a huge impact in Python too.</p>
+
+<p><strong>The hidden answer?</strong> Python dictionaries ever stop to surprise me: they are REALLY efficient.</p>
+
+<p><strong>NOTE</strong>: The followig code snippets were executed in a Python 3.5 notebook, on a windows machine, running Windows 10 and <a href="https://www.continuum.io/downloads">Anaconda Python 3.5 64 bits</a>.
+You can find my notebook on my <a href="https://github.com/stegua/MyBlogEntries">Blog GitHub repo</a>. Don’t ask me why, but this blog entry is better visualized directly on <a href="https://github.com/stegua/MyBlogEntries/blob/master/Remove%2Bblanks%2Bfrom%2Ba%2Bstring.ipynb">GitHub</a>.</p>
+
+<p><strong>UPDATE</strong>: Well, most of the time I would use my first implementation based on the <code>filter</code> builtin function, and I would try for alternative implementations only after a profiler has shown
+that removing blanks is a true bottleneck of my whole program. As written in the title, this post is meant as a basic exercise in Python.</p>
+
+<h3 id="first-attempt-functional-style">First attempt: Functional style</h3>
+<p>In Python, I prefer to write as much code in functional style as possible, relying on the 3 basic functions:</p>
+
+<ol>
+  <li><a href="https://docs.python.org/3/library/functions.html#map"><code>map</code></a></li>
+  <li><a href="https://docs.python.org/3/library/functions.html#filter"><code>filter</code></a></li>
+  <li><a href="https://docs.python.org/3/library/functools.html#functools.reduce"><code>reduce</code></a> (this is in the functools module and it is not a true builtin)</li>
+</ol>
+
+<p>Therefore, after few preliminaries, here is my first code snippet:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span></span><span class="kn">import</span> <span class="nn">cProfile</span>
+</span><span class="line">
+</span><span class="line"><span class="c1"># Download file from: &#39;http://norvig.com/big.txt&#39;</span>
+</span><span class="line"><span class="n">big</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;big.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1"># Read the while file</span>
+</span><span class="line"><span class="n">test</span> <span class="o">=</span> <span class="n">big</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span class="line">
+</span><span class="line"><span class="k">def</span> <span class="nf">RemoveBlanksFilter</span><span class="p">(</span><span class="n">in_str</span><span class="p">):</span>
+</span><span class="line">    <span class="n">result</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">in_str</span><span class="p">)</span>
+</span><span class="line">    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="n">test_result</span> <span class="o">=</span> <span class="n">RemoveBlanksFilter</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;RemoveBlanksFilter(test)&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>         6488671 function calls in 1.956 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    1.955    1.955 &lt;ipython-input-3-eeb7d3495697&gt;:1(RemoveBlanksFilter)
+  6488666    0.870    0.000    0.870    0.000 &lt;ipython-input-3-eeb7d3495697&gt;:2(&lt;lambda&gt;)
+        1    0.000    0.000    1.956    1.956 &lt;string&gt;:1(&lt;module&gt;)
+        1    0.000    0.000    1.956    1.956 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    1.085    1.085    1.955    1.955 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Wow, I didn’t realize that I would have call the lambda function for every single byte of my input file. This is clearly too much overhead.</p>
+
+<h3 id="nd-attempt-remove-function-calls-overhead">2nd attempt: remove function calls overhead</h3>
+<p>Let me drop my functional style, and write a plain old for-loop:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span></span><span class="k">def</span> <span class="nf">RemoveBlanks</span><span class="p">(</span><span class="n">in_str</span><span class="p">):</span>
+</span><span class="line">    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class="line">    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">in_str</span><span class="p">:</span>
+</span><span class="line">        <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39; &#39;</span><span class="p">:</span>
+</span><span class="line">            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</span><span class="line">    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Is test passed:&#39;</span><span class="p">,</span> <span class="n">test_result</span> <span class="o">==</span> <span class="n">RemoveBlanks</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span></span><span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;RemoveBlanks(test)&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>         5452148 function calls in 1.566 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    1.210    1.210    1.553    1.553 &lt;ipython-input-6-5e45e3056bc2&gt;:1(RemoveBlanks)
+        1    0.012    0.012    1.566    1.566 &lt;string&gt;:1(&lt;module&gt;)
+        1    0.000    0.000    1.566    1.566 {built-in method builtins.exec}
+  5452143    0.310    0.000    0.310    0.000 {method 'append' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.033    0.033    0.033    0.033 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Mmm… we just shift the problem to the list append function calls. Maybe we can do better by working in place.</p>
+
+<h3 id="rd-attempt-work-in-place">3rd attempt: work in place</h3>
+<p>Well, almost in place: Python string are immutable; therefore, we first copy the string into a list, and then we work in place over the copied list.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span></span><span class="k">def</span> <span class="nf">RemoveBlanksInPlace</span><span class="p">(</span><span class="n">in_str</span><span class="p">):</span>
+</span><span class="line">    <span class="nb">buffer</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">in_str</span><span class="p">)</span>
+</span><span class="line">    <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class="line">    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">in_str</span><span class="p">:</span>
+</span><span class="line">        <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39; &#39;</span><span class="p">:</span>
+</span><span class="line">            <span class="nb">buffer</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+</span><span class="line">            <span class="n">pos</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class="line">    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">buffer</span><span class="p">[:</span><span class="n">pos</span><span class="p">])</span>
+</span><span class="line">
+</span><span class="line"><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Is test passed:&#39;</span><span class="p">,</span> <span class="n">test_result</span> <span class="o">==</span> <span class="n">RemoveBlanksInPlace</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span></span><span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;RemoveBlanksInPlace(test)&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>         5 function calls in 1.158 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    1.113    1.113    1.145    1.145 &lt;ipython-input-9-99d36ae6359e&gt;:1(RemoveBlanksInPlace)
+        1    0.013    0.013    1.158    1.158 &lt;string&gt;:1(&lt;module&gt;)
+        1    0.000    0.000    1.158    1.158 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.032    0.032    0.032    0.032 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Ok, working in place does have an impact. Let me go on the true point: avoiding <em>mispredicted branches</em>.</p>
+
+<h3 id="th-attempt-to-avoid-mispredicted-branches">4th attempt: to avoid mispredicted branches</h3>
+<p>As in the <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">original blog post</a>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span></span><span class="k">def</span> <span class="nf">RemoveBlanksNoBranch</span><span class="p">(</span><span class="n">in_str</span><span class="p">):</span>
+</span><span class="line">    <span class="c1"># Build table</span>
+</span><span class="line">    <span class="n">table</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class="line">    <span class="k">for</span> <span class="n">ic</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+</span><span class="line">        <span class="n">c</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span>
+</span><span class="line">        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39; &#39;</span><span class="p">:</span>
+</span><span class="line">            <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class="line">        <span class="k">else</span><span class="p">:</span>
+</span><span class="line">            <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1"># Removal</span>
+</span><span class="line">    <span class="nb">buffer</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">in_str</span><span class="p">)</span>
+</span><span class="line">    <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class="line">    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">in_str</span><span class="p">:</span>
+</span><span class="line">        <span class="nb">buffer</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+</span><span class="line">        <span class="n">pos</span> <span class="o">+=</span> <span class="n">table</span><span class="p">[</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span>  <span class="c1"># ord() is a function --&gt; bottleneck</span>
+</span><span class="line">    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">buffer</span><span class="p">[:</span><span class="n">pos</span><span class="p">])</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Is test passed:&#39;</span><span class="p">,</span> <span class="n">test_result</span> <span class="o">==</span> <span class="n">RemoveBlanksNoBranch</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span></span><span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;RemoveBlanksNoBranch(test)&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>         6489183 function calls in 1.474 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    1.235    1.235    1.460    1.460 &lt;ipython-input-12-1bd75a3de21d&gt;:1(RemoveBlanksNoBranch)
+        1    0.014    0.014    1.474    1.474 &lt;string&gt;:1(&lt;module&gt;)
+      256    0.000    0.000    0.000    0.000 {built-in method builtins.chr}
+        1    0.000    0.000    1.474    1.474 {built-in method builtins.exec}
+  6488666    0.192    0.000    0.192    0.000 {built-in method builtins.ord}
+      256    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.033    0.033    0.033    0.033 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Ouch!!! These are getting even worse! Why? Well, ‘ord’ is a function, so we are getting back the overhead of function calls. Can we do better by using a dictionary instead of an array?</p>
+
+<h3 id="th-attempt-use-a-dictionary">5th attempt: use a dictionary</h3>
+<p>Let me use a dictionary in order to avoid the ‘ord’ function calls.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span></span><span class="k">def</span> <span class="nf">RemoveBlanksNoBranchDict</span><span class="p">(</span><span class="n">in_str</span><span class="p">):</span>
+</span><span class="line">    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">in_str</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">:</span>
+</span><span class="line">        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;This function works only for strings&#39;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1"># Build table</span>
+</span><span class="line">    <span class="n">table</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class="line">    <span class="k">for</span> <span class="n">ic</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+</span><span class="line">        <span class="n">c</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">ic</span><span class="p">)</span>
+</span><span class="line">        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39; &#39;</span><span class="p">:</span>
+</span><span class="line">            <span class="n">table</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class="line">        <span class="k">else</span><span class="p">:</span>
+</span><span class="line">            <span class="n">table</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1"># Removal</span>
+</span><span class="line">    <span class="nb">buffer</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">in_str</span><span class="p">)</span>
+</span><span class="line">    <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class="line">    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">in_str</span><span class="p">:</span>
+</span><span class="line">        <span class="nb">buffer</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+</span><span class="line">        <span class="n">pos</span> <span class="o">+=</span> <span class="n">table</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+</span><span class="line">    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">buffer</span><span class="p">[:</span><span class="n">pos</span><span class="p">])</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Is test passed:&#39;</span><span class="p">,</span> <span class="n">test_result</span> <span class="o">==</span> <span class="n">RemoveBlanksNoBranchDict</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span></span><span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;RemoveBlanksNoBranchDict(test)&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>         261 function calls in 0.771 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.724    0.724    0.758    0.758 &lt;ipython-input-15-46ad4c3f0b26&gt;:1(RemoveBlanksNoBranchDict)
+        1    0.013    0.013    0.771    0.771 &lt;string&gt;:1(&lt;module&gt;)
+      256    0.000    0.000    0.000    0.000 {built-in method builtins.chr}
+        1    0.000    0.000    0.771    0.771 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.034    0.034    0.034    0.034 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Oooh, yes! Now we can see that without <strong>mispredicted branches</strong> we can really speed up our algorithm.</p>
+
+<p>Is this the best pythonic solution? No, surely not, but still it is an interesting remark to keep in mind when coding.</p>
+
+<h3 id="final-remark-a-simple-pythonic-solution">Final remark: a simple pythonic solution</h3>
+<p>Likely, the simplest pythonic solution is just to use the ‘replace’ string function as follows:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span></span><span class="k">def</span> <span class="nf">RemoveBlanksBuiltin</span><span class="p">(</span><span class="n">in_str</span><span class="p">):</span>
+</span><span class="line">    <span class="n">s1</span> <span class="o">=</span> <span class="n">in_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span class="line">    <span class="n">s2</span> <span class="o">=</span> <span class="n">s1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">s2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Is test passed:&#39;</span><span class="p">,</span> <span class="n">test_result</span> <span class="o">==</span> <span class="n">RemoveBlanksBuiltin</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span></span><span class="n">cProfile</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;RemoveBlanksBuiltin(test)&#39;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>         7 function calls in 0.065 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.001    0.001    0.064    0.064 &lt;ipython-input-18-58fd6655cfba&gt;:1(RemoveBlanksBuiltin)
+        1    0.001    0.001    0.065    0.065 &lt;string&gt;:1(&lt;module&gt;)
+        1    0.000    0.000    0.065    0.065 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        3    0.063    0.021    0.063    0.021 {method 'replace' of 'str' objects}
+</code></pre>
+
+<p>Here we are, the best solution is indeed to use a builtin function, whenever it is possible, even if this was not the real aim of this exercise.</p>
+
+<p>Please, let me know if you have some comments or a different solution in Python.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1140,7 +1521,7 @@ Below, I will show you how to use <strong>CBack</strong> to implement a simple a
 <span class="line-number">3</span>
 <span class="line-number">4</span>
 <span class="line-number">5</span>
-</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span></span><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
 </span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
 </span><span class="line"><span class="n">j</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 </span><span class="line"><span class="n">printf</span><span class="p">(</span><span class="s">&quot;i = %d, j = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">);</span>
@@ -1155,7 +1536,7 @@ Below, I will show you how to use <strong>CBack</strong> to implement a simple a
 <span class="line-number">4</span>
 <span class="line-number">5</span>
 <span class="line-number">6</span>
-</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span></span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
 </span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
 </span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
 </span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
@@ -1206,7 +1587,7 @@ For the details of their use in CBack, see [1].</p>
 <span class="line-number">11</span>
 <span class="line-number">12</span>
 <span class="line-number">13</span>
-</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="n">function</span> <span class="n">findClique</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span></span><span class="n">function</span> <span class="nf">findClique</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
 </span><span class="line">   <span class="k">if</span> <span class="o">|</span><span class="n">C</span><span class="o">|</span> <span class="o">&gt;</span> <span class="o">|</span><span class="n">C</span><span class="o">*|</span> <span class="n">then</span> <span class="n">C</span><span class="o">*</span> <span class="o">&lt;-</span> <span class="n">C</span>  <span class="c1">// store the best clique</span>
 </span><span class="line">   <span class="k">if</span> <span class="o">|</span><span class="n">C</span><span class="o">|</span> <span class="o">+</span> <span class="o">|</span><span class="n">P</span><span class="o">|</span> <span class="o">&gt;</span> <span class="o">|</span><span class="n">C</span><span class="o">*|</span> <span class="n">then</span>
 </span><span class="line">      <span class="k">for</span> <span class="n">all</span> <span class="n">v</span> <span class="n">in</span> <span class="n">P</span> <span class="c1">// the order does matter </span>
@@ -1255,7 +1636,7 @@ If <code>S[v]=0</code>, then vertex <script type="math/tex">i</script> belongs t
 <span class="line-number">25</span>
 <span class="line-number">26</span>
 <span class="line-number">27</span>
-</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="k">for</span> <span class="p">(</span><span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">v</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span></span><span class="k">for</span> <span class="p">(</span><span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">v</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
 </span><span class="line">   <span class="c1">/// If the current clique cannot be extended to a clique</span>
 </span><span class="line">   <span class="c1">/// larger than C*, where LB=|C*|, then backtrack</span>
 </span><span class="line">   <span class="k">if</span> <span class="p">(</span> <span class="n">s</span> <span class="o">+</span> <span class="n">P</span> <span class="o">&lt;=</span> <span class="n">LB</span> <span class="p">)</span>
@@ -1468,7 +1849,7 @@ variable <script type="math/tex">j</script> in the equations <script type="math/
 <span class="line-number">25</span>
 <span class="line-number">26</span>
 <span class="line-number">27</span>
-</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Generate Gomory cuts:</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span></span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Generate Gomory cuts:</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
 </span><span class="line"><span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span><span class="line"><span class="n">cut</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">/// Index of cut to be added</span>
 </span><span class="line"><span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
@@ -1573,93 +1954,6 @@ there is a nice chapter by G. Cornuejols about the <strong>Ongoing Story of Gomo
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/16/how-italian-commuters-discovered-or/">How Italian Commuters Discovered Operations Research</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-<time datetime="2012-12-16T10:45:00+01:00" pubdate data-updated="true">Dec 16<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012/12/16/how-italian-commuters-discovered-or/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Last week, more then 700,000 Italian commuters discovered the importance of Operations Research (OR).
-Nobody explicitly mentioned OR, 
-but due to a horrible crew schedule of <a href="http://www.trenord.it">Trenord</a> 
-(a train operator with around 330 trains and 2700 employees),
-the commuters had a <strong>long, long, long nightmare</strong>. 
-During the whole week, several trains were cancelled (1375 in total) and most of the trains were delayed.
-A <a href="http://milano.corriere.it/milano/notizie/cronaca/12_dicembre_11/treni-cronaca-caos-episodi-2113111724378.shtml">newspaper</a> wrote that a commuter waiting to go home had the painful record of 11 consecutive trains cancelled.
-The Italian online edition of Wired has an <a href="http://daily.wired.it/news/tech/2012/12/13/trenord-treni-software-caos-85247.html">article about this horrible week</a>. 
-If you want to get an idea of the chaos you can search for “caos tilt software trenord” on google.it.</p>
-
-<p>Trenord officially said that the software that planned the crew schedule is faulty. 
-The software was bought last year from <a href="http://www.goalsystems.com">Goal Systems</a>, a Spanish company.
-Rumors say that Trenord paid the Goal System around <strong>1,500,000 Euro</strong>.
-Likely, the system is not faulty, but it “<em>only</em>” had bad input data.</p>
-
-<h2 id="what-newspapers-do-not-write">What newspapers do not write</h2>
-
-<p>Before the Goal System, Trenord was using a different software, produced by
-<a href="http://www.maior.it">Management Artificial Intelligence Operations Research srl (MAIOR)</a>
-that is used by several public transportation companies in Italy,
-included <a href="http://www.atm.it">ATM</a> that operates the subway and buses in Milan.
-In addition, MAIOR collaborates with the <em>Politecnico di Milano</em> and the <em>University of Pisa</em>
-to improve continuously its software.
-Honestly, I am biased, since I collaborate with MAIOR. 
-However, Trenord dismissed the software of MAOIR
-without any specific complaint, since the management had decided to buy the Goal System software.</p>
-
-<p>Newspapers do not ask the following question:</p>
-
-<blockquote>
-  <p>Why to change a piece of software, if the previous one was working correctly?</p>
-</blockquote>
-
-<p>In Italy, soccer players have a motto: “<em>squadra che vince non si cambia</em>”.
-Maybe at Trenord nobody plays soccer.</p>
-
-<h3 id="maior-is-back">MAIOR is back</h3>
-<p>Likely, next week will be better for the 700,000 commuters,
-since OR experts from MAIOR are traveling to Milan to 
-help Trenord to improve the situation.</p>
-
-<h3 id="disclaimer-post-edited-on-18th-december-2012">Disclaimer (post edited on 18th December 2012)</h3>
-<ol>
-  <li>I am a Pavia-Milano commuter disappointed of the chaotic week we had.</li>
-  <li>The information reported in this post were obtained with searches on google.it and published on Italian online magazines.</li>
-  <li>Surely, the Goal System is a piece of software as good as MAIOR software is.</li>
-  <li>This post does not intend to offend anyone. </li>
-</ol>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1672,12 +1966,16 @@ help Trenord to improve the situation.</p>
   
     <section>
   <h1>About Me</h1>
-  <p>Researcher at <a href="http://www.antoptima.com">AntOptima</a>.</p>
-  <p>The views expressed on this post are mine and do not necessarily reflect the views of AntOptima.</p>
+  <p>The views expressed on this blog are mine and do not necessarily reflect the views of my employers.</p>
   <nav>
-  <div><a href="http://www-dimat.unipv.it/~gualandi/Home.html">My Academic Home Page</a></div>
-  <div><a href="http://www-dimat.unipv.it/~gualandi/Papers.html">My Publications</a></div>
+  <div><a href="http://matematica.unipv.it/gualandi/">My Academic Home Page</a></div>
+  <div><a href="http://matematica.unipv.it/gualandi/research/">My Publications</a></div>
   </nav>
+  </p>
+  <p>
+  I do not accept any advertisement. 
+  However, you can offer me <a href="http://paypal.me/stegua/2.10">coffee and brioche</a> or a <a href="http://paypal.me/stegua/7.00">pizza capricciosa</a> through paypal.
+  Please consider getting in touch if you are a supporter so that I can thank you.
   </p>
 </section>
 
@@ -1712,6 +2010,10 @@ help Trenord to improve the situation.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/">Exercise in Python: remove blanks from strings</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/07/04/column-enumeration/">Graph Coloring: Column Generation or Column Enumeration?</a>
       </li>
     
@@ -1725,10 +2027,6 @@ help Trenord to improve the situation.</p>
     
       <li class="post">
         <a href="/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/">An Informal Report from the Combinatorial Optimization Workshop @ Aussois 2014</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/11/17/public-transport-and-big-data/">Public Transport and Big Data</a>
       </li>
     
   </ul>
@@ -1776,15 +2074,6 @@ help Trenord to improve the situation.</p>
     <script src="/javascripts/tinysort-min.js"></script>
     <script src="/javascripts/blogroll.js"></script>
     
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- MyBlog -->
-    <ins class="adsbygoogle"
-       style="display:inline-block;width:120px;height:240px"
-       data-ad-client="ca-pub-4380781683351357"
-       data-ad-slot="1175542821"></ins>
-    <script>
-       (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 </section>
 
   
@@ -1793,7 +2082,7 @@ help Trenord to improve the situation.</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Stefano Gualandi -
+  Copyright &copy; 2017 - Stefano Gualandi -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
