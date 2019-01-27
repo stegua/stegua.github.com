@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Kantorovich Wasserstein Distance | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.com/blog/categories/kantorovich-wasserstein-distance/atom.xml" rel="self"/>
   <link href="http://stegua.github.com/"/>
-  <updated>2019-01-27T15:55:35+01:00</updated>
+  <updated>2019-01-27T15:58:16+01:00</updated>
   <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -36,10 +36,12 @@
 
 <p><strong>The main Inspirations for this post are:</strong></p>
 
-<p><em>. My current favorite tutorial is <a href="https://arxiv.org/abs/1801.07745">Optimal Transport on Discrete Domains</a>, by <a href="http://people.csail.mit.edu/jsolomon/">Justin Solomon</a>.
-*. Two years ago, I started to study this topic thanks to <a href="https://www-dimat.unipv.it/savare/">Giuseppe Savaré</a>, and I wrote this post by looking also to <a href="https://www-dimat.unipv.it/savare/Ravello2010/ravelloB.pdf">his set of slides</a>. He has several interesting papers and you can look at his <a href="https://www-dimat.unipv.it/savare/pubblicazioni/all.html">publications list</a>.
-*. For a complete overview of this topic look at the <a href="https://optimaltransport.github.io/book/">Computational Optimal Transport</a> book, by <a href="http://www.gpeyre.com/">Gabriel Peyré</a> and <a href="http://marcocuturi.net/">Marco Cuturi</a>. These two researchers, together with Justin Solomon, where among the organizers of two <a href="https://en.wikipedia.org/wiki/Conference_on_Neural_Information_Processing_Systems">#NeurIPS</a> workshops, in <a href="http://www.iip.ist.i.kyoto-u.ac.jp/OTML2014/doku.php?id=home">2014</a> and in <a href="http://otml17.marcocuturi.net/">2017</a>, on *Optimal Transport and Machine Learning</em>.
-*. For a broader history of Combinatorial Optimization till 1960, see <a href="https://homepages.cwi.nl/~lex/files/histco.pdf">this manuscript by Alexander Schrijver</a>.</p>
+<ul>
+  <li>My current favorite tutorial is <a href="https://arxiv.org/abs/1801.07745">Optimal Transport on Discrete Domains</a>, by <a href="http://people.csail.mit.edu/jsolomon/">Justin Solomon</a>.</li>
+  <li>Two years ago, I started to study this topic thanks to <a href="https://www-dimat.unipv.it/savare/">Giuseppe Savaré</a>, and I wrote this post by looking also to <a href="https://www-dimat.unipv.it/savare/Ravello2010/ravelloB.pdf">his set of slides</a>. He has several interesting papers and you can look at his <a href="https://www-dimat.unipv.it/savare/pubblicazioni/all.html">publications list</a>.</li>
+  <li>For a complete overview of this topic look at the <a href="https://optimaltransport.github.io/book/">Computational Optimal Transport</a> book, by <a href="http://www.gpeyre.com/">Gabriel Peyré</a> and <a href="http://marcocuturi.net/">Marco Cuturi</a>. These two researchers, together with Justin Solomon, where among the organizers of two <a href="https://en.wikipedia.org/wiki/Conference_on_Neural_Information_Processing_Systems">#NeurIPS</a> workshops, in <a href="http://www.iip.ist.i.kyoto-u.ac.jp/OTML2014/doku.php?id=home">2014</a> and in <a href="http://otml17.marcocuturi.net/">2017</a>, on <em>Optimal Transport and Machine Learning</em>.</li>
+  <li>For a broader history of Combinatorial Optimization till 1960, see <a href="https://homepages.cwi.nl/~lex/files/histco.pdf">this manuscript by Alexander Schrijver</a>.</li>
+</ul>
 
 <p><strong>DISCLAIMER 1:</strong> This is a long “ongoing” post, and, despite my efforts, it might contain errors of any type. If you have any suggestion for improving this post, please (!), let me know about: I will be more than happy to mention you (or any of your avatars) in the acknowledgement section. Otherwise, if you prefer, I can offer you a drink, whenever we will meet in real life.</p>
 
