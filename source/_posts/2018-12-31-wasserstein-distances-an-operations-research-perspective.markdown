@@ -2,10 +2,10 @@
 layout: post
 title: "An informal and biased Tutorial on Kantorovich-Wasserstein distances"
 date: 2018-12-31 13:13
-update: 2018-12-31 13:13
+update: 2019-01-25 13:17
 comments: true
 published: true
-categories: [Optimal Transport, Kantorovich-Wasserstein Distance, Linear Programming, Computational Combinatorial Optimization, Network Simplex]
+categories: [Optimal Transport, Kantorovich Wasserstein Distance, Linear Programming, Computational Combinatorial Optimization, Network Simplex]
 sharing: true
 description: "A biased tutorial on Kantorovich-Wasserstein distances in discrete settings"
 cover:
