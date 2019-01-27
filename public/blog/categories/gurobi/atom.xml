@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Gurobi | Spaghetti Optimization]]></title>
+  <title><![CDATA[Category: GUROBI | Spaghetti Optimization]]></title>
   <link href="http://stegua.github.io/blog/categories/gurobi/atom.xml" rel="self"/>
   <link href="http://stegua.github.io/"/>
-  <updated>2019-01-27T13:50:00+01:00</updated>
+  <updated>2019-01-27T13:51:57+01:00</updated>
   <id>http://stegua.github.io/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -14,584 +14,11 @@
 
   
   <entry>
-    <title type="html"><![CDATA[The Impact of Preprocessing on the MIPLIB2003]]></title>
-    <link href="http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing/"/>
-    <updated>2014-03-19T22:38:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing</id>
-    <content type="html"><![CDATA[<p>What do you know about <strong>preprocessing</strong> for <em>Mixed Integer Programming (MIP)</em> problems?</p>
-
-<p>After a nice chat with <a href="http://dk.linkedin.com/in/bojensen">Bo Jensen</a>, CEO, founder, and co-owner (really, he is a Rocket Scientist!) at <a href="http://www.sulumoptimization.com/">Sulum Optimization</a>, I realised that I know barely anything.</p>
-
-<p>By definition, we have that:</p>
-
-<blockquote>
-  <p>“Presolving is a way to transform the given problem instance into an equivalent instance that is (hopefully) easier to solve.” (see, chap. 10 in <a href="http://nbn-resolving.de/urn:nbn:de:0297-zib-11129">Tobias Achterberg’s Thesis</a>)</p>
-</blockquote>
-
-<p>All I know is that every MIP solver has a <strong>Presolve</strong> parameter, which can take different values.
-For instance, <a href="http://www.gurobi.com">Gurobi</a> has three possible values for that parameter (you can find more details on the <a href="http://www.gurobi.com/documentation/5.0/reference-manual/node718#parameter:Presolve">Gurobi online manual</a>):</p>
-
-<ul>
-  <li><em>Presolve=0</em>: no presolve at all</li>
-  <li><em>Presolve=1</em>: standard presolve</li>
-  <li><em>Presolve=2</em>: aggressive presolve: “More aggressive application of presolve takes more time, but can sometimes lead to a significantly tighter model.”</li>
-</ul>
-
-<p>However, I can’t tell you the real <strong>impact</strong> of that parameter on the overall solution process of a MIP instance. Thus, here we go: let me write a new post that addresses this basic question!</p>
-
-<h2 id="how-to-measure-the-impact-of-preprocessing">How to measure the Impact of Preprocessing?</h2>
-<p>To measure the impact of preprocessing we need four ingredients:</p>
-
-<ol>
-  <li>A MIP solver</li>
-  <li>A Data set</li>
-  <li>Computer power</li>
-  <li>A method to <strong>measure</strong> the impact of preprocessing</li>
-</ol>
-
-<p>Changing one of the ingredients could give you different results, but, hopefully, the big picture will not change too much.</p>
-
-<p>As a solver, I have selected the current release of Gurobi (i.e., version 5.6.2). For the data set, likely the most critical ingredient, I have used the <a href="http://miplib.zib.de/miplib2003/">MIPLIB2003</a>, basically because I had already all the 60 instances on my server. For running the test I have used an old cluster from the <a href="http://www-dimat.unipv.it">Math Department</a> of University of Pavia.</p>
-
-<p>The <strong>measure of impact</strong> I have decided to use (after considering other alternatives) is quite conservative: the fraction of closed instances as a function of runtime.</p>
-
-<p>During the last weekend, I have collected a bunch of logs for the 60 instances of the MIPLIB2003, and, then, using <a href="http://www.rstudio.com">RStudio</a>, I have draw the following cumulative plot:</p>
-
-<p>{% img center ../../../../../../images/preprocessing.png %}</p>
-
-<p>The picture is as simple as clear:</p>
-
-<blockquote>
-  <p>Preprocessing does always pay-off and permits to solve around 10% more of the instances within the same time limit!</p>
-</blockquote>
-
-<p>In this post, I will not discuss additional technical details, but I just want to add two observations:</p>
-
-<ol>
-  <li>Standard preprocessing has removed in average 20.3% of nonzero entries of the original model, while aggressive preprocessing has removed 22.5% of nonzero entries, only a few more.</li>
-  <li>The average MIP gaps as reported by Gurobi at timeout are: no-presolve = 13.44%, standard = 9.08%, and aggressive = 11.02%.</li>
-</ol>
-
-<p>Likely, the aggressive presolve setting has been decided by Gurobi using a different, much larger, and customer-oriented dataset.</p>
-
-<h2 id="open-questions">Open Questions</h2>
-<p>Indeed, preprocessing is a very important feature of a modern MIP solver as Gurobi. Investing few seconds before starting the branch-and-bound MIP search can save a significant amount of runtime. However, a more aggressive preprocessing strategy does not seem to payoff, in average, on the MIPLIB2003.</p>
-
-<p>Unfortunately, preprocessing is somehow disregarded from the research community. There are few recent papers dealing with preprocessing (<em>“ehi! if you do have one, please, let me know about it, ok?”</em>).
-Most of papers are from the 90s and about Linear Programming, i.e., without integer variables, which mess up everything.</p>
-
-<p>Here a list of basic questions I have in mind:</p>
-
-<ul>
-  <li>If cutting planes are used to approximate the convex hull of an Integer Problem, preprocessing for what is used for, really?</li>
-  <li>Preprocessing techniques have been designed considering a trade-off between <strong>efficiency</strong> and <strong>efficacy</strong> (see, MWP Savelsbergh, <em>Preprocessing and Probing Techniques for MIP problems</em>, Journal of Computing, vol6(4) 445-454, 1995). With recent progress in software and hardware technologies, can we revise this trade-off in favor of efficacy?</li>
-  <li>Preprocessing techniques used for Linear Programming are effective when applied to LP relaxations of Integer Problems?</li>
-  <li>Should preprocessing sparsify the coefficient matrix?</li>
-  <li>Using the more recent <a href="http://miplib.zib.de/">MIPLIB2010</a> should we expect much different results?</li>
-  <li>Which is a better method to measure the impact of preprocessing on a collection of instances?</li>
-</ul>
-
-<p>If you want to share your idea, experience, or opinion, with respect to these questions, you could comment below or send me an email.</p>
-
-<p>Now, to conclude, my bonus question:</p>
-
-<blockquote>
-  <p>Do you have any new smart idea for improving preprocessing?</p>
-</blockquote>
-
-<p>Well, if you had, I guess you would at least write a paper about, but, do not go for a patent, please!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[An Informal Report from the Combinatorial Optimization Workshop @ Aussois 2014]]></title>
-    <link href="http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/"/>
-    <updated>2014-01-13T18:30:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014</id>
-    <content type="html"><![CDATA[<p>It is very hard to report about the <a href="http://www.iasi.cnr.it/aussois/web/home">Combinatorial Optimization Workshop</a> in <a href="http://www.aussois.com/hiver/">Aussois</a>. It was like an “informal” <a href="http://www.or.uni-bonn.de/ipco/">IPCO</a> with <em>Super Heroes researchers</em> in the audience, leaded by <em>Captain Egon</em>, who appears at work in the following photo-tweet:</p>
-
-<blockquote class="twitter-tweet" lang="en"><p>Egon talks intersection cuts at <a href="https://twitter.com/search?q=%23aussois&amp;src=hash">#aussois</a>. Still the man. <a href="http://t.co/7KMcNyJYV0">pic.twitter.com/7KMcNyJYV0</a></p>&mdash; Jeff Linderoth (@JeffLinderoth) <a href="https://twitter.com/JeffLinderoth/statuses/420852308583276544">January 8, 2014</a></blockquote>
-<script async="" src="http://stegua.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<p>The Captain gave an inspiring talk by questioning the recursive paradigm of cutting planes algorithms. With a very basic example, <a href="http://public.tepper.cmu.edu/facultydirectory/FacultyDirectoryProfile.aspx?id=39">Balas</a> has shown how a non basic vertex (solution) can produce a much deeper cut than a cut generated by an optimal basis. Around this intuition, Balas has presented a very nice <a href="http://link.springer.com/article/10.1007%2Fs10107-011-0483-x">generalization of Intersection Cuts</a>… a new paper enters my “PAPERS-TO-BE-READ” folder.</p>
-
-<p>To stay on the subject of cutting planes, the talk by Marco Molinaro in the first day of the workshop was really nice. He raises the fundamental question on how important are <strong>sparse cuts</strong> versus <strong>dense cuts</strong>. The importance of sparse cuts comes from linear algebra: when solving the simplex it is better to have small determinants in the coefficient matrix of the Linear Programming relaxation in order to avoid numerical issues; sparse cuts implicitly help in keeping small the determinants (intuitively, you have more zeros in the matrix). Dense cuts play the opposite role, but they can be really important to improve the bound of the LP relaxation.
-In his talk, Molinaro has shown and proofed, for three particular cases, when sparse cuts are enough, and when they are not. 
-Another paper goes on the “PAPERS-TO-BE-READ” folder.</p>
-
-<p>In the same day of Molinaro, it was really inspiring the talk by Sebastian Pokutta, who really gave a completely new (for me) perspective on <strong>Extended Formulations</strong> by using <a href="http://en.wikipedia.org/wiki/Information_theory">Information Theory</a>. Sebastian is the author of a <a href="http://spokutta.wordpress.com/">blog</a>, and I hope he will post about his talk.</p>
-
-<p>Andrea Lodi has discussed about an Optimization problem that arises in Supervised Learning.  For this problem, the COIN-OR solver <a href="http://www.coin-or.org/Couenne/">Couenne</a>, developed by Pietro Belotti, significantly outperforms <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a>. The issues seem to come from on a number of basic big-M (indicator) constraints. To make a long story short, if you have to solve a hard problem, it does pay off to try different solvers, since there is not a “win-all” solver. </p>
-
-<blockquote>
-  <p>Do you have an original new idea for developing solvers? Do not be intimidated by <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a> or <a href="http://www.gurobi.com/">Gurobi</a> and go for it!</p>
-</blockquote>
-
-<p>The presentation by Marco Senatore was brilliant and his work looks very interesting. I have particularly enjoyed the application in Public Transport that he has mentioned at the end of his talk.</p>
-
-<p>I recommend to have a look at the presentation of Stephan Held about the <strong>Reach-aware Steiner Tree Problem</strong>. He has an interesting Steiner tree-like problem with a very important application in chip design. The presentation has impressive pictures of what optimal solutions look like in chip design.</p>
-
-<p>At the end of talk, Stephan announced the <a href="http://dimacs11.cs.princeton.edu/">11th DIMACS challenge on Steiner Tree Problems</a>.</p>
-
-<p>Eduardo Uchoa gave another impressive presentation on recent progresses on the classical <strong>Capacitated Vehicle Routing Problem</strong> (CVRP). He has a very sophisticated branch-and-price-and-cut algorithm, which comes with a very efficient implementation of every possible idea developed for CVRP, plus new ideas on solving efficiently the pricing sub problems (my understanding, but I might be wrong, is that they have a very efficient dominance rule for solving a shortest path sub problem). 
-+1 item in the “PAPERS-TO-BE-READ” folder.</p>
-
-<p>The last day of the workshop, I have enjoyed the two talks by Simge Kucukyavuz and Jim Luedtke on <strong>Stochastic Integer Programming</strong>: for me is a completely new topic, but the two presentations were really inspiring.</p>
-
-<p>To conclude, Domenico Salvagnin has shown how far it is possible to go by carefully using MIP technologies such as <strong>cutting planes</strong>, <strong>symmetry handling</strong>, and <strong>problem decomposition</strong>. Unfortunately, it does happen too often that when someone (typically a non OR expert) has a difficult application problem, he writes down a more or less complicated Integer Programming model, tries a solver, sees it takes too much time, and gives up with exact methods. Domenico, by solving the largest unsolved instance for the 3-dimensional assignment problem, has shown that </p>
-
-<blockquote>
-  <p>there are potentially no limits for MIP solvers!</p>
-</blockquote>
-
-<p>In this post, I have only mentioned a few talks, which somehow overlap with my research interests. However, every talk was really interesting. Fortunately, Francois Margot has strongly encouraged all of the speakers to upload their slides and/or papers, so you can find (almost) all of them on the <a href="http://www.iasi.cnr.it/aussois/web/home/program/year/2014">program web page of the workshop</a>. Visit the website and have a nice reading!</p>
-
-<p>To conclude, let me steal another nice picture from twitter: </p>
-
-<blockquote class="twitter-tweet" lang="en"><p>Goodbye <a href="https://twitter.com/search?q=%23aussois2014&amp;src=hash">#aussois2014</a> <a href="http://t.co/ODupKKmGTZ">pic.twitter.com/ODupKKmGTZ</a></p>&mdash; Matteo Fischetti (@MFischetti) <a href="https://twitter.com/MFischetti/statuses/421642338759618560">January 10, 2014</a></blockquote>
-<script async="" src="http://stegua.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Challenging MIPs instances]]></title>
-    <link href="http://stegua.github.io/blog/2012/12/13/challenging-mips/"/>
-    <updated>2012-12-13T18:11:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2012/12/13/challenging-mips</id>
-    <content type="html"><![CDATA[<p>Today, I share seven challenging MIP instances as 
-<a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps files</a>
-along with the AMPL <a href="https://github.com/stegua/MyBlogEntries/tree/master/Roadef2012">model and data files</a> 
-I used to generate them. 
-While I like the <a href="http://miplib.zib.de/">MIPLIBs</a>, I do prefer problem libraries similar to the 
-<a href="http://www.csplib.org/">CSPLIB</a> where
-you get both a problem description <strong>and</strong> a set of data. This allows anyone to try
-with her new model and/or method.</p>
-
-<p>The MIP instances I propose come from my formulation of
-the <a href="http://challenge.roadef.org/2012/en/sujet.php">Machine Reassignment Problem</a> 
-proposed for the <a href="http://roadef.org/content/index.htm">Roadef Challenge</a> sponsored by Google last year. 
-As I wrote in a <a href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
-the Challenge had <strong>huge</strong> instances and a <em>micro</em> time limit of 300 seconds.
-I said <em>micro</em> because I have in mind exact methods: there is little you can do in 300 seconds when you
-have a problem with potentially as many as <script type="math/tex">50000 \times 5000</script> binary variables. 
-If you want to use math programming and start with the solution of a linear programming relaxation of the problem,
-you have to be careful: it might happen that you cannot even solve the LP relaxation at the root node within 300 seconds.</p>
-
-<p>That is why most of the participants tackled the Challenge mainly with heuristic algorithms.
-The only <em>general purpose</em> solver that qualified for the challenge is <a href="http://www.localsolver.com">Local Solver</a>,
-which has a nice abstraction (“somehow” similar to AMPL) to well-known local search algorithms and move operators.
-The Local Solver script used in the qualification phase is available 
-<a href="http://www.localsolver.com/misc/google_machine_reassignment.lsp">here</a>.</p>
-
-<p>However, in my own opinion, it is interesting to try to solve at least the instances of the qualification phase
-with Integer Linear Programming (ILP) solvers such as 
-<a href="http://www.gurobi.com">Gurobi</a> and <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
-Can these branch-and-cut commercial solvers be competitive on such problems? </p>
-
-<h2 id="problem-overview">Problem Overview</h2>
-
-<p>Consider you are given a set of processes <script type="math/tex">P</script>, a set of machines <script type="math/tex">M</script>,
-and an initial mapping <script type="math/tex">\pi</script> of each process to a single machine 
-(i.e., <script type="math/tex">\pi_p = i</script> if process <script type="math/tex">p</script> is initially assigned to machine <script type="math/tex">i</script>).
-Each process consumes several <em>resources</em>, e.g., CPU, memory, and bandwidth.
-In the challenge, some processes were defined to be
-<em>transient</em>: they consume resources both on the machine where they are initially located,
-and in the machine they are going to be after the reassignment.
-The problem asks to find a new assignment of processes to machines that minimizes a rather involved cost function.</p>
-
-<p>A basic ILP model will have a 0-1 variable <script type="math/tex">x_{pi}</script> equals to 1 if you
-(re)assign process <script type="math/tex">p</script> to machine <script type="math/tex">i</script>. The number of processes and the number of machines give
-a first clue on the size of the problem. 
-The constraints on the resource capacities yield a multi-dimensional knapsack subproblem for each machine.
-The Machine Reassignment Problem has other constraints (kind of logical 0-1 constraints), 
-but I do not want to bore you here with a full problem description. 
-If you like to see my model, please read the 
-<a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/ampl-scripts/roadef2012.mod">AMPL model file</a>. </p>
-
-<h2 id="a-first-attempt-with-gurobi">A first attempt with Gurobi</h2>
-<p>In order to convince you that the proposed instances are challenging, I report some computational results.</p>
-
-<p>The table below reports for each instance the best result obtained by the participants
-of the challenge (second column). The remaining four columns give 
-the upper bound (UB), the lower bound (LB), the number of branch-and-bound nodes, and the computation time in seconds
-obtained with Gurobi 5.0.1, a timeout of 300 seconds, and the default parameter setting on a rather old desktop
-(single core, 2Gb of RAM).</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: center">Instance</th>
-      <th style="text-align: right">Best Known UB</th>
-      <th style="text-align: right">Upper Bound</th>
-      <th style="text-align: right">Lower Bound</th>
-      <th style="text-align: right">Nodes</th>
-      <th style="text-align: right">Time</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: center">a1-1</td>
-      <td style="text-align: right">44,306,501</td>
-      <td style="text-align: right"><strong>44,306,501</strong></td>
-      <td style="text-align: right"><strong>44,306,501</strong></td>
-      <td style="text-align: right">0</td>
-      <td style="text-align: right">0.05</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a1-2</td>
-      <td style="text-align: right">777,532,896</td>
-      <td style="text-align: right">780,511,277</td>
-      <td style="text-align: right">777,530,829</td>
-      <td style="text-align: right">537</td>
-      <td style="text-align: right">-</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a1-3</td>
-      <td style="text-align: right">583,005,717</td>
-      <td style="text-align: right"><strong>583,005,720</strong></td>
-      <td style="text-align: right"><strong>583,005,715</strong></td>
-      <td style="text-align: right">15</td>
-      <td style="text-align: right">48.76</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a1-4</td>
-      <td style="text-align: right">252,728,589</td>
-      <td style="text-align: right">320,104,617</td>
-      <td style="text-align: right">242,404,632</td>
-      <td style="text-align: right">24</td>
-      <td style="text-align: right">-</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a1-5</td>
-      <td style="text-align: right">727,578,309</td>
-      <td style="text-align: right"><strong>727,578,316</strong></td>
-      <td style="text-align: right"><strong>727,578,296</strong></td>
-      <td style="text-align: right">221</td>
-      <td style="text-align: right">2.43</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-1</td>
-      <td style="text-align: right">198</td>
-      <td style="text-align: right">54,350,836</td>
-      <td style="text-align: right">110</td>
-      <td style="text-align: right">0</td>
-      <td style="text-align: right">-</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-2</td>
-      <td style="text-align: right">816,523,983</td>
-      <td style="text-align: right">1,876,768,120</td>
-      <td style="text-align: right">559,888,659</td>
-      <td style="text-align: right">0</td>
-      <td style="text-align: right">-</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-3</td>
-      <td style="text-align: right">1,306,868,761</td>
-      <td style="text-align: right">2,272,487,840</td>
-      <td style="text-align: right">1,007,955,933</td>
-      <td style="text-align: right">0</td>
-      <td style="text-align: right">-</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-4</td>
-      <td style="text-align: right">1,681,353,943</td>
-      <td style="text-align: right">3,223,516,130</td>
-      <td style="text-align: right">1,680,231,407</td>
-      <td style="text-align: right">0</td>
-      <td style="text-align: right">-</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-5</td>
-      <td style="text-align: right">336,170,182</td>
-      <td style="text-align: right">787,355,300</td>
-      <td style="text-align: right">307,041,984</td>
-      <td style="text-align: right">0</td>
-      <td style="text-align: right">-</td>
-    </tr>
-  </tbody>
-</table>
-
-<p><br />
-Instances <strong>a1-1</strong>, <strong>a1-3</strong>, <strong>a1-5</strong> are solved to optimality within 300 seconds
-and hence they are not further considered.</p>
-
-<p>The remaining seven instances are the challenging instances mentioned at the begging of this post.
-The instances <strong>a2-x</strong> are embarrassing: they have an UB that is far away from both the best known UB
-and the computed LB.
-Specifically, look at the instance <strong>a2-1</strong>: the best result of the challenge has value 198, Gurobi
-(using my model) finds a solution with cost 54,350,836: you may agree that this is “<em>slightly</em>” more than 198.
-At the same time the LB is only 110. </p>
-
-<p>Note that for all the <strong>a2-x</strong> instances the number of branch-and-bound nodes is zero.
-After 300 seconds the solver is still at the root node trying to generate cutting planes and/or
-running their primal heuristics. Using CPLEX 12.5 we got pretty similar results.</p>
-
-<p>This is why I think these instances are challenging for branch-and-cut solvers. </p>
-
-<h2 id="search-strategies-feasibility-vs-optimality">Search Strategies: Feasibility vs Optimality</h2>
-<p>Commercial solvers have usually a meta-parameter that controls the search focus by setting other parameters
-(how they are precisely set is undocumented: do you know more about?).
-The two basic options of this parameter are (1) to focus on looking for feasible solution
-or (2) to focus on proving optimality.
-The name of this parameter is <strong>MipEmphasis</strong> in CPLEX and <strong>MipFocus</strong> in Gurobi. 
-Since the LPs are quite time consuming and after 300 seconds the solver is still at the root node, 
-we can wonder whether generating cuts is of any help on these instances.</p>
-
-<p>If we set the MipFocus to <strong>feasibility</strong> and we explicitly <strong>disable all cut generators</strong>, would we get better results?</p>
-
-<p>Look at the table below:
-the values of the upper bounds of instances <strong>a1-2</strong>, <strong>a1-4</strong>, and <strong>a2-3</strong> are slightly better than before: 
-this is a good news. However, for instance <strong>a2-1</strong> the upper bound is worse, and for the other three instances there is no difference. Moreover, the LBs are always weaker: as expected, there is no free lunch!</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: center">Instance</th>
-      <th style="text-align: right">Upper Bound</th>
-      <th style="text-align: right">Lower Bound</th>
-      <th style="text-align: right">Gap</th>
-      <th style="text-align: right">Nodes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: center">a1-2</td>
-      <td style="text-align: right">779,876,897</td>
-      <td style="text-align: right">777,530,808</td>
-      <td style="text-align: right">0.30%</td>
-      <td style="text-align: right">324</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a1-4</td>
-      <td style="text-align: right">317,802,133</td>
-      <td style="text-align: right">242,398,325</td>
-      <td style="text-align: right">23.72%</td>
-      <td style="text-align: right">48</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-1</td>
-      <td style="text-align: right">65,866,574</td>
-      <td style="text-align: right">66</td>
-      <td style="text-align: right">99.99%</td>
-      <td style="text-align: right">81</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-2</td>
-      <td style="text-align: right">1,876,768,120</td>
-      <td style="text-align: right">505,443,999</td>
-      <td style="text-align: right">73.06%</td>
-      <td style="text-align: right">0</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-3</td>
-      <td style="text-align: right">1,428,873,892</td>
-      <td style="text-align: right">1,007,955,933</td>
-      <td style="text-align: right">29.45%</td>
-      <td style="text-align: right">0</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-4</td>
-      <td style="text-align: right">3,223,516,130</td>
-      <td style="text-align: right">1,680,230,915</td>
-      <td style="text-align: right">47.87%</td>
-      <td style="text-align: right">0</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-5</td>
-      <td style="text-align: right">787,355,300</td>
-      <td style="text-align: right">307,040,989</td>
-      <td style="text-align: right">61.00%</td>
-      <td style="text-align: right">0</td>
-    </tr>
-  </tbody>
-</table>
-
-<p><br />
-If we want to keep a timeout of 300 seconds, there is little we can do, unless we develop an ad-hoc decomposition approach.</p>
-
-<blockquote>
-  <p>Can we improve those results with a branch-and-cut solver using a longer timeout?</p>
-</blockquote>
-
-<p>Most of the papers that uses branch-and-cut to solve hard problems have a timeout
-of at least one hour, and they start by running an heuristic for around 5 minutes.
-Therefore, we can think of using the best results obtained by the participants of the 
-challenge as starting solution. </p>
-
-<p>So, let us make a step backward: we enable all cut generators and we set all parameters at the default value.
-In addition we set the time limit to one hour. The table below gives the new results.
-With this setting we are able to “prove” near-optimality of instance <strong>a1-2</strong>, and we reduce
-significantly the gap of instance <strong>a2-4</strong>.
-However, the solver never improves the primal solutions: this means that we have not improved the results
-obtained in the qualification phase of the challenge.
-Note also that the number of nodes explored is still rather small despite the longer timeout.</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: center">Instance</th>
-      <th style="text-align: right">Upper Bound</th>
-      <th style="text-align: right">Lower Bound</th>
-      <th style="text-align: right">Gap</th>
-      <th style="text-align: right">Nodes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: center">a1-2</td>
-      <td style="text-align: right">777,532,896</td>
-      <td style="text-align: right">777,530,807</td>
-      <td style="text-align: right">~0.001%</td>
-      <td style="text-align: right">0</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a1-4</td>
-      <td style="text-align: right">252,728,589</td>
-      <td style="text-align: right">242,404,642</td>
-      <td style="text-align: right">4.09%</td>
-      <td style="text-align: right">427</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-1</td>
-      <td style="text-align: right">198</td>
-      <td style="text-align: right">120</td>
-      <td style="text-align: right">39.39%</td>
-      <td style="text-align: right">2113</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-2</td>
-      <td style="text-align: right">816,523,983</td>
-      <td style="text-align: right">572,213,976</td>
-      <td style="text-align: right">29.92%</td>
-      <td style="text-align: right">18</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-3</td>
-      <td style="text-align: right">1,306,868,761</td>
-      <td style="text-align: right">1,068,028,987</td>
-      <td style="text-align: right">18.27%</td>
-      <td style="text-align: right">69</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-4</td>
-      <td style="text-align: right">1,681,353,943</td>
-      <td style="text-align: right">1,680,231,594</td>
-      <td style="text-align: right">0.06%</td>
-      <td style="text-align: right">133</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-5</td>
-      <td style="text-align: right">336,170,182</td>
-      <td style="text-align: right">307,042,542</td>
-      <td style="text-align: right">8.66%</td>
-      <td style="text-align: right">187</td>
-    </tr>
-  </tbody>
-</table>
-
-<p><br />
-What if we disable all cuts and set the <strong>MipFocus</strong> to feasibility again?</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: center">Instance</th>
-      <th style="text-align: right">Upper Bound</th>
-      <th style="text-align: right">Lower Bound</th>
-      <th style="text-align: right">Gap</th>
-      <th style="text-align: right">Nodes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: center">a1-2</td>
-      <td style="text-align: right">777,532,896</td>
-      <td style="text-align: right">777,530,807</td>
-      <td style="text-align: right">~0.001%</td>
-      <td style="text-align: right">0</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a1-4</td>
-      <td style="text-align: right">252,728,589</td>
-      <td style="text-align: right">242,398,708</td>
-      <td style="text-align: right">4.09%</td>
-      <td style="text-align: right">1359</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-1</td>
-      <td style="text-align: right"><strong>196</strong></td>
-      <td style="text-align: right">70</td>
-      <td style="text-align: right">64.28%</td>
-      <td style="text-align: right">818</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-2</td>
-      <td style="text-align: right">816,523,983</td>
-      <td style="text-align: right">505,467,074</td>
-      <td style="text-align: right">38.09%</td>
-      <td style="text-align: right">81</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-3</td>
-      <td style="text-align: right"><strong>1,303,662,728</strong></td>
-      <td style="text-align: right">1,008,286,290</td>
-      <td style="text-align: right">22.66%</td>
-      <td style="text-align: right">56</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-4</td>
-      <td style="text-align: right">1,681,353,943</td>
-      <td style="text-align: right">1,680,230,918</td>
-      <td style="text-align: right">0.07%</td>
-      <td style="text-align: right">108</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">a2-5</td>
-      <td style="text-align: right"><strong>336,158,091</strong></td>
-      <td style="text-align: right">307,040,989</td>
-      <td style="text-align: right">8.67%</td>
-      <td style="text-align: right">135</td>
-    </tr>
-  </tbody>
-</table>
-
-<p><br />
-With this parameter setting, we improve the UB for 3 instances: <strong>a2-1</strong>, <strong>a2-3</strong>, and <strong>a2-5</strong>.
-However, the lower bounds are again much weaker. Look at instance <strong>a2-1</strong>: the lower bound is
-now 70 while before it was 120. If you look at instance <strong>a2-3</strong> you can see that even if
-we got a better primal solution, the gap is weaker, since the lower bound is worse.</p>
-
-<h2 id="rfc-any-idea">RFC: Any idea?</h2>
-<p>With the focus on feasibility you get better results, but you might miss the ability to prove optimality.
-With the focus on optimality you get better lower bounds, but you might not improve the primal bounds.</p>
-
-<blockquote>
-  <p>1) How to balance feasibility with optimality?</p>
-</blockquote>
-
-<p>To use branch-and-cut solver and to disable cut generators is counterintuitive, but if you do you, you get better
-primal bounds.  </p>
-
-<blockquote>
-  <p>2) Why should I use a branch-and-cut solver then? </p>
-</blockquote>
-
-<p>Do you have any idea out there?</p>
-
-<h3 id="minor-remark">Minor Remark</h3>
-<p>While writing this post, we got 3 solutions that are better than those obtained by the participants of 
-the qualification phase: 
-<a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/certificates/sol_a2_1.sol">a2-1</a>, 
-<a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/certificates/sol_a2_3.sol">a2-3</a>, and 
-<a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/certificates/sol_a2_5.sol">a2-5</a>
-(the three links give the certificates of the solutions). 
-We are almost there in proving optimality of <strong>a2-3</strong>, and we get better lower bounds than those 
-<a href="http://4c.ucc.ie/~hsimonis/reassignment.pdf">published</a> in [1].</p>
-
-<h2 id="references">References</h2>
-<style type="text/css">
+    <title type="html"><![CDATA[Graph Coloring: Column Generation or Column Enumeration?]]></title>
+    <link href="http://stegua.github.io/blog/2015/07/04/column-enumeration/"/>
+    <updated>2015-07-04T16:45:00+02:00</updated>
+    <id>http://stegua.github.io/blog/2015/07/04/column-enumeration</id>
+    <content type="html"><![CDATA[<style type="text/css">
 table { width:100%; }
 thead {
    background-color: rgba(0,0,255,0.3);
@@ -606,19 +33,322 @@ tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
 .journal { font-style: italic; }
 </style>
 
+<p>In this post, I like to share a simple idea on how to solve to optimality some <a href="http://www.info.univ-angers.fr/pub/porumbel/graphs/">hard instances</a> of the <a href="http://en.wikipedia.org/wiki/Graph_coloring">Graph Coloring</a> problem. This simple idea yields a “new time” record for a couple of hard instances. </p>
+
+<p>To date, the best <strong>exact</strong> approach to solve Graph Coloring 
+is based on <em><a href="http://en.wikipedia.org/wiki/Branch_and_price">Branch-and-Price</a></em> [1, 2, 3].
+The branch-and-price method is completely different from the Constraint Programming approach I discussed in a <a href="http://stegua.github.io/blog/2013/06/28/gecol/">previous post</a>. A key component of Branch-and-Price is the <em>column generation</em> phase, which is 
+intuitively quite simple, but mathematically rather involved for a short blog post.</p>
+
+<p>Here, I want to show you that a modern Mixed Integer Programming (MIP) solver, such as <a href="http://www.gurobi.com/">Gurobi</a> or <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a>, can solve a few hard instances of graph coloring with the following <em>“null implementation effort”</em>:</p>
+
 <ol>
-  <li>
-    <p> Deepak Mehta, Barry O’Sullivan, Helmut Simonis. 
-<span class="title">Comparing Solution Methods for the Machine Reassignment Problem</span>. 
-In Proc of CP 2012, Québec City, Canada, October 8-12, 2012.
-</p>
-  </li>
+  <li>Enumerate all possible columns</li>
+  <li>Build a <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps</a> instance with those columns</li>
+  <li>Use a MIP solver to solve the .mps instance</li>
 </ol>
 
-<h1 id="credits">Credits</h1>
-<p>Thanks to <a href="https://plus.google.com/116327072470709585073/posts">Stefano Coniglio</a> 
-and to <a href="http://imada.sdu.dk/~marco/">Marco Chiarandini</a> for their passionate discussions about the posts
-in this blog. </p>
+<p>Indeed, in this post we try to answer to the following question:</p>
+
+<blockquote>
+  <p>Is there any hope to solve any hard graph coloring instances with this naive approach?</p>
+</blockquote>
+
+<h2 id="formulation">Formulation</h2>
+<p>Given an undirected graph <script type="math/tex">G=(V,E)</script> and a set of colors <script type="math/tex">K</script>, 
+the minimum (vertex) graph coloring problem consists of assigning a color to each vertex,
+while every pair of adjacent vertices gets a different color. The objective is to minimize the number of colors used in a solution.</p>
+
+<p>The branch-and-price approach to graph coloring is based on a <em>set covering</em> formulation.
+Let <script type="math/tex">S</script> be the collection of all the maximal stable sets of <script type="math/tex">G</script>,
+and let <script type="math/tex">S_i \subseteq S</script> be the maximal stable sets that contain the vertex <script type="math/tex">i</script>.
+Let <script type="math/tex">\lambda_s</script> be a 0-1 variable equal to 1 if all the vertices in the maximal stable set <script type="math/tex">s \in S</script> 
+get assigned the same color. Hence, the set covering model is:</p>
+
+<script type="math/tex; mode=display">\min \sum_{s \in S} \lambda_s \mbox{ such that } \sum_{s \in S_i} \lambda_s \geq 1, \forall i \in N, \lambda_s \in \{0,1\}, \forall s \in S.</script>
+
+<p>Indeed, we <em>“cover”</em> every vertex of <script type="math/tex">G</script> with the minimal number of maximal stable sets.
+The issue with this model is the total number of maximal stable sets in <script type="math/tex">G</script>, which <em>is exponential in the number of vertices of G</em>.</p>
+
+<p>Column Generation is a “mathematically elegant” method to by-pass this issue:
+it lets you to solve the set covering model by <em>generating</em> a very small subset of the elements in <script type="math/tex">S</script>. This happens by repeatedly solving an auxiliary problem,
+called the <em>pricing</em> subproblem. For graph coloring, the pricing subproblem consists of a Maximum Weighted Stable Set problem.
+If you are interested in Column Generation, I recommend you to look at the first chapter of
+the <a href="http://www.springer.com/gp/book/9780387254852">Column Generation book</a>,
+which contains a nice tutorial on the topic, and I would <strong>strongly</strong> recommend reading the nice survey “Selected Topics in Column Generation”, [4].</p>
+
+<blockquote>
+  <p>How many maximal stable sets are in a hard graph coloring instance?</p>
+</blockquote>
+
+<p>If this number were not so high, we could enumerate all the stable sets in <script type="math/tex">S</script>
+and attempt to directly solve the set covering model without resorting to column generation.
+However, <em>“high”</em> is a subjective measure, so let me do some computations on my laptop and give you some precise numbers.</p>
+
+<h2 id="hard-instances">Hard instances</h2>
+<p>Among the <a href="http://mat.gsia.cmu.edu/COLOR/instances.html">DIMACS instances</a> of Graph Coloring, there are a few instances
+proposed by David Johnson, which are still unsolved (in the sense that we have not a computational proof of optimality of the best known upper bounds).</p>
+
+<p>The table below shows the dimensions of these instances. The name of instances are DSJC{n}.{d}, where {n} is the number of vertices and {d} gives the density of the graph (e.g., DSJC125.9 has 125 vertices and 0.9 of density).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Graph</th>
+      <th style="text-align: center">Nodes</th>
+      <th style="text-align: center">Edges</th>
+      <th style="text-align: center">Max stable sets</th>
+      <th style="text-align: center">Enumeration Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">DSJC125.9</td>
+      <td style="text-align: center">125</td>
+      <td style="text-align: center">6,961</td>
+      <td style="text-align: center">524</td>
+      <td style="text-align: center">0.00</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.9</td>
+      <td style="text-align: center">250</td>
+      <td style="text-align: center">27,897</td>
+      <td style="text-align: center">2,580</td>
+      <td style="text-align: center">0.01</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.9</td>
+      <td style="text-align: center">500</td>
+      <td style="text-align: center">112,437</td>
+      <td style="text-align: center">14,560</td>
+      <td style="text-align: center">0.12</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.9</td>
+      <td style="text-align: center">1,000</td>
+      <td style="text-align: center">449,449</td>
+      <td style="text-align: center">100,389</td>
+      <td style="text-align: center">2.20</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC125.5</td>
+      <td style="text-align: center">125</td>
+      <td style="text-align: center">3,891</td>
+      <td style="text-align: center">43,268</td>
+      <td style="text-align: center">0.53</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.5</td>
+      <td style="text-align: center">250</td>
+      <td style="text-align: center">15,668</td>
+      <td style="text-align: center">1,470,363</td>
+      <td style="text-align: center">43.16</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.5</td>
+      <td style="text-align: center">500</td>
+      <td style="text-align: center">62,624</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.5</td>
+      <td style="text-align: center">1,000</td>
+      <td style="text-align: center">249,826</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC125.1</td>
+      <td style="text-align: center">125</td>
+      <td style="text-align: center">736</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.1</td>
+      <td style="text-align: center">250</td>
+      <td style="text-align: center">3,218</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.1</td>
+      <td style="text-align: center">500</td>
+      <td style="text-align: center">12,458</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.1</td>
+      <td style="text-align: center">1,000</td>
+      <td style="text-align: center">49,629</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">out of memory</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+As you can see the number of maximal stable sets (i.e. the cardinality of <script type="math/tex">S</script>)
+of several instances is not so high, above all for very dense graphs, where the number of stables set is less than the number of edges. However, for sparse graphs, the number of maximal stable sets is too large for the memory available in my laptop.</p>
+
+<p>Now, let me re-state the main question of this post:</p>
+
+<blockquote>
+  <p>Can we <strong>enumerate</strong> all the maximal stable sets of <script type="math/tex">G</script> and use a  MIP solver such as <a href="http://www.gurobi.com/">Gurobi</a> or <a href="http://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/">CPLEX</a> to solve any Johnson’s instance of Graph Coloring?</p>
+</blockquote>
+
+<h2 id="results">Results</h2>
+<p>I have written a small script which uses <a href="http://users.aalto.fi/~pat/cliquer.html">Cliquer</a> to enumerate all the maximal
+stable sets of a graph, and then I generate an <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps</a>
+instance for each of the DSJC instance where I was able to store all maximal stable sets.
+The .mps file are on my public <a href="https://github.com/stegua/MyBlogEntries/tree/master/Coloring">GitHub repository for this post</a>.</p>
+
+<p>The table below shows some numbers for the sparse instances obtained using Gurobi (v6.0.0)
+with a timeout of 10 minutes on my laptop. If you compare these numbers with the results published in the literature, you can see that they are not bad at all.</p>
+
+<p>Believe me, these number are not bad at all, and establish a new <strong>TIME RECORD</strong>.</p>
+
+<p>For example, the instance DSJC250.9 was solved to optimality only recently in
+11094 seconds by [3], while the column enumeration approach solves the same instance on a similar hardware in only 23 seconds (!), and, honestly, our work in [2] did not solve this instance to optimality at all.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Graph</th>
+      <th style="text-align: center">Best known</th>
+      <th style="text-align: center">Enum. Time</th>
+      <th style="text-align: center">Run time</th>
+      <th style="text-align: center">LB</th>
+      <th style="text-align: center">UB</th>
+      <th style="text-align: center">Time [2]</th>
+      <th style="text-align: center">LB[2]</th>
+      <th style="text-align: center">UB [2]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">DSJC125.9</td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center">0.00</td>
+      <td style="text-align: center"><strong>0.44</strong></td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center">44</td>
+      <td style="text-align: center"><strong>44</strong></td>
+      <td style="text-align: center"><strong>44</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.9</td>
+      <td style="text-align: center"><strong>72</strong></td>
+      <td style="text-align: center">0.01</td>
+      <td style="text-align: center"><strong>23</strong></td>
+      <td style="text-align: center"><strong>72</strong></td>
+      <td style="text-align: center"><strong>72</strong></td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">71</td>
+      <td style="text-align: center">72</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC500.9</td>
+      <td style="text-align: center">128</td>
+      <td style="text-align: center">0.12</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">123</td>
+      <td style="text-align: center"><strong>128</strong></td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">123</td>
+      <td style="text-align: center">136</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC1000.9</td>
+      <td style="text-align: center">222</td>
+      <td style="text-align: center">2.20</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">215</td>
+      <td style="text-align: center"><strong>229</strong></td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">215</td>
+      <td style="text-align: center">245</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC125.5</td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center">0.53</td>
+      <td style="text-align: center"><strong>70.6</strong></td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center">19033</td>
+      <td style="text-align: center"><strong>17</strong></td>
+      <td style="text-align: center"><strong>17</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">DSJC250.5</td>
+      <td style="text-align: center">28</td>
+      <td style="text-align: center">43.16</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">26</td>
+      <td style="text-align: center">33</td>
+      <td style="text-align: center">timeout</td>
+      <td style="text-align: center">26</td>
+      <td style="text-align: center">31</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<blockquote>
+  <p>Can we ever solve to optimality DSJC500.9 and DSJC1000.9 via Column Enumeration?</p>
+</blockquote>
+
+<p>I would say:</p>
+
+<blockquote>
+  <p>“Yes, we can!”</p>
+</blockquote>
+
+<p>… but likely we need to be smarter while branching on the decision variables, since the default branching strategy of a generic MIP solver does not exploit the structure of the problem. If I had the time to work again on Graph Coloring, I would likely use the same branching scheme used in [2], where we combined a Zykov’s branching rule with a randomized <a href="http://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search">iterative deepening depth-first search</a> (randomised because at each restart we were using a different initial pool of columns). Another interesting option would be to tighten the set covering formulation with valid inequalities, by starting with those studied in [5]. </p>
+
+<p>In conclusion, I believe that enumerating all columns can be a simple but good starting point to attempt to solve to optimality at least the instances DSJC500.9 and DSJC1000.9.</p>
+
+<p>Do you have some spare time and are you willing to take up the challenge?</p>
+
+<h2 id="references">References</h2>
+<ol>
+  <li>
+    <p>A Mehrotra, MA Trick.
+<span class="title">A column generation approach for graph coloring</span>.
+<span class="journal">INFORMS Journal on Computing</span>. Fall 1996 vol. 8(4), pp.344-354. 
+<a href="http://joc.journal.informs.org/content/8/4/344.short ">[pdf]</a></p>
+  </li>
+  <li>
+    <p>S. Gualandi and F. Malucelli.
+<span class="title">Exact Solution of Graph Coloring Problems via Constraint Programming and Column Generation</span>.
+<span class="journal">INFORMS Journal on Computing</span>. Winter 2012 vol. 24(1), pp.81-100. 
+<a href="http://joc.journal.informs.org/content/24/1/81.short">[pdf]</a>
+<a href="http://www.optimization-online.org/DB_FILE/2010/03/2568.pdf">[preprint]</a></p>
+  </li>
+  <li>
+    <p>S. Held, W. Cook, E.C. Sewell.
+<span class="title">Maximum-weight stable sets and safe lower bounds for graph coloring</span>.
+<span class="journal">Mathematical Programming Computation</span>. December 2012, Volume 4, Issue 4, pp 363-381.
+<a href="http://link.springer.com/content/pdf/10.1007%2Fs12532-012-0042-3.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>M. Lubbecke and J. Desrosiers.
+<span class="title">Selected topics in column generation</span>.
+<span class="journal">Operations Research</span>. 2005, Volume 53, Issue 6, pp 1007-1023.
+<a href="http://pubsonline.informs.org/doi/abs/10.1287/opre.1050.0234">[pdf]</a></p>
+  </li>
+  <li>
+    <p>
+<span class="title">Set covering and packing formulations of graph coloring: algorithms and first polyhedral results</span>.
+<span class="journal">Discrete Optimization</span>. 2009, Volume 6, Issue 2, pp 135-147.
+<a href="http://www.sciencedirect.com/science/article/pii/S1572528608000716">[pdf]</a></p>
+  </li>
+</ol>
 ]]></content>
   </entry>
   
