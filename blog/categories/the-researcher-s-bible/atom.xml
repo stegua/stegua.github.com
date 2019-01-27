@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: The Researcher's Bible | Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.io/blog/categories/the-researcher-s-bible/atom.xml" rel="self"/>
-  <link href="http://stegua.github.io/"/>
-  <updated>2019-01-27T15:36:24+01:00</updated>
-  <id>http://stegua.github.io/</id>
+  <link href="http://stegua.github.com/blog/categories/the-researcher-s-bible/atom.xml" rel="self"/>
+  <link href="http://stegua.github.com/"/>
+  <updated>2019-01-27T15:55:35+01:00</updated>
+  <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Reading Excuses]]></title>
-    <link href="http://stegua.github.io/blog/2013/11/01/reading-excuses/"/>
+    <link href="http://stegua.github.com/blog/2013/11/01/reading-excuses/"/>
     <updated>2013-11-01T15:56:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2013/11/01/reading-excuses</id>
+    <id>http://stegua.github.com/blog/2013/11/01/reading-excuses</id>
     <content type="html"><![CDATA[<p>I love reading!</p>
 
 <p>I love reading about everything and I am glad that part of my work consists in reading.</p>

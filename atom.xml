@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.io/atom.xml" rel="self"/>
-  <link href="http://stegua.github.io/"/>
-  <updated>2019-01-27T15:36:24+01:00</updated>
-  <id>http://stegua.github.io/</id>
+  <link href="http://stegua.github.com/atom.xml" rel="self"/>
+  <link href="http://stegua.github.com/"/>
+  <updated>2019-01-27T15:55:35+01:00</updated>
+  <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[An informal and biased Tutorial on Kantorovich-Wasserstein distances]]></title>
-    <link href="http://stegua.github.io/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective/"/>
+    <link href="http://stegua.github.com/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective/"/>
     <updated>2018-12-31T13:13:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective</id>
+    <id>http://stegua.github.com/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective</id>
     <content type="html"><![CDATA[<p>Two years ago, I started to study <strong>Computational Optimal Transport (OT)</strong>, and, now, it is time to wrap up informally the main ideas by using an <em>Operations Research (OR)</em> perspective with a <em>Machine Learning (ML)</em> motivation.</p>
 
 <p>Yes, an <a href="https://twitter.com/hashtag/orms">OR</a> perspective.</p>
@@ -26,7 +26,7 @@
   <p>Why an OR perspective?</p>
 </blockquote>
 
-<p>Well, because most of the current theoretical works on Optimal Transport have a strong functional analysis bias, and, hence, the are pretty far to be an “easy reading” for anyone working on a different research area. Since I’m more comfortable with “summations” than with “integrations”, in this post I focus only on Discrete Optimal Transport and on Kantorovich-Wasserstein distances between a pair of discrete measure.</p>
+<p>Well, because most of the current theoretical works on Optimal Transport have a strong functional analysis bias, and, hence, the are pretty far to be an “easy reading” for anyone working on a different research area. Since I’m more comfortable with “summations” than with “integrations”, in this post I focus only on Discrete Optimal Transport and on Kantorovich-Wasserstein distances between a pair of discrete measures.</p>
 
 <blockquote>
   <p>Why an <a href="https://nips.cc/Conferences/2017/Schedule?showEvent=8758">ML</a> motivation?</p>
@@ -372,9 +372,9 @@ In two recent works, together with my co-authors, we tried to revive the <a href
   
   <entry>
     <title type="html"><![CDATA[Exercise in Python: remove blanks from strings]]></title>
-    <link href="http://stegua.github.io/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/"/>
+    <link href="http://stegua.github.com/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/"/>
     <updated>2017-01-24T16:51:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings</id>
+    <id>http://stegua.github.com/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings</id>
     <content type="html"><![CDATA[<p>This morning, after reading <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">this very nice post</a>, I decided to challenge myself in Python and to have a look at the impact of <a href="https://en.wikipedia.org/wiki/Branch_misprediction">mispredicted branches</a> in a language different from C/C++. The basic idea was to use only <a href="https://docs.python.org/3.6/library/functions.html">Python builtins</a>: external libraries are not allowed!</p>
 
 <p>As a benchmark, I grabbed a large text file from <a href="http://norvig.com/big.txt">P. Norvig’s website</a>, which is 6’488’666 byte long.</p>
@@ -726,9 +726,9 @@ that removing blanks is a true bottleneck of my whole program. As written in the
   
   <entry>
     <title type="html"><![CDATA[Graph Coloring: Column Generation or Column Enumeration?]]></title>
-    <link href="http://stegua.github.io/blog/2015/07/04/column-enumeration/"/>
+    <link href="http://stegua.github.com/blog/2015/07/04/column-enumeration/"/>
     <updated>2015-07-04T16:45:00+02:00</updated>
-    <id>http://stegua.github.io/blog/2015/07/04/column-enumeration</id>
+    <id>http://stegua.github.com/blog/2015/07/04/column-enumeration</id>
     <content type="html"><![CDATA[<style type="text/css">
 table { width:100%; }
 thead {
@@ -1065,9 +1065,9 @@ with a timeout of 10 minutes on my laptop. If you compare these numbers with the
   
   <entry>
     <title type="html"><![CDATA[Big Data and Convex Optimization]]></title>
-    <link href="http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization/"/>
+    <link href="http://stegua.github.com/blog/2014/09/27/big-data-and-convex-optimization/"/>
     <updated>2014-09-27T16:38:00+02:00</updated>
-    <id>http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization</id>
+    <id>http://stegua.github.com/blog/2014/09/27/big-data-and-convex-optimization</id>
     <content type="html"><![CDATA[<p>In the last months, I came several times across different definitions of <strong>Big Data</strong>.
 However, when someone asks me what Big Data means in practice, I am never
 able to give a satisfactory explanation. Indeed, you can easily find a flood
@@ -1103,9 +1103,9 @@ Foundations and Trends in Machine Learning. Vol. 3, No. 1 (2010) 1–122. <a hre
   
   <entry>
     <title type="html"><![CDATA[The Impact of Preprocessing on the MIPLIB2003]]></title>
-    <link href="http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing/"/>
+    <link href="http://stegua.github.com/blog/2014/03/19/the-impact-of-preprocessing/"/>
     <updated>2014-03-19T22:38:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing</id>
+    <id>http://stegua.github.com/blog/2014/03/19/the-impact-of-preprocessing</id>
     <content type="html"><![CDATA[<p>What do you know about <strong>preprocessing</strong> for <em>Mixed Integer Programming (MIP)</em> problems?</p>
 
 <p>After a nice chat with <a href="http://dk.linkedin.com/in/bojensen">Bo Jensen</a>, CEO, founder, and co-owner (really, he is a Rocket Scientist!) at <a href="http://www.sulumoptimization.com/">Sulum Optimization</a>, I realised that I know barely anything.</p>
@@ -1193,13 +1193,13 @@ Most of papers are from the 90s and about Linear Programming, i.e., without inte
   
   <entry>
     <title type="html"><![CDATA[An Informal Report from the Combinatorial Optimization Workshop @ Aussois 2014]]></title>
-    <link href="http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/"/>
+    <link href="http://stegua.github.com/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/"/>
     <updated>2014-01-13T18:30:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014</id>
+    <id>http://stegua.github.com/blog/2014/01/13/informal-report-from-cow-at-aussois-2014</id>
     <content type="html"><![CDATA[<p>It is very hard to report about the <a href="http://www.iasi.cnr.it/aussois/web/home">Combinatorial Optimization Workshop</a> in <a href="http://www.aussois.com/hiver/">Aussois</a>. It was like an “informal” <a href="http://www.or.uni-bonn.de/ipco/">IPCO</a> with <em>Super Heroes researchers</em> in the audience, leaded by <em>Captain Egon</em>, who appears at work in the following photo-tweet:</p>
 
 <blockquote class="twitter-tweet" lang="en"><p>Egon talks intersection cuts at <a href="https://twitter.com/search?q=%23aussois&amp;src=hash">#aussois</a>. Still the man. <a href="http://t.co/7KMcNyJYV0">pic.twitter.com/7KMcNyJYV0</a></p>&mdash; Jeff Linderoth (@JeffLinderoth) <a href="https://twitter.com/JeffLinderoth/statuses/420852308583276544">January 8, 2014</a></blockquote>
-<script async="" src="http://stegua.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async="" src="http://stegua.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <p>The Captain gave an inspiring talk by questioning the recursive paradigm of cutting planes algorithms. With a very basic example, <a href="http://public.tepper.cmu.edu/facultydirectory/FacultyDirectoryProfile.aspx?id=39">Balas</a> has shown how a non basic vertex (solution) can produce a much deeper cut than a cut generated by an optimal basis. Around this intuition, Balas has presented a very nice <a href="http://link.springer.com/article/10.1007%2Fs10107-011-0483-x">generalization of Intersection Cuts</a>… a new paper enters my “PAPERS-TO-BE-READ” folder.</p>
 
@@ -1237,16 +1237,16 @@ Another paper goes on the “PAPERS-TO-BE-READ” folder.</p>
 <p>To conclude, let me steal another nice picture from twitter: </p>
 
 <blockquote class="twitter-tweet" lang="en"><p>Goodbye <a href="https://twitter.com/search?q=%23aussois2014&amp;src=hash">#aussois2014</a> <a href="http://t.co/ODupKKmGTZ">pic.twitter.com/ODupKKmGTZ</a></p>&mdash; Matteo Fischetti (@MFischetti) <a href="https://twitter.com/MFischetti/statuses/421642338759618560">January 10, 2014</a></blockquote>
-<script async="" src="http://stegua.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async="" src="http://stegua.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Public Transport and Big Data]]></title>
-    <link href="http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data/"/>
+    <link href="http://stegua.github.com/blog/2013/11/17/public-transport-and-big-data/"/>
     <updated>2013-11-17T14:10:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data</id>
+    <id>http://stegua.github.com/blog/2013/11/17/public-transport-and-big-data</id>
     <content type="html"><![CDATA[<p><strong>Big Data</strong> is nowadays a <em>buzzword</em>. A simple query for “Big Data” on Google gives about 26,700,000 results. </p>
 
 <p><strong>Public Transport</strong> is not really a <em>buzzword</em>, but still on Google you can get almost the same number as with “Big Data”: 26,400,000 results.</p>
@@ -1290,9 +1290,9 @@ its cost competitive. The ultimate goal should be to increase the number of peop
   
   <entry>
     <title type="html"><![CDATA[Reading Excuses]]></title>
-    <link href="http://stegua.github.io/blog/2013/11/01/reading-excuses/"/>
+    <link href="http://stegua.github.com/blog/2013/11/01/reading-excuses/"/>
     <updated>2013-11-01T15:56:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2013/11/01/reading-excuses</id>
+    <id>http://stegua.github.com/blog/2013/11/01/reading-excuses</id>
     <content type="html"><![CDATA[<p>I love reading!</p>
 
 <p>I love reading about everything and I am glad that part of my work consists in reading.</p>
@@ -1315,9 +1315,9 @@ its cost competitive. The ultimate goal should be to increase the number of peop
   
   <entry>
     <title type="html"><![CDATA[GeCol: a Graph Coloring solver on top of Gecode]]></title>
-    <link href="http://stegua.github.io/blog/2013/06/28/gecol/"/>
+    <link href="http://stegua.github.com/blog/2013/06/28/gecol/"/>
     <updated>2013-06-28T15:00:00+02:00</updated>
-    <id>http://stegua.github.io/blog/2013/06/28/gecol</id>
+    <id>http://stegua.github.com/blog/2013/06/28/gecol</id>
     <content type="html"><![CDATA[<style type="text/css">
 .title { color: #07235F; }
 .journal { font-style: italic; }
@@ -1478,9 +1478,9 @@ vol. 120(1-3), pp. 197–207, 2002
   
   <entry>
     <title type="html"><![CDATA[Backtrack Programming in c]]></title>
-    <link href="http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/"/>
+    <link href="http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c/"/>
     <updated>2013-03-22T12:45:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c</id>
+    <id>http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c</id>
     <content type="html"><![CDATA[<style type="text/css">
 .title { color: #07235F; }
 .journal { font-style: italic; }
@@ -1706,9 +1706,9 @@ vol. 120(1-3), pp. 197–207, 2002
   
   <entry>
     <title type="html"><![CDATA[From blackboard to code: Gomory Cuts using CPLEX]]></title>
-    <link href="http://stegua.github.io/blog/2013/02/05/gomory-cuts-with-cplex/"/>
+    <link href="http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex/"/>
     <updated>2013-02-05T15:22:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2013/02/05/gomory-cuts-with-cplex</id>
+    <id>http://stegua.github.com/blog/2013/02/05/gomory-cuts-with-cplex</id>
     <content type="html"><![CDATA[<p><strong>Edited on May 16th, 2013</strong>: fixes due to <a href="http://imada.sdu.dk/~marco/">M. Chiarandini</a></p>
 
 <p>On the blackboard, to solve small Integer Linear Programs with 2 variables and <em>less or equal</em> constraints is easy,
@@ -1914,9 +1914,9 @@ there is a nice chapter by G. Cornuejols about the <strong>Ongoing Story of Gomo
   
   <entry>
     <title type="html"><![CDATA[How Italian Commuters Discovered Operations Research]]></title>
-    <link href="http://stegua.github.io/blog/2012/12/16/how-italian-commuters-discovered-or/"/>
+    <link href="http://stegua.github.com/blog/2012/12/16/how-italian-commuters-discovered-or/"/>
     <updated>2012-12-16T10:45:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2012/12/16/how-italian-commuters-discovered-or</id>
+    <id>http://stegua.github.com/blog/2012/12/16/how-italian-commuters-discovered-or</id>
     <content type="html"><![CDATA[<p>Last week, more then 700,000 Italian commuters discovered the importance of Operations Research (OR).
 Nobody explicitly mentioned OR, 
 but due to a horrible crew schedule of <a href="http://www.trenord.it">Trenord</a> 
@@ -1970,9 +1970,9 @@ help Trenord to improve the situation.</p>
   
   <entry>
     <title type="html"><![CDATA[Challenging MIPs instances]]></title>
-    <link href="http://stegua.github.io/blog/2012/12/13/challenging-mips/"/>
+    <link href="http://stegua.github.com/blog/2012/12/13/challenging-mips/"/>
     <updated>2012-12-13T18:11:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2012/12/13/challenging-mips</id>
+    <id>http://stegua.github.com/blog/2012/12/13/challenging-mips</id>
     <content type="html"><![CDATA[<p>Today, I share seven challenging MIP instances as 
 <a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps files</a>
 along with the AMPL <a href="https://github.com/stegua/MyBlogEntries/tree/master/Roadef2012">model and data files</a> 
@@ -2438,9 +2438,9 @@ in this blog. </p>
   
   <entry>
     <title type="html"><![CDATA[CP2012: Je me souviens]]></title>
-    <link href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/"/>
+    <link href="http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens/"/>
     <updated>2012-10-19T13:24:00+02:00</updated>
-    <id>http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens</id>
+    <id>http://stegua.github.com/blog/2012/10/19/cp2012-je-me-souviens</id>
     <content type="html"><![CDATA[<p>Last week in Quebec City, there was the 
 <a href="http://www.cp2012.org/">18th International Conference on Principles and Practice of Constraint Programming</a>.
 This year the conference had a record of submissions (186 in total) and the program committee
@@ -2524,9 +2524,9 @@ Will you be there? I hope so…</p>
   
   <entry>
     <title type="html"><![CDATA[Dijkstra, Dantzig, and Shortest Paths]]></title>
-    <link href="http://stegua.github.io/blog/2012/09/19/dijkstra/"/>
+    <link href="http://stegua.github.com/blog/2012/09/19/dijkstra/"/>
     <updated>2012-09-19T22:14:00+02:00</updated>
-    <id>http://stegua.github.io/blog/2012/09/19/dijkstra</id>
+    <id>http://stegua.github.com/blog/2012/09/19/dijkstra</id>
     <content type="html"><![CDATA[<style type="text/css">
 table { width:100%; }
 thead {

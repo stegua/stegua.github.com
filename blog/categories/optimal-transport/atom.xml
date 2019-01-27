@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Optimal Transport | Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.io/blog/categories/optimal-transport/atom.xml" rel="self"/>
-  <link href="http://stegua.github.io/"/>
-  <updated>2019-01-27T15:36:24+01:00</updated>
-  <id>http://stegua.github.io/</id>
+  <link href="http://stegua.github.com/blog/categories/optimal-transport/atom.xml" rel="self"/>
+  <link href="http://stegua.github.com/"/>
+  <updated>2019-01-27T15:55:35+01:00</updated>
+  <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[An informal and biased Tutorial on Kantorovich-Wasserstein distances]]></title>
-    <link href="http://stegua.github.io/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective/"/>
+    <link href="http://stegua.github.com/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective/"/>
     <updated>2018-12-31T13:13:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective</id>
+    <id>http://stegua.github.com/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective</id>
     <content type="html"><![CDATA[<p>Two years ago, I started to study <strong>Computational Optimal Transport (OT)</strong>, and, now, it is time to wrap up informally the main ideas by using an <em>Operations Research (OR)</em> perspective with a <em>Machine Learning (ML)</em> motivation.</p>
 
 <p>Yes, an <a href="https://twitter.com/hashtag/orms">OR</a> perspective.</p>
@@ -26,7 +26,7 @@
   <p>Why an OR perspective?</p>
 </blockquote>
 
-<p>Well, because most of the current theoretical works on Optimal Transport have a strong functional analysis bias, and, hence, the are pretty far to be an “easy reading” for anyone working on a different research area. Since I’m more comfortable with “summations” than with “integrations”, in this post I focus only on Discrete Optimal Transport and on Kantorovich-Wasserstein distances between a pair of discrete measure.</p>
+<p>Well, because most of the current theoretical works on Optimal Transport have a strong functional analysis bias, and, hence, the are pretty far to be an “easy reading” for anyone working on a different research area. Since I’m more comfortable with “summations” than with “integrations”, in this post I focus only on Discrete Optimal Transport and on Kantorovich-Wasserstein distances between a pair of discrete measures.</p>
 
 <blockquote>
   <p>Why an <a href="https://nips.cc/Conferences/2017/Schedule?showEvent=8758">ML</a> motivation?</p>

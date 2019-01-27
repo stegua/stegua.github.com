@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Convex Optimization | Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.io/blog/categories/convex-optimization/atom.xml" rel="self"/>
-  <link href="http://stegua.github.io/"/>
-  <updated>2019-01-27T15:36:24+01:00</updated>
-  <id>http://stegua.github.io/</id>
+  <link href="http://stegua.github.com/blog/categories/convex-optimization/atom.xml" rel="self"/>
+  <link href="http://stegua.github.com/"/>
+  <updated>2019-01-27T15:55:35+01:00</updated>
+  <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Big Data and Convex Optimization]]></title>
-    <link href="http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization/"/>
+    <link href="http://stegua.github.com/blog/2014/09/27/big-data-and-convex-optimization/"/>
     <updated>2014-09-27T16:38:00+02:00</updated>
-    <id>http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization</id>
+    <id>http://stegua.github.com/blog/2014/09/27/big-data-and-convex-optimization</id>
     <content type="html"><![CDATA[<p>In the last months, I came several times across different definitions of <strong>Big Data</strong>.
 However, when someone asks me what Big Data means in practice, I am never
 able to give a satisfactory explanation. Indeed, you can easily find a flood

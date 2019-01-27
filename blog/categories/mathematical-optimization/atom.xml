@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Mathematical Optimization | Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.io/blog/categories/mathematical-optimization/atom.xml" rel="self"/>
-  <link href="http://stegua.github.io/"/>
-  <updated>2019-01-27T15:36:24+01:00</updated>
-  <id>http://stegua.github.io/</id>
+  <link href="http://stegua.github.com/blog/categories/mathematical-optimization/atom.xml" rel="self"/>
+  <link href="http://stegua.github.com/"/>
+  <updated>2019-01-27T15:55:35+01:00</updated>
+  <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Big Data and Convex Optimization]]></title>
-    <link href="http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization/"/>
+    <link href="http://stegua.github.com/blog/2014/09/27/big-data-and-convex-optimization/"/>
     <updated>2014-09-27T16:38:00+02:00</updated>
-    <id>http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization</id>
+    <id>http://stegua.github.com/blog/2014/09/27/big-data-and-convex-optimization</id>
     <content type="html"><![CDATA[<p>In the last months, I came several times across different definitions of <strong>Big Data</strong>.
 However, when someone asks me what Big Data means in practice, I am never
 able to give a satisfactory explanation. Indeed, you can easily find a flood
@@ -53,9 +53,9 @@ Foundations and Trends in Machine Learning. Vol. 3, No. 1 (2010) 1–122. <a hre
   
   <entry>
     <title type="html"><![CDATA[Public Transport and Big Data]]></title>
-    <link href="http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data/"/>
+    <link href="http://stegua.github.com/blog/2013/11/17/public-transport-and-big-data/"/>
     <updated>2013-11-17T14:10:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data</id>
+    <id>http://stegua.github.com/blog/2013/11/17/public-transport-and-big-data</id>
     <content type="html"><![CDATA[<p><strong>Big Data</strong> is nowadays a <em>buzzword</em>. A simple query for “Big Data” on Google gives about 26,700,000 results. </p>
 
 <p><strong>Public Transport</strong> is not really a <em>buzzword</em>, but still on Google you can get almost the same number as with “Big Data”: 26,400,000 results.</p>

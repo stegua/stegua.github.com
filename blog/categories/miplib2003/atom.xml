@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: MIPLIB2003 | Spaghetti Optimization]]></title>
-  <link href="http://stegua.github.io/blog/categories/miplib2003/atom.xml" rel="self"/>
-  <link href="http://stegua.github.io/"/>
-  <updated>2019-01-27T15:36:24+01:00</updated>
-  <id>http://stegua.github.io/</id>
+  <link href="http://stegua.github.com/blog/categories/miplib2003/atom.xml" rel="self"/>
+  <link href="http://stegua.github.com/"/>
+  <updated>2019-01-27T15:55:35+01:00</updated>
+  <id>http://stegua.github.com/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[The Impact of Preprocessing on the MIPLIB2003]]></title>
-    <link href="http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing/"/>
+    <link href="http://stegua.github.com/blog/2014/03/19/the-impact-of-preprocessing/"/>
     <updated>2014-03-19T22:38:00+01:00</updated>
-    <id>http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing</id>
+    <id>http://stegua.github.com/blog/2014/03/19/the-impact-of-preprocessing</id>
     <content type="html"><![CDATA[<p>What do you know about <strong>preprocessing</strong> for <em>Mixed Integer Programming (MIP)</em> problems?</p>
 
 <p>After a nice chat with <a href="http://dk.linkedin.com/in/bojensen">Bo Jensen</a>, CEO, founder, and co-owner (really, he is a Rocket Scientist!) at <a href="http://www.sulumoptimization.com/">Sulum Optimization</a>, I realised that I know barely anything.</p>
