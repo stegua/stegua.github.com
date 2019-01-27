@@ -1249,105 +1249,6 @@ with a timeout of 10 minutes on my laptop. If you compare these numbers with the
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/10/11/steiner-tree/">Steiner Tree, Cutting Planes, and the Importance of an Epsilon</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-11T16:14:00+02:00" pubdate data-updated="true">Oct 11<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/10/11/steiner-tree/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This is a technical post about the following question:</p>
-
-<blockquote>
-  <p>When solving the <a href="">Steiner Tree problem</a> via <a href="">branch-and-cut</a>, which is the impact of adding <strong>a small epsilon</strong> to the weights of the separation problem?</p>
-</blockquote>
-
-<p>The answer is: the epsilon has a <strong>HUGE</strong> impact! </p>
-
-<p>If you don’t believe me, look at the plot below: it reports the dual bound as function of the number of iterations, with the blue and red lines refer to adding or not adding a small epsilon to the weighs of the separation problem (which is a standard <strong>max flow</strong> problem).</p>
-
-<p>If you are curious about the reason of such impact, maybe you can find this post interesting.</p>
-
-<p>If you are not curious, but you need a starting point to implement a branch-and-cut solver for the Steiner Tree problem, based on <a href="">Gurobi</a> and the <a href="">Lemon Graph Library</a>, you can jump directly to <a href="">my github repo</a> with the code used to write this post, while you can go to <a href="">Steiner Tree Lib</a> to get a number of standard instances.</p>
-
-<p>If you are not curious and you are not interested about the Steiner Tree problem, you can just stop to read this post.</p>
-
-<h2 id="steiner-tree-via-branch-and-cut">Steiner Tree via Branch-and-Cut</h2>
-
-<p>The Steiner Tree problem is defined on an undirected graph $G=(V,E)$ and a set of terminal
-nodes $T \subseteq V$. Every edge $e={i,j} \in E$ has a cost $c_e$. The problem asks to find a tree in $G$ that spans the nodes in $T$.</p>
-
-<p>In this post, we use a Integer Linear Programming model defined on the directed graph $H=(V,A)$, obtained from $G$ by inserting in $A$ the two arcs $(i,j)$ and $(j,i)$ for each edge ${i,j}  in E$; the cost of the arcs are equal to the cost of the corresponding edges.
-In addition, we select a vertex that plays the role of the <strong>root</strong> vertex $r$: the Steiner Tree problem becomes the problem of finding an arborescence rooted in $r$ that <strong>reach</strong> every node in $T$. </p>
-
-<p>Formally, we introduce a 0-1 variable $x_e$ for each arc in $A$, and write the following model:</p>
-
-<script type="math/tex; mode=display">(P) = \min \sum_{e \in A} c_e x_e \mid \sum_{e \in \delta^+(S)} x_e \geq 1, \forall S \subset V, r \in S, \exists t \in T: t \in V \setminus S</script>
-
-<table>
-  <tbody>
-    <tr>
-      <td>All the magic of this model is in the <strong>reachibility</strong> constraints: for each cut of the digraph with the root node on one side (i.e., in $r \in S$) and any terminal node $t$ on the other side (i.e., $t \in V \setminus S$), we must have at least 1 arc variable $x_e$ that traverses the cut equal to 1. Indeed, these constraints are exponential in number, since the number of subsets of $V$ is $O(2^{</td>
-      <td>V</td>
-      <td>})$:</td>
-    </tr>
-  </tbody>
-</table>
-
-<blockquote>
-  <p>the only option to consider this exponential number of constraints is via branch-and-cut</p>
-</blockquote>
-
-<p>We solve a relaxation of the problem with a small subset of constraints, and we add new constraints “on demand”, only when we find a candidate solution that violates any of these constraints.</p>
-
-<p>The problem of looking for a violated constrained is usually called the <strong>separation problem</strong>, and here is defined as follows:</p>
-
-<p>Given a $x^*$ solution to (P), define for each arc a capacity $u_e$ equal to $x_e$.
-At this point, for each terminal node $t$, find the maximal flow from $r$ to $t$. Remember that for duality, to each maximal flow corresponds a minimum cut, and note that if the capacity of this cut is strictly smaller than 1, you have find a violated inequality of the problem.</p>
-
-<p>Here is they key part of this post. Given $\bar{x}$, we set each arc capacity $u_e=\bar{x}_e$
-and we solve a sequence of max-flow problem to look for a cut of minimum capacity.</p>
-
-<blockquote>
-  <p>What does it happen if in the separation problem we set $u_e=\bar{x}_e + \epsilon$ ??</p>
-</blockquote>
-
-<blockquote>
-  <p>How significant can be the impact of an epsilon?</p>
-</blockquote>
-
-<p>about a short code to solve via branch-and-cut the classical <a href="">Steiner Tree Problem</a>, one of those fundamental Combinatorial Optimization problems that are not solvable in polynomial time (technically, it is <a href="">NP-hard</a>).</p>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
       <h1 class="entry-title"><a href="/blog/2014/09/27/big-data-and-convex-optimization/">Big Data and Convex Optimization</a></h1>
     
     
@@ -1940,6 +1841,265 @@ vol. 120(1-3), pp. 197–207, 2002
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/22/backtrack-programming-in-c/">Backtrack Programming in C</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+<time datetime="2013-03-22T12:45:00+01:00" pubdate data-updated="true">Mar 22<span>nd</span>, 2013</time>
+        
+         | <a href="/blog/2013/03/22/backtrack-programming-in-c/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><style type="text/css">
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
+<p>Recently, I have discovered a nice tiny library (1 file!) that supports <a href="http://en.wikipedia.org/wiki/Backtracking">Backtrack Programming</a> in <strong>standard C</strong>.
+The library is called <a href="http://www.akira.ruc.dk/~keld/research/CBACK/">CBack</a> and 
+is developed by <a href="http://www.akira.ruc.dk/~keld/">Keld Helsgaun</a>, who is known in the Operations Research 
+and Computer Science communities for his efficient implementation of the 
+Lin-Kernighan heuristics for the <a href="http://www.akira.ruc.dk/~keld/research/LKH/">Travelling Salesman Problem</a>.</p>
+
+<p><strong>CBack</strong> offers basically two functions that are described in [1] as follows:</p>
+
+<ol>
+  <li><strong><code>Choice(N)</code></strong>: “<em>is used when a choice is to be made among a number of alternatives, where <strong>N</strong> is a positive integer denoting the number of alternatives</em>”.</li>
+  <li><strong><code>Backtrack()</code></strong>: “<em>causes the program to backtrack, that is to say, return to the most recent call of Choice, which has not yet returned all its values</em>”.</li>
+</ol>
+
+<p>With these two functions is pretty simple to develop exact enumeration algorithms.
+The <strong>CBack</strong> library comes with several examples, such as algorithms for the <a href="http://en.wikipedia.org/wiki/Eight_queens_puzzle">N-queens</a> problem and the <a href="http://en.wikipedia.org/wiki/15_puzzle">15-puzzle</a>.
+Below, I will show you how to use <strong>CBack</strong> to implement a simple algorithm that finds a <a href="http://en.wikipedia.org/wiki/Clique_problem">Maximum Clique</a> in an undirected graph.</p>
+
+<p>As usual, the source code used to write this post is publicly available on
+<a href="https://github.com/stegua/MyBlogEntries/tree/master/Backtracking">my GitHub repository</a>.</p>
+
+<h2 id="basic-use-of-cback">Basic use of CBack</h2>
+<p>The <strong>CBack</strong> documentation shows as first example the following code snippet:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span></span><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span><span class="line"><span class="n">j</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span><span class="line"><span class="n">printf</span><span class="p">(</span><span class="s">&quot;i = %d, j = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">);</span>
+</span><span class="line"><span class="n">Backtrack</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The output produced by the snippet is:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span></span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If you are familiar with backtrack programming (e.g., <a href="http://en.wikipedia.org/wiki/Prolog">Prolog</a>), you should not be surprised by the output, and you can jump to the next section. Otherwise, 
+the Figure below sketches the program execution. </p>
+
+<p><img src="http://stegua.github.io/images/backtrack.png" /></p>
+
+<p>When the program executes the <code>Choice(N=3)</code> statement, that is the first call to the first choice (line 2), value 1 is assigned to variable <code>i</code>. Behind the scene, the <em>Choice</em> function stores the current execution state of the program in its own stack,
+and records the next possible choices (i.e. the other possible program branches),
+that are values <code>2</code> and <code>3</code>. Next, the second <code>Choice(N=2)</code> assigns value 1 to <code>j</code> (line 3),
+and again the state of the program is stored for later use. Then, the <code>printf</code> outputs <code>i = 1 , j = 1</code> (line 4 and first line of output). Now, it is time to <em>backtrack</em> (line 5). </p>
+
+<p>What is happening here?</p>
+
+<p>Look again at the figure above: When the <code>Backtrack()</code> function is invoked, the algorithm <em>backtracks</em> and continues the execution
+from the most recent <strong>Choice</strong> stored in its stack, i.e. it assigns to variable <code>j</code> value 2, and <code>printf</code> outputs <code>i = 1, j = 2</code>. Later, the <code>Backtrack()</code> is invoked again, and this time the algorithm backtracks until the previous possible choice that corresponds to the assignment of value 2 to variable <code>i</code>, and it executes <code>i = 2</code>. Once the second choice for variable <code>i</code> is performed, there are again two possible choices for variable <code>j</code>, since the program has backtracked to a point that precedes that statement. Thus, the program executes <code>j = 1</code>, and <code>printf</code> outputs <code>i = 2, j = 1</code>. At this point, the program <em>backtracks</em> again, and consider the next possible choice, <code>j = 2</code>. This is repeated until all possible choices for <code>Choice(3)</code> and <code>Choice(2)</code> are exhausted, yielding the 6 possible combinations of <code>i</code> and <code>j</code> that the problem gave as output.</p>
+
+<p>Indeed, during the execution, the program has implicitly visited in a depth-first manner the <em>search tree</em> of the previous figure.
+CBack supports also different search strategy, such as <em>best first</em>, but I will not cover that topic here.</p>
+
+<p>In order to store and restore the program execution state (well, more precisely the <em>calling environment</em>), <code>Choice(N)</code> and <code>Backtrack</code> use two <strong>threatening</strong> C standard functions, <code>setjmp</code> and <code>longjmp</code>. 
+For the details of their use in CBack, see [1].</p>
+
+<h2 id="a-basic-maximum-clique-algorithm">A Basic Maximum Clique Algorithm</h2>
+<p>The reason why I like this library, apart from remembering me the time I was programming with <a href="http://www.mozart-oz.org/">Mozart</a>, is that it permits to implement quickly exact algorithms based on enumeration. While enumeration is usually disregarded as <em>inefficient</em> (“<em>ehi, it is just brute force</em>!”), it is still one of the best method to solve small instances of almost any combinatorial optimization problem. In addition, many sophisticated exact algorithms use plain enumeration as a subroutine, when during the search process the size of the problem becomes small enough.</p>
+
+<p>Consider now the <strong>Maximum Clique Problem</strong>: Given an undirected graph <script type="math/tex">G=(V,E)</script>, the problem is to find the largest complete subgraph of <script type="math/tex">G</script>. More formally, you look for the largest subset <script type="math/tex">C</script> of the vertex set <script type="math/tex">V</script> such that for any pair of nodes <script type="math/tex">{i,j}</script> in <script type="math/tex">C \times C</script> there exists an arc <script type="math/tex">{i,j} \in E</script>.  </p>
+
+<p>The well-known branch-and-bound algorithm of Carraghan and Pardalos [2] is based on enumeration. The implementation of Applegate and Johnson, called <a href="ftp://dimacs.rutgers.edu/pub/dsj/clique/dfmax.c">dfmax.c</a>, is a very efficient implementation of that algorithm. Next, I show a basic implementation of the same algorithm that uses <strong>CBack</strong> for backtracking.</p>
+
+<p>The Carraghan and Pardalos algorithm uses three sets: the current clique <script type="math/tex">C</script>, the largest clique found so far <script type="math/tex">C^*</script>, and the set of candidate vertices <script type="math/tex">P</script>. The pseudo code of the algorithm is as follows (as described in [3]):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Basic Maximum Clique Algorithm</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span></span><span class="n">function</span> <span class="nf">findClique</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+</span><span class="line">   <span class="k">if</span> <span class="o">|</span><span class="n">C</span><span class="o">|</span> <span class="o">&gt;</span> <span class="o">|</span><span class="n">C</span><span class="o">*|</span> <span class="n">then</span> <span class="n">C</span><span class="o">*</span> <span class="o">&lt;-</span> <span class="n">C</span>  <span class="c1">// store the best clique</span>
+</span><span class="line">   <span class="k">if</span> <span class="o">|</span><span class="n">C</span><span class="o">|</span> <span class="o">+</span> <span class="o">|</span><span class="n">P</span><span class="o">|</span> <span class="o">&gt;</span> <span class="o">|</span><span class="n">C</span><span class="o">*|</span> <span class="n">then</span>
+</span><span class="line">      <span class="k">for</span> <span class="n">all</span> <span class="n">v</span> <span class="n">in</span> <span class="n">P</span> <span class="c1">// the order does matter </span>
+</span><span class="line">         <span class="n">P</span> <span class="o">&lt;-</span> <span class="n">P</span> <span class="err">\</span> <span class="p">{</span><span class="n">v</span><span class="p">}</span>
+</span><span class="line">         <span class="n">C</span><span class="err">&#39;</span> <span class="o">&lt;-</span> <span class="n">C</span> <span class="n">u</span> <span class="p">{</span><span class="n">v</span><span class="p">}</span>
+</span><span class="line">         <span class="n">P</span><span class="err">&#39;</span> <span class="o">&lt;-</span> <span class="n">P</span>  <span class="err">\</span><span class="n">intersect</span> <span class="n">N</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>  <span class="c1">// neighbors of p</span>
+</span><span class="line">         <span class="n">findClique</span><span class="p">(</span><span class="n">C</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">P</span><span class="err">&#39;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="n">function</span> <span class="n">main</span><span class="p">()</span>
+</span><span class="line">   <span class="n">C</span><span class="o">*</span> <span class="o">&lt;-</span> <span class="p">{}</span>  <span class="c1">// empty set, C* global variable</span>
+</span><span class="line">   <span class="n">findClique</span><span class="p">({},</span><span class="n">V</span><span class="p">)</span>
+</span><span class="line">   <span class="k">return</span> <span class="n">C</span><span class="o">*</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>As you can see, the backtracking is here described in terms of a recursive function. However, using CBack, we can implement the same algorithm without using recursion.</p>
+
+<h2 id="maximum-clique-with-cback">Maximum Clique with CBack</h2>
+<p>We use an array <code>S</code> of <script type="math/tex">n</script> integers, one for each vertex of <script type="math/tex">V</script>.
+If <code>S[v]=0</code>, then vertex <script type="math/tex">i</script> belongs to the candidate set <script type="math/tex">P</script>; if <code>S[v]=1</code>, then vertex <script type="math/tex">i</script> is in <script type="math/tex">C</script>; if <code>S[v]=2</code>, then vertex <script type="math/tex">i</script> cannot be neither in <script type="math/tex">P</script> nor in <script type="math/tex">C</script>. The variable <code>s</code> stores the size of current clique.</p>
+
+<p>Let me show you directly the C code:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Max Clique via Branch-and-Bound</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span></span><span class="k">for</span> <span class="p">(</span><span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">v</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">   <span class="c1">/// If the current clique cannot be extended to a clique</span>
+</span><span class="line">   <span class="c1">/// larger than C*, where LB=|C*|, then backtrack</span>
+</span><span class="line">   <span class="k">if</span> <span class="p">(</span> <span class="n">s</span> <span class="o">+</span> <span class="n">P</span> <span class="o">&lt;=</span> <span class="n">LB</span> <span class="p">)</span>
+</span><span class="line">      <span class="n">Backtrack</span><span class="p">();</span>
+</span><span class="line">   <span class="k">if</span> <span class="p">(</span> <span class="n">S</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">{</span>  <span class="c1">/// Skip removed vertices  </span>
+</span><span class="line">      <span class="c1">/// Choice: Either v is in C (S[v]=1) or is not (S[v]=2)</span>
+</span><span class="line">      <span class="n">S</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span> <span class="n">S</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">{</span> <span class="c1">/// P &lt;- P \ {v} </span>
+</span><span class="line">         <span class="n">P</span><span class="o">--</span><span class="p">;</span>  <span class="c1">/// Decrease the size of the candidate set </span>
+</span><span class="line">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="c1">/// S[v]=1: C &lt;- C u {v}</span>
+</span><span class="line">         <span class="n">s</span><span class="o">++</span><span class="p">;</span>   <span class="c1">/// Update current clique size </span>
+</span><span class="line">         <span class="k">if</span> <span class="p">(</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="n">LB</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="n">LB</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>  <span class="c1">/// Store the new best clique</span>
+</span><span class="line">            <span class="k">for</span> <span class="p">(</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">w</span> <span class="o">&lt;=</span> <span class="n">v</span><span class="p">;</span> <span class="n">w</span><span class="o">++</span> <span class="p">)</span>
+</span><span class="line">               <span class="n">C</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">w</span><span class="p">];</span>
+</span><span class="line">         <span class="p">}</span>
+</span><span class="line">         <span class="c1">/// Restrict the candidate set </span>
+</span><span class="line">         <span class="k">for</span> <span class="p">(</span> <span class="n">w</span> <span class="o">=</span> <span class="n">V</span><span class="p">[</span><span class="n">v</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="n">V</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="p">;</span> <span class="n">w</span><span class="o">--</span> <span class="p">)</span>
+</span><span class="line">            <span class="k">if</span> <span class="p">(</span> <span class="n">S</span><span class="p">[</span><span class="n">E</span><span class="p">[</span><span class="n">w</span><span class="p">]]</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">               <span class="n">S</span><span class="p">[</span><span class="n">E</span><span class="p">[</span><span class="n">w</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class="line">               <span class="n">P</span><span class="o">--</span><span class="p">;</span> <span class="c1">/// Decrease the size of the candidate set </span>
+</span><span class="line">            <span class="p">}</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">   <span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="n">Backtrack</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Well, I like this code pretty much, despite being a “<em>plain old</em>” C program.
+The algorithm and code can be improved in several ways (ordering the vertices, improving the pruning, using upper bounds from heuristic vertex coloring, using induced degree as in [2]), but still, the main loop and the backtrack machinery is all there, in a few lines of code!</p>
+
+<p>Maybe you wonder about the efficiency of this code, but at the moment I have not a precise answer. For sure, the ordering of the vertices is crucial, and can make a huge difference on solving the <a href="http://iridia.ulb.ac.be/~fmascia/maximum_clique/DIMACS-benchmark">max-clique DIMACS instances</a>. I have used CBack to implement my own version of the Ostengard’s max-clique algorithm [4], but my implementation is somehow slower. I suspect that the difference is due to data structure used to store the graph (Ostengard’s implementation relies on bitsets), but not in the way the backtracking is achieved. Although, to answer to such question could be a subject of another post.</p>
+
+<p>In conclusion, if you need to implement an exact enumerative algorithm, <a href="http://www.akira.ruc.dk/~keld/research/CBACK/">CBack</a> could be an option to consider.</p>
+
+<h3 id="references">References</h3>
+
+<ol>
+  <li>
+    <p>Keld Helsgaun. 
+<span class="title">CBack: A Simple Tool for Backtrack Programming in C</span>. 
+<span class="journal">Software: Practice and Experience</span>, 
+vol. 25(8), pp. 905-934, 2006. 
+<a href="http://dx.doi.org/10.1002/spe.4380250805">[doi]</a>
+</p>
+  </li>
+  <li>
+    <p>Carraghan and Pardalos. 
+<span class="title">An exact algorithm for the maximum clique problem</span>. 
+<span class="journal">Operations Research Letters</span>, 
+vol. 9(6), pp. 375-382, 1990, 
+<a href="http://www.dcs.gla.ac.uk/~pat/jchoco/clique/papersClique/carraghanPardalos90.pdf">[pdf]</a>
+</p>
+  </li>
+  <li>
+    <p>Torsten Fahle. 
+<span class="title">Simple and Fast: Improving a Branch-and-Bound Algorithm</span>. 
+In Proc <span class="journal">ESA 2002</span>, LNCS 2461, pp. 485-498.
+<a href="http://dx.doi.org/10.1007/3-540-45749-6_44">[doi]</a>
+</p>
+  </li>
+  <li>
+    <p>Patric R.J. Ostergard.
+<span class="title">A fast algorithm for the maximum clique problem</span>.
+<span class="journal">Discrete Applied Mathematics</span>, 
+vol. 120(1-3), pp. 197–207, 2002
+<a href="http://citeseerx.ist.psu.edu/viewdoc/similar?doi=10.1.1.28.7666&amp;type=cc">[pdf]</a>
+</p>
+  </li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -2007,11 +2167,11 @@ vol. 120(1-3), pp. 197–207, 2002
       </li>
     
       <li class="post">
-        <a href="/blog/2014/10/11/steiner-tree/">Steiner Tree, Cutting Planes, and the importance of an Epsilon</a>
+        <a href="/blog/2014/09/27/big-data-and-convex-optimization/">Big Data and Convex Optimization</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/09/27/big-data-and-convex-optimization/">Big Data and Convex Optimization</a>
+        <a href="/blog/2014/03/19/the-impact-of-preprocessing/">The Impact of Preprocessing on the MIPLIB2003</a>
       </li>
     
   </ul>
