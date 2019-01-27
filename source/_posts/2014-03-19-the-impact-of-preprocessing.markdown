@@ -23,7 +23,7 @@ All I know is that every MIP solver has a **Presolve** parameter, which can take
 For instance, [Gurobi](http://www.gurobi.com) has three possible values for that parameter (you can find more details on the [Gurobi online manual](http://www.gurobi.com/documentation/5.0/reference-manual/node718#parameter:Presolve)):
 
 * *Presolve=0*: no presolve at all
-* *Presolve=1*: standard presolve 
+* *Presolve=1*: standard presolve
 * *Presolve=2*: aggressive presolve: "More aggressive application of presolve takes more time, but can sometimes lead to a significantly tighter model."
 
 
@@ -47,7 +47,7 @@ During the last weekend, I have collected a bunch of logs for the 60 instances o
 
 {% img center ../../../../../../images/preprocessing.png %}
 
-The picture is as simple as clear: 
+The picture is as simple as clear:
 
 > Preprocessing does always pay-off and permits to solve around 10% more of the instances within the same time limit!
 
@@ -80,4 +80,3 @@ Now, to conclude, my bonus question:
 > Do you have any new smart idea for improving preprocessing?
 
 Well, if you had, I guess you would at least write a paper about, but, do not go for a patent, please!
-
