@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>CP2012: Je me souviens - Spaghetti Optimization</title>
+  <meta name="author" content="Stefano Gualandi">
+
+  
+  <meta name="description" content="Last week in Quebec City, there was the 18th International Conference on Principles and Practice of Constraint Programming.
+This year the conference &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Spaghetti Optimization" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- IMPORTANT PLEASE READ THIS: Delete the below line if your blog already uses jQuery in some form. Otherwise a conflict might be created and your blog might not work properly. -->
+<!-- Use the below line only if your blog doesn't already use jQuery. Please check your head.html and custom/head.html to be sure. -->
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> -->
+<!-- Below lines are necessary for Google Feeds API to work properly. Add them to your head.html or custom/head.html files in the _includes directory of your Octopress blog's source folder -->
+<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("feeds", "1");</script> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34931940-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+    <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+    <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+    <meta property="og:url" content="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/">
+<meta property="og:type" content="website" />
+
+<meta property="og:title" content="CP2012: Je me souviens">
+<meta property="og:description" content="">
+ 
+
+ 
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+   MathJax.Hub.Config({messageStyle: "none"})
+   </script>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Spaghetti Optimization</a></h1>
+  
+    <h2>My cookbook about Math, Algorithms, and Programming</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:stegua.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/credits">Credits</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+   
+  <header>
+    
+      <h1 class="entry-title">CP2012: Je Me Souviens</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+<time datetime="2012-10-19T13:24:00+02:00" pubdate data-updated="true">Oct 19<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Last week in Quebec City, there was the 
+<a href="http://www.cp2012.org/">18th International Conference on Principles and Practice of Constraint Programming</a>.
+This year the conference had a record of submissions (186 in total) and the program committee
+made a vey nice job in organizing the plenary sessions and the tutorials.
+You can find <a href="http://4c.ucc.ie/~hsimonis/CP2012/index.htm">very nice pictures</a> of the conference on <a href="http://4c.ucc.ie/~hsimonis/">Helmut’s web page</a>.</p>
+
+<p>During the conference, the weather outside was pretty cold, but at the conference site
+the discussions were warm and the presentations were intriguing.</p>
+
+<p>In this post, I share an informal report of the conference as <a href="http://en.wikipedia.org/wiki/Je_me_souviens"><em>“Je me souviens”</em></a>. </p>
+
+<h3 id="challenges-in-smart-grids">Challenges in Smart Grids</h3>
+<p>The invited talks were excellent and my favorite one was given by Miguel F. Anjos
+on Optimization Challenges in Smart Grid Operations.
+Miguel is not exactly a CP programmer, he is more on discrete non linear 
+optimization, but his talk was a perfect mixed of applications, modeling, and solution techniques.
+Please, read and enjoy <a href="http://www.cp2012.org/slides/Anjos-OptChalSmartGrids-CP2012.pdf">his slides</a>.</p>
+
+<p>I like to mention just one of his observations. Nowadays, electric cars are becoming more and more
+present. What would happen when each of us will have an electric car?
+Likely, during the night, while sleeping, we will connect our car to the grid to recharge the
+car batteries. This will lead to high variability in night peaks of energy demand.</p>
+
+<p>How to manage these peaks?</p>
+
+<p>Well, what Miguel has reported as a possible challenging option is to think of the collection of cars connected to the grid as a kind of huge battery. This sort of <em>collective</em> battery could be used to better handle the peaks of energy demands. Each car would play the game with a double role: if there is not an energy demand peak, you can recharge the car battery; otherwise, the car battery could be used as a power source and it could supply energy to the grid. This is an oversimplification, but as you can image there would be great challenges and opportunities for any <em>constraint optimizer</em> in terms of modeling and solution techniques. </p>
+
+<p>I am curious to read more about, do you?</p>
+
+<h3 id="sessions-and-talks">Sessions and Talks</h3>
+<p>This year CP had the thicker conference proceedings, ever. Traditionally, the papers are presented in two parallel sessions. Two is not that much when you think that this year at <a href="http://ismp2012.mathopt.org/">ISMP</a> there were 40 parallel sessions…
+but still, you always regret that you could not attend the talk in the other session. Argh!</p>
+
+<p>Here I like to mention just two works. However, the program chair is trying 
+to make <a href="http://www.cp2012.org/accepted_papers.php">all the slides</a> available.
+Have a look at the program and at the slides: there are many good papers.</p>
+
+<p>In the application track, Deepak Mehta gave a nice talk about a joint work with Barry O’Sullivan and Helmut Simonis
+on <a href="http://4c.ucc.ie/~hsimonis/reassignment.pdf"><em>Comparing Solution Methods for the Machine Reassignment Problem</em></a>, a problem
+that Google has to solve every day in its 
+<a href="http://www.google.com/about/datacenters/gallery/#/tech">data centers</a> and that was the subject of the <a href="http://challenge.roadef.org/2012/en/sujet.php">Google/Roadef Challenge 2012</a>.
+The true challenge is given by the HUGE size of the instances and the very short timeout (300 seconds). The work presented by Deepak is really interesting and they got excellent results using CP-based Large Neighborhood Search: they classified second at the challenge.</p>
+
+<p>Related to the <strong>Machine Reassignment Problem</strong> there was a second interesting talk entitled 
+<em><a href="http://www.springerlink.com/content/52j3197311333658/">Weibull-based Benchmarks for Bin Packing</a></em>, 
+by Ignacio Castineiras, Milan De Cauwer and Barry O’Sullivan. 
+They have designed a parametric instance generator for bin packing problems based on the Weibull distribution.
+Having a parametric generator is crucial to perform exhaustive computational results and to
+identify those instances that are challenging for a particular solution technique.
+For instance, they have considered a CP-approach to bin packing problems and they have identified those Weibull shape values that yield challenging instances for such an approach.
+A nice feature is that their generator is able to create instances similar to those of the Google challenge…
+I hope they will release their generator soon!</p>
+
+<h3 id="the-doctoral-program">The Doctoral Program</h3>
+<p>Differently from other conferences (as for instance <a href="http://ipco2013.dim.uchile.cl/">IPCO</a>), CP gives PhD
+students the opportunity to present their ongoing work within a <a href="http://zivny.cz/dp12/">Doctoral Program</a>.
+The sponsors cover part of the costs for attending the conference.
+During the conference each student has a mentor who is supposed to
+help him. This year there were around 24 students and only very few of them
+had a paper accepted at the main conference. This means that without
+the Doctoral Program, most of these students would not had the opportunity to attend the conference.</p>
+
+<p>Geoffrey Chu awarded the 2012 ACP Doctoral Research Award for his thesis
+<strong><em>Improving Combinatorial Optimization</em></strong>. To give you an idea about the amount of his contributions, consider that after his thesis presentation, someone in the audience asked:</p>
+
+<p><em>“And you got only <strong>one PhD</strong> for all this work?”</em></p>
+
+<p><em>Chapeau!</em> Among other things, Chu has implemented <a href="http://www.g12.csse.unimelb.edu.au/minizinc/challenge2011/description_chuffed.txt">Chuffed</a> one of the most efficient CP solver
+that uses <em>lazy clause generation</em> and that ranked very well at the last
+<a href="http://www.g12.cs.mu.oz.au/minizinc/challenge2012/results2012.html">MiniZinc Challenge</a>, even if it was not one of the official competitors. </p>
+
+<p>For the record, the winner of the MiniZinc challenge of this year is (again) the <a href="http://www.gecode.org">Gecode team</a>. Congratulations!</p>
+
+<h3 id="next-year">Next Year</h3>
+<p>Next year CP will be held in Sweden, at Uppsala University on 16-20 September 2013.
+Will you be there? I hope so…</p>
+
+<p>In the meantime, if you were at the conference, which was your favorite talk and/or paper?</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Stefano Gualandi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+<time datetime="2012-10-19T13:24:00+02:00" class="updated">Updated Oct 19<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/conference-report/'>Conference report</a>, <a class='category' href='/blog/categories/constraint-programming/'>Constraint Programming</a>, <a class='category' href='/blog/categories/optimization/'>Optimization</a>, <a class='category' href='/blog/categories/smart-grids/'>Smart Grids</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/" data-via="famo2spaghi" data-counturl="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="small"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/09/19/dijkstra/" title="Previous Post: Dijkstra, Dantzig, and Shortest Paths">&laquo; Dijkstra, Dantzig, and Shortest Paths</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/12/13/challenging-mips/" title="Next Post: Challenging MIPs instances">Challenging MIPs instances &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>The views expressed on this blog are mine and do not necessarily reflect the views of my employers.</p>
+  <nav>
+  <div><a href="http://matematica.unipv.it/gualandi/">My Academic Home Page</a></div>
+  <div><a href="http://matematica.unipv.it/gualandi/research/">My Publications</a></div>
+  </nav>
+  </p>
+  <p>
+  I do not accept any advertisement. 
+  However, you can offer me <a href="http://paypal.me/stegua/2.10">coffee and brioche</a> or <a href="http://paypal.me/stegua/7.00">pizza capricciosa</a> through paypal.
+  </p>
+</section>
+
+<section>
+ <h2>Latest Tweets</h2>
+<a class="twitter-timeline" href="https://twitter.com/famo2spaghi" data-widget-id="303485589863407617">Tweets by @famo2spaghi</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<script type="text/javascript">
+   $.domReady(function(){
+         getTwitterFeed("famo2spaghi", 3, true);
+         });
+</script>
+<script src="/javascripts/twitter.js" type="text/javascript"> </script>
+
+<a href="http://twitter.com/famo2spaghi" class="twitter-follow-button" data-show-count="true">Follow @famo2spaghi</a>
+
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/+StefanoGualandi?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      My Google+ profile
+    </a>
+  </h1>
+</section>
+
+
+<section>
+  <h2>Recent Posts</h2>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective/">An informal and biased Tutorial on Kantorovich-Wasserstein distances</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/">Exercise in Python: remove blanks from strings</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/04/column-enumeration/">Graph Coloring: Column Generation or Column Enumeration?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/27/big-data-and-convex-optimization/">Big Data and Convex Optimization</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/19/the-impact-of-preprocessing/">The Impact of Preprocessing on the MIPLIB2003</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h2>GitHub Repos</h2>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/stegua">@stegua</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'stegua',
+            count: 2,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blogroll</h1>
+  <!-- IMPORTANT: Do not change the below ID as it will affect the functioning of the plugin-->
+    <ul id="blogroll-list"><li><a href='http://bartoszmilewski.com/' feedurl='http://bartoszmilewski.com/feed/' title = 'Concurrency, C++, Haskell'>Bartosz Milewski's Programming Cafe</a></li><li><a href='http://cp-is-fun.blogspot.fr/' feedurl='' title = 'Constraint Programming is fun'>CP is fun</a></li><li><a href='http://bob4er.blogspot.com/' feedurl='http://bob4er.blogspot.com/feeds/posts/default' title = ''>disORiented</a></li><li><a href='http://erlingdandersen.blogspot.it/' feedurl='http://erlingdandersen.blogspot.com/feeds/posts/default' title = 'This blog is about my work at MOSEK ApS where I am the CEO, a computer programmer and tea maker'>Erling's blog</a></li><li><a href='http://farkasdilemma.wordpress.com' feedurl='http://farkasdilemma.wordpress.com/feed' title = 'Austin Buchanan's Blog'>Farkas' Dilemma</a></li><li><a href='https://www.ibm.com/developerworks/mydeveloperworks/blogs/jfp/?lang=en' feedurl='https://www.ibm.com/developerworks/mydeveloperworks/blogs/roller-ui/rendering/feed/jfp/entries/atom?lang=en' title = 'Making Mathematical Optimization Pervasive'>IT Best Kept Secret Is Optimization</a></li><li><a href='http://mat.gsia.cmu.edu/blog/' feedurl='http://feeds.feedburner.com/MichaelTricksORB' title = 'Thoughts on the world of operations research'>Michael Trick’s Operations Research Blog</a></li><li><a href='http://www.hakank.org/constraint_programming_blog/' feedurl='http://www.hakank.org/constraint_programming_blog/atom.xml' title = 'This is my blog about constraint programming and related paradigms'>My Constraint Programming Blog</a></li><li><a href='http://nathanbrixius.wordpress.com/' feedurl='http://nathanbrixius.wordpress.com/feed/' title = 'Optimization, analytics, software'>Nathan Brixius</a></li><li><a href='http://zverovich.net/' feedurl='http://zverovich.net/atom.xml' title = 'Victor Zverovich'>Notes of a humble developer</a></li><li><a href='http://orbythebeach.wordpress.com/' feedurl='http://feeds.feedburner.com/OrByTheBeach' title = 'Operations Research, Computers, Education, and South Florida'>O.R. by the Beach</a></li><li><a href='http://optimizationzen.com/' feedurl='http://feeds.feedburner.com/optimizationzen' title = 'The Art of Decision Making'>Optimization Zen</a></li><li><a href='http://orinanobworld.blogspot.it/' feedurl='http://orinanobworld.blogspot.com/feeds/posts/default' title = 'A mix of operations research items and software tricks that I'll probably forget if I don't write them down somewhere'>OR in an OB World</a></li><li><a href='http://punkrockor.wordpress.com/' feedurl='http://punkrockor.wordpress.com/feed/' title = '~*~ peace, love, and operations research ~*~'>Punk Rock Operations Research</a></li><li><a href='http://spokutta.wordpress.com/' feedurl='http://spokutta.wordpress.com/feed/' title = 'Mathematics and related topics'>Sebastian Pokutta's blog</a></li><li><a href='http://thiagoserra.com' feedurl='http://thiagoserra.com/feed' title = ''>Tatu-Search Optimization</a></li><li><a href='http://org.mie.utoronto.ca/blog/' feedurl='' title = 'An Operations Research blog from the University of Toronto'>The OR Café</a></li><li><a href='http://www.thequestforoptimality.com/' feedurl='http://www.thequestforoptimality.com/feed/' title = 'OR made fun and practical'>The Quest for Optimality</a></li></ul>
+    
+    <script type="text/javascript">
+      $(document).ready(function(){
+        updateFeeds(true);
+      });
+    </script>
+    <script src="/javascripts/tinysort-min.js"></script>
+    <script src="/javascripts/blogroll.js"></script>
+    
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2019 - Stefano Gualandi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'famo2spaghi';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/';
+        var disqus_url = 'http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

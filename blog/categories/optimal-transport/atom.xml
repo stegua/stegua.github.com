@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Optimal Transport | Spaghetti Optimization]]></title>
+  <link href="http://stegua.github.io/blog/categories/optimal-transport/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2019-01-27T15:36:24+01:00</updated>
+  <id>http://stegua.github.io/</id>
+  <author>
+    <name><![CDATA[Stefano Gualandi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[An informal and biased Tutorial on Kantorovich-Wasserstein distances]]></title>
+    <link href="http://stegua.github.io/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective/"/>
+    <updated>2018-12-31T13:13:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective</id>
+    <content type="html"><![CDATA[<p>Two years ago, I started to study <strong>Computational Optimal Transport (OT)</strong>, and, now, it is time to wrap up informally the main ideas by using an <em>Operations Research (OR)</em> perspective with a <em>Machine Learning (ML)</em> motivation.</p>
+
+<p>Yes, an <a href="https://twitter.com/hashtag/orms">OR</a> perspective.</p>
+
+<blockquote>
+  <p>Why an OR perspective?</p>
+</blockquote>
+
+<p>Well, because most of the current theoretical works on Optimal Transport have a strong functional analysis bias, and, hence, the are pretty far to be an “easy reading” for anyone working on a different research area. Since I’m more comfortable with “summations” than with “integrations”, in this post I focus only on Discrete Optimal Transport and on Kantorovich-Wasserstein distances between a pair of discrete measure.</p>
+
+<blockquote>
+  <p>Why an <a href="https://nips.cc/Conferences/2017/Schedule?showEvent=8758">ML</a> motivation?</p>
+</blockquote>
+
+<p>Because measuring the <strong>similarity</strong> between complex objects is a crucial basic step in several <a href="https://twitter.com/hashtag/machinelearning?vertical=news&amp;src=hash">#machinelearning</a> tasks. Mathematically, in order to measure the similarity (or dissimilarity) between two objects we need a metric, i.e., a distance function. And <em>Optimal Transport</em> gives us a powerful similarity measure based on the solution of a <strong>Combinatorial Optimization</strong> problem, which can be formulated and solved with <strong>Linear Programming</strong>.</p>
+
+<p><strong>The main Inspirations for this post are:</strong></p>
+
+<p><em>. My current favorite tutorial is <a href="https://arxiv.org/abs/1801.07745">Optimal Transport on Discrete Domains</a>, by <a href="http://people.csail.mit.edu/jsolomon/">Justin Solomon</a>.
+*. Two years ago, I started to study this topic thanks to <a href="https://www-dimat.unipv.it/savare/">Giuseppe Savaré</a>, and I wrote this post by looking also to <a href="https://www-dimat.unipv.it/savare/Ravello2010/ravelloB.pdf">his set of slides</a>. He has several interesting papers and you can look at his <a href="https://www-dimat.unipv.it/savare/pubblicazioni/all.html">publications list</a>.
+*. For a complete overview of this topic look at the <a href="https://optimaltransport.github.io/book/">Computational Optimal Transport</a> book, by <a href="http://www.gpeyre.com/">Gabriel Peyré</a> and <a href="http://marcocuturi.net/">Marco Cuturi</a>. These two researchers, together with Justin Solomon, where among the organizers of two <a href="https://en.wikipedia.org/wiki/Conference_on_Neural_Information_Processing_Systems">#NeurIPS</a> workshops, in <a href="http://www.iip.ist.i.kyoto-u.ac.jp/OTML2014/doku.php?id=home">2014</a> and in <a href="http://otml17.marcocuturi.net/">2017</a>, on *Optimal Transport and Machine Learning</em>.
+*. For a broader history of Combinatorial Optimization till 1960, see <a href="https://homepages.cwi.nl/~lex/files/histco.pdf">this manuscript by Alexander Schrijver</a>.</p>
+
+<p><strong>DISCLAIMER 1:</strong> This is a long “ongoing” post, and, despite my efforts, it might contain errors of any type. If you have any suggestion for improving this post, please (!), let me know about: I will be more than happy to mention you (or any of your avatars) in the acknowledgement section. Otherwise, if you prefer, I can offer you a drink, whenever we will meet in real life.</p>
+
+<p><strong>DISCLAIMER 2:</strong> I wrote this post while reading the book <strong><a href="https://www.goodreads.com/book/show/9969571-ready-player-one">Ready Player One</a></strong>, by Ernest Cline.</p>
+
+<p><strong>DISCLAIMER 3:</strong> I’m recruiting postdocs. If you like the topic of this post and you are looking for a postdoc position, write me an email.</p>
+
+<h2 id="similarity-measures-and-distance-functions">Similarity measures and distance functions</h2>
+<p>A <strong>metric</strong> is a function, usually denoted by <script type="math/tex">d</script>, between a pair of objects belonging to a space <script type="math/tex">X</script>:</p>
+
+<script type="math/tex; mode=display">d : X \times X \rightarrow \mathbb{R}_+</script>
+
+<p>Given any triple of points <script type="math/tex">x,y,z \in X</script>, the conditions that <script type="math/tex">d</script> must satisfy in order to be a metric are:</p>
+
+<ol>
+  <li><script type="math/tex">d(x,y) \geq 0</script> <em>(non negativity)</em></li>
+  <li><script type="math/tex">d(x,y) = 0 \Leftrightarrow x=y</script> <em>(identity of indiscernibles)</em></li>
+  <li><script type="math/tex">d(x,y) = d(y,x)</script> <em>(symmetry)</em></li>
+  <li><script type="math/tex">d(x,z) \leq d(x,y) + d(y,z)</script> <em>(triangle inequality or subadditivity)</em></li>
+</ol>
+
+<p>If the space <script type="math/tex">X</script> is <script type="math/tex">\mathbb{R}^k</script>, then <script type="math/tex">\mathbf{x}, \mathbf{y}, \mathbf{z}</script> are vectors of <script type="math/tex">k</script> elements, and the most common distance is indeed the Euclidean function</p>
+
+<script type="math/tex; mode=display">d(\mathbf{x},\mathbf{y}) = \sqrt{\sum_{i = 1}^k(x_i - y_i)^2}</script>
+
+<p>where <script type="math/tex">x_i</script> is the <script type="math/tex">i</script>-th component of the vector <script type="math/tex">\mathbf{x}</script>. Clearly, the algorithmic complexity of computing (in finite precision) this distance is linear with the dimension of <script type="math/tex">X</script>.</p>
+
+<p><strong>QUESTION:</strong> What if we want to compute the distance between a pair of clouds of <script type="math/tex">n</script> points defined in <script type="math/tex">\mathbb{R}^k</script>?</p>
+
+<p>If we want to compute the distance between the two vectors, that represent the two clouds of <script type="math/tex">n</script> points, we need to define a distance function.</p>
+
+<p>Let me fix the notation first. If <script type="math/tex">\mathbf{x}</script> is a vector, then <script type="math/tex">x_i</script> is the <script type="math/tex">i</script>-th element. Suppose we have two matrices <script type="math/tex">\mathbf{X}</script> and <script type="math/tex">\mathbf{Y}</script> with <script type="math/tex">n \times k</script> elements, which represent <script type="math/tex">n</script> points in <script type="math/tex">\mathbb{R}^k</script>. We denote by <script type="math/tex">\mathbf{x}_i</script> the <script type="math/tex">i</script>-th row of matrix <script type="math/tex">\mathbf{X}</script>, and by <script type="math/tex">x_{ij}</script> the <script type="math/tex">j</script>-th element of row <script type="math/tex">i</script>. Indeed, the rows <script type="math/tex">\mathbf{x}_i</script> and <script type="math/tex">\mathbf{y}_i</script> of the two matrices give the coordinates <script type="math/tex">x_{i1},\dots,x_{ik}</script> and <script type="math/tex">y_{i1},\dots,y_{ik}</script> of the two corresponding points.</p>
+
+<p>Whenever <script type="math/tex">k=1</script>, a simple choice is to consider the <a href="https://en.wikipedia.org/wiki/Minkowski_distance">Minkowski Distance</a>, which is a metric for normed vector spaces:</p>
+
+<script type="math/tex; mode=display">M_p(\mathbf{x},\mathbf{y}) = \left( \sum_{i=1}^n \mid x_i - y_i\mid^p \right)^{\frac{1}{p}}</script>
+
+<p>where typical values of <script type="math/tex">p</script> are:</p>
+
+<ul>
+  <li><script type="math/tex">p=1</script> (Manhattan distance)</li>
+  <li><script type="math/tex">p=2</script> (Euclidean distance, see above)</li>
+  <li><script type="math/tex">p=\infty</script> (Infinity distance)</li>
+</ul>
+
+<p>We have also the Minkowski norm, that is a function</p>
+
+<script type="math/tex; mode=display">\ell_p : \mathbb{R} \rightarrow \mathbb{R}_+</script>
+
+<p>computed as</p>
+
+<script type="math/tex; mode=display">\ell_p(\mathbf{x}) = \left( \sum_{i=1}^n \mid x_i \mid^p\right)^{\frac{1}{p}}</script>
+
+<p>Whenever <script type="math/tex">k>1</script>, we have to consider a more general distance function:</p>
+
+<script type="math/tex; mode=display">D : \mathbb{R}^{n \times k} \times \mathbb{R}^{n \times k} \rightarrow \mathbb{R}_+</script>
+
+<p>such that the relations (1)-(4) are satisfied. We could use as distance function <script type="math/tex">D(\mathbf{X},\mathbf{Y})</script> any <a href="https://en.wikipedia.org/wiki/Matrix_norm">matrix norm</a>, but, to begin with, we can use the Minkowski distance twice in cascade as follows.</p>
+
+<ol>
+  <li>First, we compute the distance between a pair of points in <script type="math/tex">\mathbb{R}^k</script>, which we call the <strong>ground distance</strong>, using <script type="math/tex">M_q</script>, with <script type="math/tex">q\geq 1</script>. By applying this function to all the <script type="math/tex">n</script> pairs of points, we get a vector <script type="math/tex">\mathbf{z}</script> of <script type="math/tex">n</script> non-negative values:</li>
+</ol>
+
+<script type="math/tex; mode=display"> z_i = M_q(\mathbf{x}_i,\mathbf{y}_i), \quad i=1,\dots, n</script>
+
+<ol>
+  <li>Second, we apply the Minkowski norm <script type="math/tex">\ell_p</script> to the vector <script type="math/tex">\mathbf{z}</script>.</li>
+</ol>
+
+<p>Composing these two operations, we can define a distance function between a pair of vectors of points (i.e., pair of matrices) as follows:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+D_{p,q}(\mathbf{X},\mathbf{Y}) = \ell_p(\mathbf{z}) = \ell_p(\left< M_q(\mathbf{x}_i,\mathbf{y}_i)\right>) = \left( \sum_{i=1}^n \left( \sum_{j = 1}^n \left(x_{ij} - y_{ij}\right)^q  \right)^{\frac{p}{q}} \right)^{\frac{1}{p}} %]]&gt;</script>
+
+<p>Note that for <script type="math/tex">p=q=2</script>, we get</p>
+
+<script type="math/tex; mode=display">D_{2,2}(\mathbf{X},\mathbf{Y}) = \sqrt{\sum_{i=1}^n \sum_{j = 1}^n \left(x_{ij} - y_{ij}\right)^2} = \mid\mid \mathbf{X} - \mathbf{Y}\mid\mid_F</script>
+
+<p>which is the <a href="https://en.wikipedia.org/wiki/Matrix_norm#Frobenius_norm">Frobenius Norm</a> of the element wise difference <script type="math/tex">\mathbf{X} - \mathbf{Y}</script>.</p>
+
+<p>The main drawback of this distance function is that it implicitly relies on the order (position) of the single points in the two input vectors: any permutation of one (or both) of the two vectors will yield a different value of the ground distance. This happens because the distance function between the two input vectors considers only “interactions” between the <script type="math/tex">i</script>-th pair of points stored at the same <script type="math/tex">i</script>-th position in the two vectors.</p>
+
+<p><strong>IMPORTANT.</strong> Here is where Discrete Optimal Transport comes into action: it offers an alternative distance function based on the solution of a <strong>Combinatorial Optimization</strong> problem, which is, in the simplest case, formulated as the following <strong>Linear Program</strong>:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+\begin{aligned}\mathcal{W}_d(\mathbf{X},\mathbf{Y}) := \min \;\;& \sum_{i=1}^n\sum_{j=1}^n d(\mathbf{x}_i,\mathbf{y}_j) \pi_{ij} \\
+ & \sum_{i=1}^n \pi_{ij} = 1& j=1,\dots,n \\
+ & \sum_{j=1}^n \pi_{ij} = 1& i=1,\dots,n \\
+ & \pi_{ij} \geq 0 & i=1,\dots,n, j=1,\dots,n .
+ \end{aligned} %]]&gt;</script>
+
+<p>If you have a minimal <a href="https://twitter.com/hashtag/orms">#orms</a> background at this point you should have recognized that this problem is a standard <a href="https://en.wikipedia.org/wiki/Assignment_problem">Assignment Problem</a>: we have to assign each point of the first vector <script type="math/tex">\mathbf{x}</script> to a single point of the second vector <script type="math/tex">\mathbf{y}</script>, in such a way that the overall cost is minimum. From an optimal solution of this problem, we can select among all possible permutations of the rows of <script type="math/tex">\mathbf{Y}</script>, the permutation that gives the minimal value of the Frobenius norm.</p>
+
+<p>Whenever the ground distance <script type="math/tex">d(\mathbf{x},\mathbf{y})</script> is a metric, then <script type="math/tex">\mathcal{W}_d(\mathbf{X},\mathbf{Y})</script> is a metric as well. In other terms, the optimal value of this problem is a measure of distance between the two vectors, while the optimal values of the decision variables <script type="math/tex">\mathbf{\pi}</script> gives a mapping from the rows of <script type="math/tex">\mathbf{X}</script> to the rows of <script type="math/tex">\mathbf{Y}</script> (in OT terminology, an <em>optimal plan</em>). This is possible because the LP problem has a <a href="https://en.wikipedia.org/wiki/Unimodular_matrix">Totally Unimodular</a> coefficient matrix, and, hence, every basic optimal solution of the LP problem has integer values.</p>
+
+<blockquote>
+  <p><strong>WAIT, LET ME STOP HERE FOR A SECOND!</strong></p>
+</blockquote>
+
+<p>I am being too technical, too early. Let me take a step back in <em>History</em>.</p>
+
+<h2 id="once-upon-a-time-from-monge-to-kantorovich">Once Upon a Time: from Monge to Kantorovich</h2>
+<p>The History of Optimal Transport is quite fascinating and it begins with the <a href="https://gallica.bnf.fr/ark:/12148/bpt6k35800/f796"><em>Mémoire sur la théorie des déblais et des remblais</em></a> by <a href="https://en.wikipedia.org/wiki/Gaspard_Monge">Gaspard Monge</a> (1746-1818). I like to think of Gaspard as visiting the <a href="https://en.wikipedia.org/wiki/Dune_of_Pilat">Dune of Pilat</a>, near Bordeaux, and then writing his <em>Mémoire</em> while going back to home… but this is only my imagination. Still, particles of sand give me the most concrete idea for passing from a continuous to a discrete problem.</p>
+
+<p><img class="center" src="../../../../../../images/dune_pillat.JPG"></p>
+
+<p>In his <em>Mémoire</em>, Gaspard Monge considered the problem of transporting <em>“des terres d’un lieu dans un autre”</em> at minimal cost. The idea is that we have first to consider the cost of transporting a single molecule of <em>“terre”</em>, which is proportional to its weight and to the distance from its initial and final position. The total cost of transportation is given by summing up the transportation cost of each single molecule. Using the Lex Schrijver’s words, Monge’s transportation problem was <a href="https://homepages.cwi.nl/~lex/files/histco.pdf">camouflaged as a continuous problem</a>.</p>
+
+<p>The idea of Gaspard is to assign to each initial position a single final destination: it is not possible to split a molecule into smaller parts. This unsplittable version of the problem posed a very challenging problem where <a href="https://math.berkeley.edu/~evans/Monge-Kantorovich.survey.pdf"><em>“the direct methods of the calculus of variations fail spectacularly”</em></a> (<a href="https://math.berkeley.edu/~evans/">Lawrence C. Evans</a>, see link at page 5). This challenge stayed unsolved until the work of <a href="https://en.wikipedia.org/wiki/Leonid_Kantorovich">Leonid Kantorovich</a> (1912-1986).</p>
+
+<p>Curiously, Leonid did not arrive to the transportation problem while studying directly the work of Monge. Instead, he was asked to solve an industrial resource allocation problem, which is more general than Monge’s problem. Only a few years later, he reconsidered his contribution in terms of the continuous probabilistic version of Monge’s transportation problem. However, I am unable to state the true technical contributions of Leonid with respect to the work of Gaspard in a short post (well, honestly, I would be unable even in an infinite post), but I recommend you to read the <a href="https://link.springer.com/article/10.1007%2Fs00283-013-9380-x">Long History of the Monge-Kantorovich Transportation Problem</a>.</p>
+
+<p>Anyway, I have pretty clear the two main concepts that are the foundations of the work by Kantorovich:</p>
+
+<ol>
+  <li><strong>RELAXATION</strong>: He relaxes the problem posed by Gaspard and he proves that an optimal solution of the relaxation equals an optimal solution of the original problem (Here is the link to the very unofficial soundtrack of his work: <a href="https://www.youtube.com/watch?v=RVmG_d3HKBA">“Relax, take it easy!”</a>). Indeed, Leonid relaxed formulation allows each molecule to be split across several destinations, differently from the formulation of Monge. In OR terms, he solves a Hitchcock Problem, not an Assignment Problem. For more details, see Chapter 1 of the <a href="https://optimaltransport.github.io/book/">Computational Optimal Transport</a>.</li>
+</ol>
+
+<p><img class="center" src="../../../../../../images/relax_easy.PNG"></p>
+
+<ol>
+  <li><strong>DUALITY</strong>: Leonid uses a dual formulation of the relaxed problem. Indeed, he <em>invented</em> the dual potential functions and he sketched the first version of dual simplex algorithm. Unfortunately, I studied Linear Programming duality without having an historical perspective, and hence duality looks like <em>obvious</em>, but at the time is was clearly a new concept.</li>
+</ol>
+
+<p>For the records, Leonid Kantorovich won the Nobel Prize, and <a href="https://www.nobelprize.org/prizes/economic-sciences/1975/kantorovich/25950-autobiography-1975/">his autobiography</a> merits to be read more than once.</p>
+
+<p>Well, I have still so much to learn from the past!</p>
+
+<h3 id="two-fields-medal-winners-alessio-figalli-and-cedric-villani">Two Fields medal winners: Alessio Figalli and Cedric Villani</h3>
+<p>If you think that Optimal Transport belongs to the past, you are wrong!</p>
+
+<p>Last summer (2018), in Rio de Janeiro, <a href="https://people.math.ethz.ch/~afigalli/">Alessio Figalli</a> won the <a href="https://en.wikipedia.org/wiki/Fields_Medal">Fields Medal</a> with this citation:</p>
+
+<blockquote>
+  <p><em>“for his contributions to the <strong>theory of optimal transport</strong>, and its application to partial differential equations, metric geometry, and probability”</em></p>
+</blockquote>
+
+<p>Alessio is not the first Fields medalist who worked on Optimal Transport. Already <a href="https://cedricvillani.org/for-mathematicians/">Cedric Villani</a>, who wrote the <a href="http://cedricvillani.org/wp-content/uploads/2012/08/B07.StFlour.pdf">most cited book</a> on Optimal Transport [1], won the Fields Medal in 2010. I strongly suggest you to look any of <a href="https://www.youtube.com/watch?v=Kc0Kthyo0hU">his lectures available on Youtube</a>. And … do you know that Villani spent a short period of time during his PhD in my current Math Dept. at University of Pavia?</p>
+
+<p>As an extra bonus, if you don’t know what a Fields Medal is, you can have Robin Williams to explain the prize in this clip taken from <a href="https://www.youtube.com/watch?v=TRU4YYxM7vU">Good Will Hunting</a>.</p>
+
+<h2 id="discrete-optimal-transport-and-linear-programming">Discrete Optimal Transport and Linear Programming</h2>
+<p>It is time of being technical again and to move from the Monge assignment problem, to the Kantorovich “relaxed” transportation problem. In the assignment model presented above, we are implicitly considering that all the positions are occupied by a single molecule of unitary weight. If we want to consider the more general setting of Discrete Optimal Transport, we need to consider the “mass” of each molecule, and to formulate the problem of transporting the total mass at minimum cost. Before presenting the model, we define formally the concept of a <strong>discrete measure</strong> and of the <strong>cost matrix</strong> between all pairs of molecule positions.</p>
+
+<p><strong>DISCRETE MEASURES:</strong> Given a of vector of <script type="math/tex">n</script> positions <script type="math/tex">\mathbf{x}_i</script>, and given the <a href="https://en.wikipedia.org/wiki/Dirac_delta_function">Dirac delta function</a>, we can define the <em>Dirac measures</em> <script type="math/tex">\delta_{\mathbf{x}_i}</script> as</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+\delta_{\mathbf{x}_i}(A) = \left\{ \begin{array}{ll} 1 & \text{if} \;\;\mathbf{x}_i \in A \subseteq X \\ 0 & \text{if} \;\;\mathbf{x}_i \notin A \subseteq X \\  \end{array}\right. %]]&gt;</script>
+
+<p>Given a vector of <script type="math/tex">n</script> weights <script type="math/tex">\mu_i</script>, one associated to each element of <script type="math/tex">\mathbf{x}</script>, we can define the <strong>discrete measure</strong> <script type="math/tex">\mathbf{\mu}</script> as</p>
+
+<script type="math/tex; mode=display">\mu(A) = \sum_{i=1}^n \mu_i \delta_{\mathbf{x}_i}</script>
+
+<p>Note the <script type="math/tex">\mu</script> is a function of type: <script type="math/tex">\mu : A \rightarrow \mathbb{R}_+</script>, for any subset <script type="math/tex">A</script> of <script type="math/tex">X</script>. The vector <script type="math/tex">\mathbf{x}</script> is called the support of the measure <script type="math/tex">\mathbf{\mu}</script>. In Computer Science terms, <em>a discrete measure is defined by a vector of pairs</em>, where each pair contains a positive number <script type="math/tex">\mu_i</script> (the measured value) and its support point <script type="math/tex">\mathbf{x}_i</script> (the location where the measure occurred). Note that <script type="math/tex">\mathbf{x}_i</script> is a (small?) vector storing the coordinates of the <script type="math/tex">i</script>-th point.</p>
+
+<p><strong>COST MATRIX:</strong> Given two discrete measures <script type="math/tex">\mathbf{\mu}</script> and <script type="math/tex">\mathbf{\nu}</script>, the first with support <script type="math/tex">\mathbf{x}</script> and the second with support <script type="math/tex">\mathbf{y}</script>, we can define the following cost matrix:</p>
+
+<script type="math/tex; mode=display">c_{ij} = d(\mathbf{x}_i, \mathbf{y}_j), \quad \text{for } i=1,\dots,n \text{ and } j= 1,\dots, m</script>
+
+<p>where <script type="math/tex">d</script> is a distance function, such as, for instance, the Minkowski distance <script type="math/tex">M_q(\mathbf{x},\mathbf{y})</script> defined before. Note that <script type="math/tex">\mathbf{\mu}</script> has <script type="math/tex">n</script> elements, and <script type="math/tex">\mathbf{\nu}</script> has <script type="math/tex">m</script> elements.</p>
+
+<h3 id="kantorovich-wasserstein-distances-between-two-discrete-measures">Kantorovich-Wasserstein distances between two discrete measures</h3>
+<p>At this point, we have all the basic elements to define the <strong>Kantorovich-Wasserstein distance function between discrete measures</strong> in terms of the solution of a (huge) Linear Program.</p>
+
+<p><strong>INPUT:</strong> Two discrete measures <script type="math/tex">\mathbf{\mu}</script> and <script type="math/tex">\mathbf{\nu}</script> defined on a metric space <script type="math/tex">X</script>, and the corresponding supports <script type="math/tex">\mathbf{x}</script> and <script type="math/tex">\mathbf{y}</script>, having <script type="math/tex">n</script> and <script type="math/tex">m</script> elements, respectively. A distance function <script type="math/tex">d</script>, which permits to compute the cost <script type="math/tex">c_{ij}</script>.</p>
+
+<p><strong>OUTPUT:</strong> A transportation plan <script type="math/tex">\mathbf{\pi}</script> and a value of distance of <script type="math/tex">\mathcal{W}(\mathbf{\mu}, \mathbf{\nu})</script> that corresponds to an optimal solution of the following Linear Program:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+\begin{aligned}
+\mathcal{W}(\mathbf{\mu},\mathbf{\nu}) := \min \;\;& \sum_{i=1}^n\sum_{j=1}^m c_{ij} \pi_{ij} \\
+ & \sum_{j=1}^m \pi_{ij} \geq \mu_i & i=1,\dots,n \\
+ & \sum_{i=1}^n \pi_{ij} \leq \nu_j& j=1,\dots,m \\
+ & \pi_{ij} \geq 0 & i=1,\dots,n, j=1,\dots,m.
+ \end{aligned} %]]&gt;</script>
+
+<p>This Linear Program is indeed a special case of the <a href="https://www.jstor.org/stable/2627172?seq=1#page_scan_tab_contents">Transportation Problem</a>, known also as the Hitchcock-Koopmans problem. It is a special case because the cost vector has a strong structure that should be exploited as much as possible.</p>
+
+<p><strong>Computational Challenge:</strong> While the previous problem is polynomially solvable, the size of practical instances is very large. For instance, if you want to compute the distance between a pair of grey scale images of resolution <script type="math/tex">512 \times 512</script> pixels, you end up with an LP with <script type="math/tex">512^4 = 68\;719\;476\;736</script> cost coefficients. Hence, these problems must be handled with care. If you want to see how the solution time and memory requirement scale for grey scale image, please, have a look at the <a href="http://www.iasi.cnr.it/aussois/web/uploads/2018/slides/gualandis.pdf">slides of my talk at Aussois (2018)</a>.</p>
+
+<p><img class="center" src="../../../../../../images/ot_challenge.png"></p>
+
+<h3 id="kantorovich-wasserstein-distance">KANTOROVICH-WASSERSTEIN DISTANCE</h3>
+
+<p>Whenever</p>
+
+<ol>
+  <li>The two measure are discrete probability measures, that is, both <script type="math/tex">\sum_{i=1}^n \mu_i = 1</script> and <script type="math/tex">\sum_{j = 1}^m \nu_j = 1</script> (i.e., <script type="math/tex">\mathbf{\mu}</script> and <script type="math/tex">\mathbf{\nu}</script> belongs to the probability simplex), and,</li>
+  <li>The cost vector is defined as the <script type="math/tex">p</script>-th power of a distance,</li>
+</ol>
+
+<p>then we define the <strong>Kantorovich-Wasserstein distance of order <script type="math/tex">p</script></strong> as the following functional:</p>
+
+<script type="math/tex; mode=display">\mathcal{W}_p(\mathbf{\mu},\mathbf{\nu}) := \left(\min_{\pi \in U} \sum_{i=1}^n\sum_{j=1}^m d(\mathbf{x}_i, \mathbf{y}_j)^p \pi_{ij} \right)^{\frac{1}{p}}</script>
+
+<p>where the set <script type="math/tex">U</script> is defined as:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+U := \left\{\begin{array}{ll}
+ \sum_{j=1,\dots,m} \pi_{ij} \leq \mu_i & i=1,\dots,n \\
+ \sum_{i=1,\dots,n} \pi_{ij} \geq \nu_j& j=1,\dots,m \\
+ \pi_{ij} \geq 0 & i=1,\dots,n, j=1,\dots,m. \\
+ \end{array}
+ \right\}
+ %]]&gt;</script>
+
+<p>From a mathematical perspective, the most interesting case is the order <script type="math/tex">p=2</script>, which <em>generalizes</em> the Euclidean distance to discrete probability vectors. Note that in this formulation, the two constraint sets defining <script type="math/tex">U</script> could be replaced with equality constraints, since <script type="math/tex">\mathbf{\mu}</script> and <script type="math/tex">\mathbf{\nu}</script> belongs to the probability simplex. In addition, any Combinatorial Optimization algorithm must be used with care, since all the cost and constraint coefficients are not integer.
+<strong>Note:</strong> The <script type="math/tex">p</script> power used for the ground distance must not be confused with the order (power) of a Kantorovich-Wasserstein distance.</p>
+
+<h3 id="earth-mover-distance">EARTH MOVER DISTANCE</h3>
+
+<p>A particular case of the Kantorovich-Wasserstein distance very popular in the Computer Vision research community, is the so-called <strong>Earth Mover Distance (EMD)</strong> [2], which is used between a pair of <script type="math/tex">k</script>-dimensional histograms obtained by preprocessing the images of interest. In this case, (i) we have <script type="math/tex">n=m</script>, (ii) we do not require the discrete measures to belong to the probability simplex, and (iii) we do not even require that the two measures are <em>balanced</em>, that is, <script type="math/tex">\sum_{i=1}^n \mu_i = \sum_{j=1}^n \nu_j</script>. In Optimal Transport terminology, the Earth Mover Distance solves an <strong>unbalanced optimal transport problem</strong>. For the EMD, the feasibility set <script type="math/tex">U</script> is replaced by the set:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+V := \left\{\begin{array}{ll}
+ \sum_{i=1}^n \sum_{j=1}^n \pi_{ij} = \min \{ \sum_{i=1}^n \mu_i, \sum_{j=1}^n \nu_j \}& \\
+ \sum_{j=1,\dots,n} \pi_{ij} \geq \mu_i & i=1,\dots,n \\
+ \sum_{i=1,\dots,n} \pi_{ij} \geq \nu_j& j=1,\dots,n \\
+ \pi_{ij} \geq 0 & i=1,\dots,n, j=1,\dots,n. \\
+ \end{array}
+ \right\}
+ %]]&gt;</script>
+
+<p>The cost function is taken with the order <script type="math/tex">p=1</script>:</p>
+
+<script type="math/tex; mode=display">EMD(\mathbf{x},\mathbf{y}) := \min_{\pi \in V} \sum_{i=1}^n\sum_{j=1}^m d(x_i, y_j) \pi_{ij}</script>
+
+<p>The most used function <script type="math/tex">d</script> is the Minkowski distance induced by the <script type="math/tex">\ell_p</script> norm.</p>
+
+<h3 id="word-mover-distance">WORD MOVER DISTANCE</h3>
+
+<p>A very interesting application of discrete optimal transport is the definition of a metric for text documents [3]. The main idea is, first, to exploit a <a href="https://en.wikipedia.org/wiki/Word_embedding">word embedding</a> obtained, for instance, with the popular <a href="https://www.tensorflow.org/tutorials/representation/word2vec">word2vec</a> neural network [4], and, second, to formulate the problem of “transporting” a text document into another at minimal cost.</p>
+
+<blockquote>
+  <p>Yes, but … how we compute the ground distance between two words?</p>
+</blockquote>
+
+<p>A word embedding associates to each word of a given vocabulary a vector of <script type="math/tex">\mathbb{R}^k</script>. For the pre-trained embedding made available by Google at <a href="https://code.google.com/archive/p/word2vec/">this archive</a>, which contains the embedding of around 3 millions of words, <script type="math/tex">k</script> is equals to 300. Indeed, given a vocabulary of <script type="math/tex">n</script> words and fixed a dimension <script type="math/tex">k</script>, a word embedding is given by a matrix <script type="math/tex">\mathbf{X}</script> of dimension <script type="math/tex">n \times k</script>: Row <script type="math/tex">\mathbf{x}_i</script> gives the <script type="math/tex">k</script>-dimensional vector representing the word embedding of word <script type="math/tex">i</script>.</p>
+
+<p>In this case, instead of having discrete measures, we deal with normalized bag-of-words (nBOW), which are vector of <script type="math/tex">\mathbb{R}^n</script>, where <script type="math/tex">n</script> denotes the number of words in the vocabulary. If a text document <script type="math/tex">\mathbf{\mu} \in \mathbb{R}^n</script> contains <script type="math/tex">t_i</script> times the word <script type="math/tex">i</script>, then <script type="math/tex">\mathbf{\mu}_i = \frac{t_i}{\sum_{j=1}^n t_j}</script>. At this point is clear that the <strong>ground distance</strong> between a pair of words is given by the distance between the corresponding embedding vectors in <script type="math/tex">\mathbb{R}^k</script>, that is, given two words <script type="math/tex">i</script> and <script type="math/tex">j</script>, then</p>
+
+<script type="math/tex; mode=display">c(i,j) = \ell_2(\mathbf{x}_i - \mathbf{x}_j)</script>
+
+<p>Finally, given two text documents <script type="math/tex">\mathbf{\mu}</script> and <script type="math/tex">\mathbf{\nu}</script>, we can formulate the Linear Program that gives the <strong>Word Mover Distance</strong> as:</p>
+
+<script type="math/tex; mode=display">\text{WMD}(\mathbf{\mu},\mathbf{\nu}) := \min_{\pi \in U} \sum_{i=1}^n\sum_{j=1}^n c(\mathbf{x}_i, \mathbf{x}_j) \pi_{ij}</script>
+
+<p>where the set <script type="math/tex">U</script> is defined as:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+U := \left\{\begin{array}{ll}
+ \sum_{j=1,\dots,n} \pi_{ij} = \mu_i & i=1,\dots,n \\
+ \sum_{i=1,\dots,n} \pi_{ij} = \nu_j& j=1,\dots,n \\
+ \pi_{ij} \geq 0 & i=1,\dots,n, j=1,\dots,n. \\
+ \end{array}
+ \right\}
+ %]]&gt;</script>
+
+<p>If you are serious reader, and you are still reading this post, then it is clear that the Word Mover Distance is exactly a Kantorovich-Wasserstein distance of order 1, with an Euclidean ground distance. If you are interested in the quality of this distance when used within a nearest neighbor heuristic for a text classification task, we refer to [3]. <em>(While writing this post, I started to wonder how would perform a <strong>WMD</strong> of order 2, but this is another story…)</em></p>
+
+<h3 id="interesting-research-directions">Interesting Research Directions</h3>
+<p>The following are the research topics I am interested in right now. Each topic deserves its own blog post, but let me write here just a short sketch.</p>
+
+<ul>
+  <li>
+    <p><strong>Computational Challenges:</strong> The development of efficient algorithms for the solution of Optimal Transport problems is an active area of research. Currently, the preferred (heuristic) approach is based on so-called <a href="http://marcocuturi.net/SI.html">regularized optimal transport</a>, introduced originally in [5]. Indeed, regularized optimal transport deserves its own blog post.
+In two recent works, together with my co-authors, we tried to revive the <a href="https://scholar.google.it/scholar?q=dantzig+network+simplex&amp;hl=en&amp;as_sdt=0&amp;as_vis=1&amp;oi=scholart">Network Simplex</a> for two special cases: Kantorovich-Wasserstein distances of order 1 for <script type="math/tex">k</script>-dimensional histograms [6] and Kantorovich-Wasserstein distances of order 2 for decomposable cost functions [7]. The second paper  was presented as a <a href="https://github.com/stegua/dpartion-nips2018/blob/master/poster/PosterNIPS2018.pdf">poster at NeurIPS2018</a>. <em>(If you ever read any of the two papers, please, let me know what you think about them)</em></p>
+  </li>
+  <li>
+    <p><strong>Unbalanced Optimal Transport:</strong> The computation of Kantorovich-Wasserstein distance for pair of unbalanced discrete measures is very challenging. Last year, a brilliant math student finished a nice project on this topic, which I hope to finalize during the next semester.</p>
+  </li>
+  <li>
+    <p><strong>Barycenters of Discrete Measures:</strong> The Kantorovich-Wasserstein distance can be used to generalize the concept of <em>barycenters</em>, that is, the problem of finding a discrete measure that is the closest (in Kantorovich terms) to a given set of discrete measures. The problem of finding the barycenter can be formulated as a Linear Program, where the unknowns (the decision variables) are both the transport plan and the discrete measure representing the barycenter. For instance, the following images, taken from our last draft paper, represents the barycenters of each of the 10 digits of the <a href="http://yann.lecun.com/exdb/mnist/">MNIST</a> data set of handwritten images (each image is the barycenter of other <script type="math/tex">3\;200</script> images).</p>
+  </li>
+</ul>
+
+<p><img class="center" src="../../../../../../images/mnist_bary.PNG"></p>
+
+<ul>
+  <li><strong>Distances between Discrete Measures defined on different metric spaces:</strong> This topic is at the top of my 2019 resolutions. There are a few papers by <a href="https://people.math.osu.edu/memoli.2/">Facundo Mémoli</a> on this topic, which are based on the so-called <strong>Gromov-Wasserstein distance</strong> and that requires the solution of a <strong>Quadratic Assignment Problem (QAP)</strong>.</li>
+</ul>
+
+<p>Now, it’s time to close this post with final remarks.</p>
+
+<h2 id="optimal-transport-a-brilliant-future">Optimal Transport: A brilliant future?</h2>
+<p>Given the number and the quality of results achieved on the Theory of Optimal Transport by “pure” mathematicians, it is the time to turn these theoretical results into a set of useful algorithms implemented in efficient and scalable solvers. So far, the only public library I am aware of is <a href="https://github.com/rflamary/POT">POT: Python Optimal Transport</a>.</p>
+
+<p>On <a href="https://medium.com/">Medium</a>, C.E. Perez claims that <a href="https://medium.com/intuitionmachine/optimal-transport-theory-the-new-math-for-deep-learning-2520395fc183">Optimal Transport Theory (is) the New Math for Deep Learning</a>. In his short post, he explains how Optimal Transport is used in Deep Learning algorithms, specifically in <strong>Generative Adversarial Networks (GANs)</strong>, to replace the <strong>Kullback-Leibler (KL) divergence</strong>.</p>
+
+<p>Honestly, I do not have a clear idea regarding the potential impact of Kantorovich distances on <strong>GANs</strong> and <strong>Deep Learning</strong> in general, but I think there are a lot of research opportunities for everyone with a strong passion for <strong>Computational Combinatorial Optimization</strong>.</p>
+
+<p>And you, what do you think about the topics presented in this post?</p>
+
+<p>As usual, I will be very happy to hear from you, in the meantime…</p>
+
+<blockquote>
+  <p><strong>GAME OVER</strong></p>
+</blockquote>
+
+<h3 id="acknowledgement">Acknowledgement</h3>
+<p>I would like to thank <a href="https://imada.sdu.dk/~marco/">Marco Chiarandini</a>, <a href="https://www.southampton.ac.uk/maths/about/staff/sc2r15.page">Stefano Coniglio</a>, and <a href="http://www-dimat.unipv.it/~bassetti/">Federico Bassetti</a> for constructive criticism of this blog post.</p>
+
+<h3 id="references">References</h3>
+
+<ol>
+  <li>
+    <p>Villani, C. <span class="title">Optimal transport, old and new.</span> Grundlehren der mathematischen Wissenschaften, Vol.338, Springer-Verlag, 2009. <a href="http://cedricvillani.org/wp-content/uploads/2012/08/B07.StFlour.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>Rubner, Y., Tomasi, C. and Guibas, L.J., 2000. <span class="title">The earth mover's distance as a metric for image retrieval.</span> International journal of computer vision, 40(2), pp.99-121. <a href="https://idp.springer.com/authorize/casa?redirect_uri=https://link.springer.com/content/pdf/10.1023/A:1026543900054.pdf&amp;casa_token=Ysv8VHVK29EAAAAA:nIcUgwC_iwnFqj7C1DUcKcVi-JY4FvCt9GQOhNQsa4nmVe_H3BfpO197Y_sakGDwqCfziSHEt3q1Mg">[pdf]</a></p>
+  </li>
+  <li>
+    <p>Kusner, M.J., Sun, Y., Kolkin, N.I., Weinberger, K.Q. <span class="title">From Word Embeddings To Document Distances.</span> Proceedings of the 32 nd International Conference on Machine Learning, Lille, France, 2015. <a href="http://proceedings.mlr.press/v37/kusnerb15.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>Mikolov, T., Sutskever, I., Chen, K., Corrado, G.S. and Dean, J., 2013. <span class="title">Distributed representations of words and phrases and their compositionality.</span> In Advances in neural information processing systems (pp. 3111-3119). <a href="https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>Cuturi, M., 2013. <span class="title">Sinkhorn distances: Lightspeed computation of optimal transport.</span> In Advances in neural information processing systems (pp. 2292-2300). <a href="https://papers.nips.cc/paper/4927-sinkhorn-distances-lightspeed-computation-of-optimal-transport.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>Bassetti, F., Gualandi, S. and Veneroni, M., 2018. <span class="title">On the Computation of Kantorovich-Wasserstein Distances between 2D-Histograms by Uncapacitated Minimum Cost Flows.</span> arXiv preprint arXiv:1804.00445. <a href="https://arxiv.org/pdf/1804.00445">[pdf]</a></p>
+  </li>
+  <li>
+    <p>Auricchio, G., Bassetti, F., Gualandi, S. and Veneroni, M., 2018. <span class="title">Computing Kantorovich-Wasserstein Distances on d-dimensional histograms using (d+1)-partite graphs. </span> NeurIPS, 2018.<a href="https://arxiv.org/pdf/1805.07416">[pdf]</a></p>
+  </li>
+</ol>
+]]></content>
+  </entry>
+  
+</feed>

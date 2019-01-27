@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: AMPL | Spaghetti Optimization]]></title>
+  <link href="http://stegua.github.io/blog/categories/ampl/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2019-01-27T15:36:24+01:00</updated>
+  <id>http://stegua.github.io/</id>
+  <author>
+    <name><![CDATA[Stefano Gualandi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Challenging MIPs instances]]></title>
+    <link href="http://stegua.github.io/blog/2012/12/13/challenging-mips/"/>
+    <updated>2012-12-13T18:11:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2012/12/13/challenging-mips</id>
+    <content type="html"><![CDATA[<p>Today, I share seven challenging MIP instances as 
+<a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps files</a>
+along with the AMPL <a href="https://github.com/stegua/MyBlogEntries/tree/master/Roadef2012">model and data files</a> 
+I used to generate them. 
+While I like the <a href="http://miplib.zib.de/">MIPLIBs</a>, I do prefer problem libraries similar to the 
+<a href="http://www.csplib.org/">CSPLIB</a> where
+you get both a problem description <strong>and</strong> a set of data. This allows anyone to try
+with her new model and/or method.</p>
+
+<p>The MIP instances I propose come from my formulation of
+the <a href="http://challenge.roadef.org/2012/en/sujet.php">Machine Reassignment Problem</a> 
+proposed for the <a href="http://roadef.org/content/index.htm">Roadef Challenge</a> sponsored by Google last year. 
+As I wrote in a <a href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
+the Challenge had <strong>huge</strong> instances and a <em>micro</em> time limit of 300 seconds.
+I said <em>micro</em> because I have in mind exact methods: there is little you can do in 300 seconds when you
+have a problem with potentially as many as <script type="math/tex">50000 \times 5000</script> binary variables. 
+If you want to use math programming and start with the solution of a linear programming relaxation of the problem,
+you have to be careful: it might happen that you cannot even solve the LP relaxation at the root node within 300 seconds.</p>
+
+<p>That is why most of the participants tackled the Challenge mainly with heuristic algorithms.
+The only <em>general purpose</em> solver that qualified for the challenge is <a href="http://www.localsolver.com">Local Solver</a>,
+which has a nice abstraction (“somehow” similar to AMPL) to well-known local search algorithms and move operators.
+The Local Solver script used in the qualification phase is available 
+<a href="http://www.localsolver.com/misc/google_machine_reassignment.lsp">here</a>.</p>
+
+<p>However, in my own opinion, it is interesting to try to solve at least the instances of the qualification phase
+with Integer Linear Programming (ILP) solvers such as 
+<a href="http://www.gurobi.com">Gurobi</a> and <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
+Can these branch-and-cut commercial solvers be competitive on such problems? </p>
+
+<h2 id="problem-overview">Problem Overview</h2>
+
+<p>Consider you are given a set of processes <script type="math/tex">P</script>, a set of machines <script type="math/tex">M</script>,
+and an initial mapping <script type="math/tex">\pi</script> of each process to a single machine 
+(i.e., <script type="math/tex">\pi_p = i</script> if process <script type="math/tex">p</script> is initially assigned to machine <script type="math/tex">i</script>).
+Each process consumes several <em>resources</em>, e.g., CPU, memory, and bandwidth.
+In the challenge, some processes were defined to be
+<em>transient</em>: they consume resources both on the machine where they are initially located,
+and in the machine they are going to be after the reassignment.
+The problem asks to find a new assignment of processes to machines that minimizes a rather involved cost function.</p>
+
+<p>A basic ILP model will have a 0-1 variable <script type="math/tex">x_{pi}</script> equals to 1 if you
+(re)assign process <script type="math/tex">p</script> to machine <script type="math/tex">i</script>. The number of processes and the number of machines give
+a first clue on the size of the problem. 
+The constraints on the resource capacities yield a multi-dimensional knapsack subproblem for each machine.
+The Machine Reassignment Problem has other constraints (kind of logical 0-1 constraints), 
+but I do not want to bore you here with a full problem description. 
+If you like to see my model, please read the 
+<a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/ampl-scripts/roadef2012.mod">AMPL model file</a>. </p>
+
+<h2 id="a-first-attempt-with-gurobi">A first attempt with Gurobi</h2>
+<p>In order to convince you that the proposed instances are challenging, I report some computational results.</p>
+
+<p>The table below reports for each instance the best result obtained by the participants
+of the challenge (second column). The remaining four columns give 
+the upper bound (UB), the lower bound (LB), the number of branch-and-bound nodes, and the computation time in seconds
+obtained with Gurobi 5.0.1, a timeout of 300 seconds, and the default parameter setting on a rather old desktop
+(single core, 2Gb of RAM).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Instance</th>
+      <th style="text-align: right">Best Known UB</th>
+      <th style="text-align: right">Upper Bound</th>
+      <th style="text-align: right">Lower Bound</th>
+      <th style="text-align: right">Nodes</th>
+      <th style="text-align: right">Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">a1-1</td>
+      <td style="text-align: right">44,306,501</td>
+      <td style="text-align: right"><strong>44,306,501</strong></td>
+      <td style="text-align: right"><strong>44,306,501</strong></td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">0.05</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-2</td>
+      <td style="text-align: right">777,532,896</td>
+      <td style="text-align: right">780,511,277</td>
+      <td style="text-align: right">777,530,829</td>
+      <td style="text-align: right">537</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-3</td>
+      <td style="text-align: right">583,005,717</td>
+      <td style="text-align: right"><strong>583,005,720</strong></td>
+      <td style="text-align: right"><strong>583,005,715</strong></td>
+      <td style="text-align: right">15</td>
+      <td style="text-align: right">48.76</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-4</td>
+      <td style="text-align: right">252,728,589</td>
+      <td style="text-align: right">320,104,617</td>
+      <td style="text-align: right">242,404,632</td>
+      <td style="text-align: right">24</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-5</td>
+      <td style="text-align: right">727,578,309</td>
+      <td style="text-align: right"><strong>727,578,316</strong></td>
+      <td style="text-align: right"><strong>727,578,296</strong></td>
+      <td style="text-align: right">221</td>
+      <td style="text-align: right">2.43</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-1</td>
+      <td style="text-align: right">198</td>
+      <td style="text-align: right">54,350,836</td>
+      <td style="text-align: right">110</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-2</td>
+      <td style="text-align: right">816,523,983</td>
+      <td style="text-align: right">1,876,768,120</td>
+      <td style="text-align: right">559,888,659</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-3</td>
+      <td style="text-align: right">1,306,868,761</td>
+      <td style="text-align: right">2,272,487,840</td>
+      <td style="text-align: right">1,007,955,933</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-4</td>
+      <td style="text-align: right">1,681,353,943</td>
+      <td style="text-align: right">3,223,516,130</td>
+      <td style="text-align: right">1,680,231,407</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-5</td>
+      <td style="text-align: right">336,170,182</td>
+      <td style="text-align: right">787,355,300</td>
+      <td style="text-align: right">307,041,984</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">-</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+Instances <strong>a1-1</strong>, <strong>a1-3</strong>, <strong>a1-5</strong> are solved to optimality within 300 seconds
+and hence they are not further considered.</p>
+
+<p>The remaining seven instances are the challenging instances mentioned at the begging of this post.
+The instances <strong>a2-x</strong> are embarrassing: they have an UB that is far away from both the best known UB
+and the computed LB.
+Specifically, look at the instance <strong>a2-1</strong>: the best result of the challenge has value 198, Gurobi
+(using my model) finds a solution with cost 54,350,836: you may agree that this is “<em>slightly</em>” more than 198.
+At the same time the LB is only 110. </p>
+
+<p>Note that for all the <strong>a2-x</strong> instances the number of branch-and-bound nodes is zero.
+After 300 seconds the solver is still at the root node trying to generate cutting planes and/or
+running their primal heuristics. Using CPLEX 12.5 we got pretty similar results.</p>
+
+<p>This is why I think these instances are challenging for branch-and-cut solvers. </p>
+
+<h2 id="search-strategies-feasibility-vs-optimality">Search Strategies: Feasibility vs Optimality</h2>
+<p>Commercial solvers have usually a meta-parameter that controls the search focus by setting other parameters
+(how they are precisely set is undocumented: do you know more about?).
+The two basic options of this parameter are (1) to focus on looking for feasible solution
+or (2) to focus on proving optimality.
+The name of this parameter is <strong>MipEmphasis</strong> in CPLEX and <strong>MipFocus</strong> in Gurobi. 
+Since the LPs are quite time consuming and after 300 seconds the solver is still at the root node, 
+we can wonder whether generating cuts is of any help on these instances.</p>
+
+<p>If we set the MipFocus to <strong>feasibility</strong> and we explicitly <strong>disable all cut generators</strong>, would we get better results?</p>
+
+<p>Look at the table below:
+the values of the upper bounds of instances <strong>a1-2</strong>, <strong>a1-4</strong>, and <strong>a2-3</strong> are slightly better than before: 
+this is a good news. However, for instance <strong>a2-1</strong> the upper bound is worse, and for the other three instances there is no difference. Moreover, the LBs are always weaker: as expected, there is no free lunch!</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Instance</th>
+      <th style="text-align: right">Upper Bound</th>
+      <th style="text-align: right">Lower Bound</th>
+      <th style="text-align: right">Gap</th>
+      <th style="text-align: right">Nodes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">a1-2</td>
+      <td style="text-align: right">779,876,897</td>
+      <td style="text-align: right">777,530,808</td>
+      <td style="text-align: right">0.30%</td>
+      <td style="text-align: right">324</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-4</td>
+      <td style="text-align: right">317,802,133</td>
+      <td style="text-align: right">242,398,325</td>
+      <td style="text-align: right">23.72%</td>
+      <td style="text-align: right">48</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-1</td>
+      <td style="text-align: right">65,866,574</td>
+      <td style="text-align: right">66</td>
+      <td style="text-align: right">99.99%</td>
+      <td style="text-align: right">81</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-2</td>
+      <td style="text-align: right">1,876,768,120</td>
+      <td style="text-align: right">505,443,999</td>
+      <td style="text-align: right">73.06%</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-3</td>
+      <td style="text-align: right">1,428,873,892</td>
+      <td style="text-align: right">1,007,955,933</td>
+      <td style="text-align: right">29.45%</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-4</td>
+      <td style="text-align: right">3,223,516,130</td>
+      <td style="text-align: right">1,680,230,915</td>
+      <td style="text-align: right">47.87%</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-5</td>
+      <td style="text-align: right">787,355,300</td>
+      <td style="text-align: right">307,040,989</td>
+      <td style="text-align: right">61.00%</td>
+      <td style="text-align: right">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+If we want to keep a timeout of 300 seconds, there is little we can do, unless we develop an ad-hoc decomposition approach.</p>
+
+<blockquote>
+  <p>Can we improve those results with a branch-and-cut solver using a longer timeout?</p>
+</blockquote>
+
+<p>Most of the papers that uses branch-and-cut to solve hard problems have a timeout
+of at least one hour, and they start by running an heuristic for around 5 minutes.
+Therefore, we can think of using the best results obtained by the participants of the 
+challenge as starting solution. </p>
+
+<p>So, let us make a step backward: we enable all cut generators and we set all parameters at the default value.
+In addition we set the time limit to one hour. The table below gives the new results.
+With this setting we are able to “prove” near-optimality of instance <strong>a1-2</strong>, and we reduce
+significantly the gap of instance <strong>a2-4</strong>.
+However, the solver never improves the primal solutions: this means that we have not improved the results
+obtained in the qualification phase of the challenge.
+Note also that the number of nodes explored is still rather small despite the longer timeout.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Instance</th>
+      <th style="text-align: right">Upper Bound</th>
+      <th style="text-align: right">Lower Bound</th>
+      <th style="text-align: right">Gap</th>
+      <th style="text-align: right">Nodes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">a1-2</td>
+      <td style="text-align: right">777,532,896</td>
+      <td style="text-align: right">777,530,807</td>
+      <td style="text-align: right">~0.001%</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-4</td>
+      <td style="text-align: right">252,728,589</td>
+      <td style="text-align: right">242,404,642</td>
+      <td style="text-align: right">4.09%</td>
+      <td style="text-align: right">427</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-1</td>
+      <td style="text-align: right">198</td>
+      <td style="text-align: right">120</td>
+      <td style="text-align: right">39.39%</td>
+      <td style="text-align: right">2113</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-2</td>
+      <td style="text-align: right">816,523,983</td>
+      <td style="text-align: right">572,213,976</td>
+      <td style="text-align: right">29.92%</td>
+      <td style="text-align: right">18</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-3</td>
+      <td style="text-align: right">1,306,868,761</td>
+      <td style="text-align: right">1,068,028,987</td>
+      <td style="text-align: right">18.27%</td>
+      <td style="text-align: right">69</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-4</td>
+      <td style="text-align: right">1,681,353,943</td>
+      <td style="text-align: right">1,680,231,594</td>
+      <td style="text-align: right">0.06%</td>
+      <td style="text-align: right">133</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-5</td>
+      <td style="text-align: right">336,170,182</td>
+      <td style="text-align: right">307,042,542</td>
+      <td style="text-align: right">8.66%</td>
+      <td style="text-align: right">187</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+What if we disable all cuts and set the <strong>MipFocus</strong> to feasibility again?</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Instance</th>
+      <th style="text-align: right">Upper Bound</th>
+      <th style="text-align: right">Lower Bound</th>
+      <th style="text-align: right">Gap</th>
+      <th style="text-align: right">Nodes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">a1-2</td>
+      <td style="text-align: right">777,532,896</td>
+      <td style="text-align: right">777,530,807</td>
+      <td style="text-align: right">~0.001%</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-4</td>
+      <td style="text-align: right">252,728,589</td>
+      <td style="text-align: right">242,398,708</td>
+      <td style="text-align: right">4.09%</td>
+      <td style="text-align: right">1359</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-1</td>
+      <td style="text-align: right"><strong>196</strong></td>
+      <td style="text-align: right">70</td>
+      <td style="text-align: right">64.28%</td>
+      <td style="text-align: right">818</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-2</td>
+      <td style="text-align: right">816,523,983</td>
+      <td style="text-align: right">505,467,074</td>
+      <td style="text-align: right">38.09%</td>
+      <td style="text-align: right">81</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-3</td>
+      <td style="text-align: right"><strong>1,303,662,728</strong></td>
+      <td style="text-align: right">1,008,286,290</td>
+      <td style="text-align: right">22.66%</td>
+      <td style="text-align: right">56</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-4</td>
+      <td style="text-align: right">1,681,353,943</td>
+      <td style="text-align: right">1,680,230,918</td>
+      <td style="text-align: right">0.07%</td>
+      <td style="text-align: right">108</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-5</td>
+      <td style="text-align: right"><strong>336,158,091</strong></td>
+      <td style="text-align: right">307,040,989</td>
+      <td style="text-align: right">8.67%</td>
+      <td style="text-align: right">135</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+With this parameter setting, we improve the UB for 3 instances: <strong>a2-1</strong>, <strong>a2-3</strong>, and <strong>a2-5</strong>.
+However, the lower bounds are again much weaker. Look at instance <strong>a2-1</strong>: the lower bound is
+now 70 while before it was 120. If you look at instance <strong>a2-3</strong> you can see that even if
+we got a better primal solution, the gap is weaker, since the lower bound is worse.</p>
+
+<h2 id="rfc-any-idea">RFC: Any idea?</h2>
+<p>With the focus on feasibility you get better results, but you might miss the ability to prove optimality.
+With the focus on optimality you get better lower bounds, but you might not improve the primal bounds.</p>
+
+<blockquote>
+  <p>1) How to balance feasibility with optimality?</p>
+</blockquote>
+
+<p>To use branch-and-cut solver and to disable cut generators is counterintuitive, but if you do you, you get better
+primal bounds.  </p>
+
+<blockquote>
+  <p>2) Why should I use a branch-and-cut solver then? </p>
+</blockquote>
+
+<p>Do you have any idea out there?</p>
+
+<h3 id="minor-remark">Minor Remark</h3>
+<p>While writing this post, we got 3 solutions that are better than those obtained by the participants of 
+the qualification phase: 
+<a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/certificates/sol_a2_1.sol">a2-1</a>, 
+<a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/certificates/sol_a2_3.sol">a2-3</a>, and 
+<a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/certificates/sol_a2_5.sol">a2-5</a>
+(the three links give the certificates of the solutions). 
+We are almost there in proving optimality of <strong>a2-3</strong>, and we get better lower bounds than those 
+<a href="http://4c.ucc.ie/~hsimonis/reassignment.pdf">published</a> in [1].</p>
+
+<h2 id="references">References</h2>
+<style type="text/css">
+table { width:100%; }
+thead {
+   background-color: rgba(0,0,255,0.3);
+   color: black;
+   text-indent: 14px;
+   text-align: left;
+}
+td { padding:4px; }
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
+<ol>
+  <li>
+    <p> Deepak Mehta, Barry O’Sullivan, Helmut Simonis. 
+<span class="title">Comparing Solution Methods for the Machine Reassignment Problem</span>. 
+In Proc of CP 2012, Québec City, Canada, October 8-12, 2012.
+</p>
+  </li>
+</ol>
+
+<h1 id="credits">Credits</h1>
+<p>Thanks to <a href="https://plus.google.com/116327072470709585073/posts">Stefano Coniglio</a> 
+and to <a href="http://imada.sdu.dk/~marco/">Marco Chiarandini</a> for their passionate discussions about the posts
+in this blog. </p>
+]]></content>
+  </entry>
+  
+</feed>

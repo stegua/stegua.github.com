@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Preprocessing | Spaghetti Optimization]]></title>
+  <link href="http://stegua.github.io/blog/categories/preprocessing/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2019-01-27T15:36:24+01:00</updated>
+  <id>http://stegua.github.io/</id>
+  <author>
+    <name><![CDATA[Stefano Gualandi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[The Impact of Preprocessing on the MIPLIB2003]]></title>
+    <link href="http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing/"/>
+    <updated>2014-03-19T22:38:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing</id>
+    <content type="html"><![CDATA[<p>What do you know about <strong>preprocessing</strong> for <em>Mixed Integer Programming (MIP)</em> problems?</p>
+
+<p>After a nice chat with <a href="http://dk.linkedin.com/in/bojensen">Bo Jensen</a>, CEO, founder, and co-owner (really, he is a Rocket Scientist!) at <a href="http://www.sulumoptimization.com/">Sulum Optimization</a>, I realised that I know barely anything.</p>
+
+<p>By definition, we have that:</p>
+
+<blockquote>
+  <p>“Presolving is a way to transform the given problem instance into an equivalent instance that is (hopefully) easier to solve.” (see, chap. 10 in <a href="http://nbn-resolving.de/urn:nbn:de:0297-zib-11129">Tobias Achterberg’s Thesis</a>)</p>
+</blockquote>
+
+<p>All I know is that every MIP solver has a <strong>Presolve</strong> parameter, which can take different values.
+For instance, <a href="http://www.gurobi.com">Gurobi</a> has three possible values for that parameter (you can find more details on the <a href="http://www.gurobi.com/documentation/5.0/reference-manual/node718#parameter:Presolve">Gurobi online manual</a>):</p>
+
+<ul>
+  <li><em>Presolve=0</em>: no presolve at all</li>
+  <li><em>Presolve=1</em>: standard presolve</li>
+  <li><em>Presolve=2</em>: aggressive presolve: “More aggressive application of presolve takes more time, but can sometimes lead to a significantly tighter model.”</li>
+</ul>
+
+<p>However, I can’t tell you the real <strong>impact</strong> of that parameter on the overall solution process of a MIP instance. Thus, here we go: let me write a new post that addresses this basic question!</p>
+
+<h2 id="how-to-measure-the-impact-of-preprocessing">How to measure the Impact of Preprocessing?</h2>
+<p>To measure the impact of preprocessing we need four ingredients:</p>
+
+<ol>
+  <li>A MIP solver</li>
+  <li>A Data set</li>
+  <li>Computer power</li>
+  <li>A method to <strong>measure</strong> the impact of preprocessing</li>
+</ol>
+
+<p>Changing one of the ingredients could give you different results, but, hopefully, the big picture will not change too much.</p>
+
+<p>As a solver, I have selected the current release of Gurobi (i.e., version 5.6.2). For the data set, likely the most critical ingredient, I have used the <a href="http://miplib.zib.de/miplib2003/">MIPLIB2003</a>, basically because I had already all the 60 instances on my server. For running the test I have used an old cluster from the <a href="http://www-dimat.unipv.it">Math Department</a> of University of Pavia.</p>
+
+<p>The <strong>measure of impact</strong> I have decided to use (after considering other alternatives) is quite conservative: the fraction of closed instances as a function of runtime.</p>
+
+<p>During the last weekend, I have collected a bunch of logs for the 60 instances of the MIPLIB2003, and, then, using <a href="http://www.rstudio.com">RStudio</a>, I have draw the following cumulative plot:</p>
+
+<p><img class="center" src="../../../../../../images/preprocessing.png"></p>
+
+<p>The picture is as simple as clear:</p>
+
+<blockquote>
+  <p>Preprocessing does always pay-off and permits to solve around 10% more of the instances within the same time limit!</p>
+</blockquote>
+
+<p>In this post, I will not discuss additional technical details, but I just want to add two observations:</p>
+
+<ol>
+  <li>Standard preprocessing has removed in average 20.3% of nonzero entries of the original model, while aggressive preprocessing has removed 22.5% of nonzero entries, only a few more.</li>
+  <li>The average MIP gaps as reported by Gurobi at timeout are: no-presolve = 13.44%, standard = 9.08%, and aggressive = 11.02%.</li>
+</ol>
+
+<p>Likely, the aggressive presolve setting has been decided by Gurobi using a different, much larger, and customer-oriented dataset.</p>
+
+<h2 id="open-questions">Open Questions</h2>
+<p>Indeed, preprocessing is a very important feature of a modern MIP solver as Gurobi. Investing few seconds before starting the branch-and-bound MIP search can save a significant amount of runtime. However, a more aggressive preprocessing strategy does not seem to payoff, in average, on the MIPLIB2003.</p>
+
+<p>Unfortunately, preprocessing is somehow disregarded from the research community. There are few recent papers dealing with preprocessing (<em>“ehi! if you do have one, please, let me know about it, ok?”</em>).
+Most of papers are from the 90s and about Linear Programming, i.e., without integer variables, which mess up everything.</p>
+
+<p>Here a list of basic questions I have in mind:</p>
+
+<ul>
+  <li>If cutting planes are used to approximate the convex hull of an Integer Problem, preprocessing for what is used for, really?</li>
+  <li>Preprocessing techniques have been designed considering a trade-off between <strong>efficiency</strong> and <strong>efficacy</strong> (see, MWP Savelsbergh, <em>Preprocessing and Probing Techniques for MIP problems</em>, Journal of Computing, vol6(4) 445-454, 1995). With recent progress in software and hardware technologies, can we revise this trade-off in favor of efficacy?</li>
+  <li>Preprocessing techniques used for Linear Programming are effective when applied to LP relaxations of Integer Problems?</li>
+  <li>Should preprocessing sparsify the coefficient matrix?</li>
+  <li>Using the more recent <a href="http://miplib.zib.de/">MIPLIB2010</a> should we expect much different results?</li>
+  <li>Which is a better method to measure the impact of preprocessing on a collection of instances?</li>
+</ul>
+
+<p>If you want to share your idea, experience, or opinion, with respect to these questions, you could comment below or send me an email.</p>
+
+<p>Now, to conclude, my bonus question:</p>
+
+<blockquote>
+  <p>Do you have any new smart idea for improving preprocessing?</p>
+</blockquote>
+
+<p>Well, if you had, I guess you would at least write a paper about, but, do not go for a patent, please!</p>
+]]></content>
+  </entry>
+  
+</feed>

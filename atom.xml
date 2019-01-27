@@ -1,141 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
 
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <title>Spaghetti Optimization</title>
-  <meta name="author" content="Stefano Gualandi">
-
-  
-  <meta name="description" content="Two years ago, I started to study Computational Optimal Transport (OT), and, now, it is time to wrap up informally the main ideas by using an &hellip;">
-  
-
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://stegua.github.io/">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <link href="/atom.xml" rel="alternate" title="Spaghetti Optimization" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
-<!-- IMPORTANT PLEASE READ THIS: Delete the below line if your blog already uses jQuery in some form. Otherwise a conflict might be created and your blog might not work properly. -->
-<!-- Use the below line only if your blog doesn't already use jQuery. Please check your head.html and custom/head.html to be sure. -->
-<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> -->
-<!-- Below lines are necessary for Google Feeds API to work properly. Add them to your head.html or custom/head.html files in the _includes directory of your Octopress blog's source folder -->
-<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">google.load("feeds", "1");</script> -->
-
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-34931940-2']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-
-
-
-    <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-    <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-    <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
-    <meta property="og:url" content="http://stegua.github.io/index.html">
-<meta property="og:type" content="website" />
-
-<meta property="og:title" content="Spaghetti Optimization">
-<meta property="og:description" content="">
- 
-
- 
-
-<script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-   MathJax.Hub.Config({messageStyle: "none"})
-   </script>
-</head>
-
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Spaghetti Optimization</a></h1>
-  
-    <h2>My cookbook about Math, Algorithms, and Programming</h2>
-  
-</hgroup>
-
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:stegua.github.io" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="/credits">Credits</a></li>
-</ul>
-
-</nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
-      
-  <header>
+  <title><![CDATA[Spaghetti Optimization]]></title>
+  <link href="http://stegua.github.io/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2019-01-27T15:36:24+01:00</updated>
+  <id>http://stegua.github.io/</id>
+  <author>
+    <name><![CDATA[Stefano Gualandi]]></name>
     
-      <h1 class="entry-title"><a href="/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective/">An Informal and Biased Tutorial on Kantorovich-Wasserstein Distances</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
 
   
-
-
-
-  
-<time datetime="2018-12-31T13:13:00+01:00" pubdate data-updated="true">Dec 31<span>st</span>, 2018</time>
-        
-         | <a href="/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Two years ago, I started to study <strong>Computational Optimal Transport (OT)</strong>, and, now, it is time to wrap up informally the main ideas by using an <em>Operations Research (OR)</em> perspective with a <em>Machine Learning (ML)</em> motivation.</p>
+  <entry>
+    <title type="html"><![CDATA[An informal and biased Tutorial on Kantorovich-Wasserstein distances]]></title>
+    <link href="http://stegua.github.io/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective/"/>
+    <updated>2018-12-31T13:13:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective</id>
+    <content type="html"><![CDATA[<p>Two years ago, I started to study <strong>Computational Optimal Transport (OT)</strong>, and, now, it is time to wrap up informally the main ideas by using an <em>Operations Research (OR)</em> perspective with a <em>Machine Learning (ML)</em> motivation.</p>
 
 <p>Yes, an <a href="https://twitter.com/hashtag/orms">OR</a> perspective.</p>
 
@@ -228,8 +111,8 @@
 
 <p>Composing these two operations, we can define a distance function between a pair of vectors of points (i.e., pair of matrices) as follows:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-D_{p,q}(\mathbf{X},\mathbf{Y}) = \ell_p(\mathbf{z}) = \ell_p(\left< M_q(\mathbf{x}_i,\mathbf{y}_i)\right>) = \left( \sum_{i=1}^n \left( \sum_{j = 1}^n \left(x_{ij} - y_{ij}\right)^q  \right)^{\frac{p}{q}} \right)^{\frac{1}{p}} %]]></script>
+<script type="math/tex; mode=display">% &lt;![CDATA[
+D_{p,q}(\mathbf{X},\mathbf{Y}) = \ell_p(\mathbf{z}) = \ell_p(\left< M_q(\mathbf{x}_i,\mathbf{y}_i)\right>) = \left( \sum_{i=1}^n \left( \sum_{j = 1}^n \left(x_{ij} - y_{ij}\right)^q  \right)^{\frac{p}{q}} \right)^{\frac{1}{p}} %]]&gt;</script>
 
 <p>Note that for <script type="math/tex">p=q=2</script>, we get</p>
 
@@ -241,12 +124,12 @@ D_{p,q}(\mathbf{X},\mathbf{Y}) = \ell_p(\mathbf{z}) = \ell_p(\left< M_q(\mathbf{
 
 <p><strong>IMPORTANT.</strong> Here is where Discrete Optimal Transport comes into action: it offers an alternative distance function based on the solution of a <strong>Combinatorial Optimization</strong> problem, which is, in the simplest case, formulated as the following <strong>Linear Program</strong>:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
+<script type="math/tex; mode=display">% &lt;![CDATA[
 \begin{aligned}\mathcal{W}_d(\mathbf{X},\mathbf{Y}) := \min \;\;& \sum_{i=1}^n\sum_{j=1}^n d(\mathbf{x}_i,\mathbf{y}_j) \pi_{ij} \\
  & \sum_{i=1}^n \pi_{ij} = 1& j=1,\dots,n \\
  & \sum_{j=1}^n \pi_{ij} = 1& i=1,\dots,n \\
  & \pi_{ij} \geq 0 & i=1,\dots,n, j=1,\dots,n .
- \end{aligned} %]]></script>
+ \end{aligned} %]]&gt;</script>
 
 <p>If you have a minimal <a href="https://twitter.com/hashtag/orms">#orms</a> background at this point you should have recognized that this problem is a standard <a href="https://en.wikipedia.org/wiki/Assignment_problem">Assignment Problem</a>: we have to assign each point of the first vector <script type="math/tex">\mathbf{x}</script> to a single point of the second vector <script type="math/tex">\mathbf{y}</script>, in such a way that the overall cost is minimum. From an optimal solution of this problem, we can select among all possible permutations of the rows of <script type="math/tex">\mathbf{Y}</script>, the permutation that gives the minimal value of the Frobenius norm.</p>
 
@@ -303,8 +186,8 @@ D_{p,q}(\mathbf{X},\mathbf{Y}) = \ell_p(\mathbf{z}) = \ell_p(\left< M_q(\mathbf{
 
 <p><strong>DISCRETE MEASURES:</strong> Given a of vector of <script type="math/tex">n</script> positions <script type="math/tex">\mathbf{x}_i</script>, and given the <a href="https://en.wikipedia.org/wiki/Dirac_delta_function">Dirac delta function</a>, we can define the <em>Dirac measures</em> <script type="math/tex">\delta_{\mathbf{x}_i}</script> as</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
-\delta_{\mathbf{x}_i}(A) = \left\{ \begin{array}{ll} 1 & \text{if} \;\;\mathbf{x}_i \in A \subseteq X \\ 0 & \text{if} \;\;\mathbf{x}_i \notin A \subseteq X \\  \end{array}\right. %]]></script>
+<script type="math/tex; mode=display">% &lt;![CDATA[
+\delta_{\mathbf{x}_i}(A) = \left\{ \begin{array}{ll} 1 & \text{if} \;\;\mathbf{x}_i \in A \subseteq X \\ 0 & \text{if} \;\;\mathbf{x}_i \notin A \subseteq X \\  \end{array}\right. %]]&gt;</script>
 
 <p>Given a vector of <script type="math/tex">n</script> weights <script type="math/tex">\mu_i</script>, one associated to each element of <script type="math/tex">\mathbf{x}</script>, we can define the <strong>discrete measure</strong> <script type="math/tex">\mathbf{\mu}</script> as</p>
 
@@ -325,13 +208,13 @@ D_{p,q}(\mathbf{X},\mathbf{Y}) = \ell_p(\mathbf{z}) = \ell_p(\left< M_q(\mathbf{
 
 <p><strong>OUTPUT:</strong> A transportation plan <script type="math/tex">\mathbf{\pi}</script> and a value of distance of <script type="math/tex">\mathcal{W}(\mathbf{\mu}, \mathbf{\nu})</script> that corresponds to an optimal solution of the following Linear Program:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
+<script type="math/tex; mode=display">% &lt;![CDATA[
 \begin{aligned}
 \mathcal{W}(\mathbf{\mu},\mathbf{\nu}) := \min \;\;& \sum_{i=1}^n\sum_{j=1}^m c_{ij} \pi_{ij} \\
  & \sum_{j=1}^m \pi_{ij} \geq \mu_i & i=1,\dots,n \\
  & \sum_{i=1}^n \pi_{ij} \leq \nu_j& j=1,\dots,m \\
  & \pi_{ij} \geq 0 & i=1,\dots,n, j=1,\dots,m.
- \end{aligned} %]]></script>
+ \end{aligned} %]]&gt;</script>
 
 <p>This Linear Program is indeed a special case of the <a href="https://www.jstor.org/stable/2627172?seq=1#page_scan_tab_contents">Transportation Problem</a>, known also as the Hitchcock-Koopmans problem. It is a special case because the cost vector has a strong structure that should be exploited as much as possible.</p>
 
@@ -354,14 +237,14 @@ D_{p,q}(\mathbf{X},\mathbf{Y}) = \ell_p(\mathbf{z}) = \ell_p(\left< M_q(\mathbf{
 
 <p>where the set <script type="math/tex">U</script> is defined as:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
+<script type="math/tex; mode=display">% &lt;![CDATA[
 U := \left\{\begin{array}{ll}
  \sum_{j=1,\dots,m} \pi_{ij} \leq \mu_i & i=1,\dots,n \\
  \sum_{i=1,\dots,n} \pi_{ij} \geq \nu_j& j=1,\dots,m \\
  \pi_{ij} \geq 0 & i=1,\dots,n, j=1,\dots,m. \\
  \end{array}
  \right\}
- %]]></script>
+ %]]&gt;</script>
 
 <p>From a mathematical perspective, the most interesting case is the order <script type="math/tex">p=2</script>, which <em>generalizes</em> the Euclidean distance to discrete probability vectors. Note that in this formulation, the two constraint sets defining <script type="math/tex">U</script> could be replaced with equality constraints, since <script type="math/tex">\mathbf{\mu}</script> and <script type="math/tex">\mathbf{\nu}</script> belongs to the probability simplex. In addition, any Combinatorial Optimization algorithm must be used with care, since all the cost and constraint coefficients are not integer.
 <strong>Note:</strong> The <script type="math/tex">p</script> power used for the ground distance must not be confused with the order (power) of a Kantorovich-Wasserstein distance.</p>
@@ -370,7 +253,7 @@ U := \left\{\begin{array}{ll}
 
 <p>A particular case of the Kantorovich-Wasserstein distance very popular in the Computer Vision research community, is the so-called <strong>Earth Mover Distance (EMD)</strong> [2], which is used between a pair of <script type="math/tex">k</script>-dimensional histograms obtained by preprocessing the images of interest. In this case, (i) we have <script type="math/tex">n=m</script>, (ii) we do not require the discrete measures to belong to the probability simplex, and (iii) we do not even require that the two measures are <em>balanced</em>, that is, <script type="math/tex">\sum_{i=1}^n \mu_i = \sum_{j=1}^n \nu_j</script>. In Optimal Transport terminology, the Earth Mover Distance solves an <strong>unbalanced optimal transport problem</strong>. For the EMD, the feasibility set <script type="math/tex">U</script> is replaced by the set:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
+<script type="math/tex; mode=display">% &lt;![CDATA[
 V := \left\{\begin{array}{ll}
  \sum_{i=1}^n \sum_{j=1}^n \pi_{ij} = \min \{ \sum_{i=1}^n \mu_i, \sum_{j=1}^n \nu_j \}& \\
  \sum_{j=1,\dots,n} \pi_{ij} \geq \mu_i & i=1,\dots,n \\
@@ -378,7 +261,7 @@ V := \left\{\begin{array}{ll}
  \pi_{ij} \geq 0 & i=1,\dots,n, j=1,\dots,n. \\
  \end{array}
  \right\}
- %]]></script>
+ %]]&gt;</script>
 
 <p>The cost function is taken with the order <script type="math/tex">p=1</script>:</p>
 
@@ -406,14 +289,14 @@ V := \left\{\begin{array}{ll}
 
 <p>where the set <script type="math/tex">U</script> is defined as:</p>
 
-<script type="math/tex; mode=display">% <![CDATA[
+<script type="math/tex; mode=display">% &lt;![CDATA[
 U := \left\{\begin{array}{ll}
  \sum_{j=1,\dots,n} \pi_{ij} = \mu_i & i=1,\dots,n \\
  \sum_{i=1,\dots,n} \pi_{ij} = \nu_j& j=1,\dots,n \\
  \pi_{ij} \geq 0 & i=1,\dots,n, j=1,\dots,n. \\
  \end{array}
  \right\}
- %]]></script>
+ %]]&gt;</script>
 
 <p>If you are serious reader, and you are still reading this post, then it is clear that the Word Mover Distance is exactly a Kantorovich-Wasserstein distance of order 1, with an Euclidean ground distance. If you are interested in the quality of this distance when used within a nearest neighbor heuristic for a text classification task, we refer to [3]. <em>(While writing this post, I started to wonder how would perform a <strong>WMD</strong> of order 2, but this is another story…)</em></p>
 
@@ -484,46 +367,15 @@ In two recent works, together with my co-authors, we tried to revive the <a href
     <p>Auricchio, G., Bassetti, F., Gualandi, S. and Veneroni, M., 2018. <span class="title">Computing Kantorovich-Wasserstein Distances on d-dimensional histograms using (d+1)-partite graphs. </span> NeurIPS, 2018.<a href="https://arxiv.org/pdf/1805.07416">[pdf]</a></p>
   </li>
 </ol>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/">Exercise in Python: Remove Blanks From Strings</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-<time datetime="2017-01-24T16:51:00+01:00" pubdate data-updated="true">Jan 24<span>th</span>, 2017</time>
-        
-         | <a href="/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This morning, after reading <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">this very nice post</a>, I decided to challenge myself in Python and to have a look at the impact of <a href="https://en.wikipedia.org/wiki/Branch_misprediction">mispredicted branches</a> in a language different from C/C++. The basic idea was to use only <a href="https://docs.python.org/3.6/library/functions.html">Python builtins</a>: external libraries are not allowed!</p>
+  <entry>
+    <title type="html"><![CDATA[Exercise in Python: remove blanks from strings]]></title>
+    <link href="http://stegua.github.io/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/"/>
+    <updated>2017-01-24T16:51:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings</id>
+    <content type="html"><![CDATA[<p>This morning, after reading <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">this very nice post</a>, I decided to challenge myself in Python and to have a look at the impact of <a href="https://en.wikipedia.org/wiki/Branch_misprediction">mispredicted branches</a> in a language different from C/C++. The basic idea was to use only <a href="https://docs.python.org/3.6/library/functions.html">Python builtins</a>: external libraries are not allowed!</p>
 
 <p>As a benchmark, I grabbed a large text file from <a href="http://norvig.com/big.txt">P. Norvig’s website</a>, which is 6’488’666 byte long.</p>
 
@@ -869,46 +721,15 @@ that removing blanks is a true bottleneck of my whole program. As written in the
 <p>Here we are, the best solution is indeed to use a builtin function, whenever it is possible, even if this was not the real aim of this exercise.</p>
 
 <p>Please, let me know if you have some comments or a different solution in Python.</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/04/column-enumeration/">Graph Coloring: Column Generation or Column Enumeration?</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-<time datetime="2015-07-04T16:45:00+02:00" pubdate data-updated="true">Jul 4<span>th</span>, 2015</time>
-        
-         | <a href="/blog/2015/07/04/column-enumeration/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><style type="text/css">
+  <entry>
+    <title type="html"><![CDATA[Graph Coloring: Column Generation or Column Enumeration?]]></title>
+    <link href="http://stegua.github.io/blog/2015/07/04/column-enumeration/"/>
+    <updated>2015-07-04T16:45:00+02:00</updated>
+    <id>http://stegua.github.io/blog/2015/07/04/column-enumeration</id>
+    <content type="html"><![CDATA[<style type="text/css">
 table { width:100%; }
 thead {
    background-color: rgba(0,0,255,0.3);
@@ -1239,46 +1060,15 @@ with a timeout of 10 minutes on my laptop. If you compare these numbers with the
 <a href="http://www.sciencedirect.com/science/article/pii/S1572528608000716">[pdf]</a></p>
   </li>
 </ol>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/09/27/big-data-and-convex-optimization/">Big Data and Convex Optimization</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-<time datetime="2014-09-27T16:38:00+02:00" pubdate data-updated="true">Sep 27<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/09/27/big-data-and-convex-optimization/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>In the last months, I came several times across different definitions of <strong>Big Data</strong>.
+  <entry>
+    <title type="html"><![CDATA[Big Data and Convex Optimization]]></title>
+    <link href="http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization/"/>
+    <updated>2014-09-27T16:38:00+02:00</updated>
+    <id>http://stegua.github.io/blog/2014/09/27/big-data-and-convex-optimization</id>
+    <content type="html"><![CDATA[<p>In the last months, I came several times across different definitions of <strong>Big Data</strong>.
 However, when someone asks me what Big Data means in practice, I am never
 able to give a satisfactory explanation. Indeed, you can easily find a flood
 of posts on twitter, blogs, newspaper, and even scientific journals and conferences,
@@ -1308,46 +1098,15 @@ are the best content that I have read so far about <strong>Big Data</strong>.</p
 Foundations and Trends in Machine Learning. Vol. 3, No. 1 (2010) 1–122. <a href="http://web.stanford.edu/~boyd/papers/pdf/admm_distr_stats.pdf">[pdf]</a></p>
 
 <p>[2] If you like to have a speedy overview of <em>Convex Optimization</em>, you may read a <a href="https://www.ibm.com/developerworks/community/blogs/jfp/entry/convex_optimization?lang=en">J.F. Puget’s blog post</a>.</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/19/the-impact-of-preprocessing/">The Impact of Preprocessing on the MIPLIB2003</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-<time datetime="2014-03-19T22:38:00+01:00" pubdate data-updated="true">Mar 19<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/03/19/the-impact-of-preprocessing/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>What do you know about <strong>preprocessing</strong> for <em>Mixed Integer Programming (MIP)</em> problems?</p>
+  <entry>
+    <title type="html"><![CDATA[The Impact of Preprocessing on the MIPLIB2003]]></title>
+    <link href="http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing/"/>
+    <updated>2014-03-19T22:38:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2014/03/19/the-impact-of-preprocessing</id>
+    <content type="html"><![CDATA[<p>What do you know about <strong>preprocessing</strong> for <em>Mixed Integer Programming (MIP)</em> problems?</p>
 
 <p>After a nice chat with <a href="http://dk.linkedin.com/in/bojensen">Bo Jensen</a>, CEO, founder, and co-owner (really, he is a Rocket Scientist!) at <a href="http://www.sulumoptimization.com/">Sulum Optimization</a>, I realised that I know barely anything.</p>
 
@@ -1429,47 +1188,18 @@ Most of papers are from the 90s and about Linear Programming, i.e., without inte
 </blockquote>
 
 <p>Well, if you had, I guess you would at least write a paper about, but, do not go for a patent, please!</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/">An Informal Report From the Combinatorial Optimization Workshop @ Aussois 2014</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-13T18:30:00+01:00" pubdate data-updated="true">Jan 13<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>It is very hard to report about the <a href="http://www.iasi.cnr.it/aussois/web/home">Combinatorial Optimization Workshop</a> in <a href="http://www.aussois.com/hiver/">Aussois</a>. It was like an “informal” <a href="http://www.or.uni-bonn.de/ipco/">IPCO</a> with <em>Super Heroes researchers</em> in the audience, leaded by <em>Captain Egon</em>, who appears at work in the following photo-tweet:</p>
+  <entry>
+    <title type="html"><![CDATA[An Informal Report from the Combinatorial Optimization Workshop @ Aussois 2014]]></title>
+    <link href="http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014/"/>
+    <updated>2014-01-13T18:30:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2014/01/13/informal-report-from-cow-at-aussois-2014</id>
+    <content type="html"><![CDATA[<p>It is very hard to report about the <a href="http://www.iasi.cnr.it/aussois/web/home">Combinatorial Optimization Workshop</a> in <a href="http://www.aussois.com/hiver/">Aussois</a>. It was like an “informal” <a href="http://www.or.uni-bonn.de/ipco/">IPCO</a> with <em>Super Heroes researchers</em> in the audience, leaded by <em>Captain Egon</em>, who appears at work in the following photo-tweet:</p>
 
 <blockquote class="twitter-tweet" lang="en"><p>Egon talks intersection cuts at <a href="https://twitter.com/search?q=%23aussois&amp;src=hash">#aussois</a>. Still the man. <a href="http://t.co/7KMcNyJYV0">pic.twitter.com/7KMcNyJYV0</a></p>&mdash; Jeff Linderoth (@JeffLinderoth) <a href="https://twitter.com/JeffLinderoth/statuses/420852308583276544">January 8, 2014</a></blockquote>
-<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async="" src="http://stegua.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <p>The Captain gave an inspiring talk by questioning the recursive paradigm of cutting planes algorithms. With a very basic example, <a href="http://public.tepper.cmu.edu/facultydirectory/FacultyDirectoryProfile.aspx?id=39">Balas</a> has shown how a non basic vertex (solution) can produce a much deeper cut than a cut generated by an optimal basis. Around this intuition, Balas has presented a very nice <a href="http://link.springer.com/article/10.1007%2Fs10107-011-0483-x">generalization of Intersection Cuts</a>… a new paper enters my “PAPERS-TO-BE-READ” folder.</p>
 
@@ -1507,48 +1237,17 @@ Another paper goes on the “PAPERS-TO-BE-READ” folder.</p>
 <p>To conclude, let me steal another nice picture from twitter: </p>
 
 <blockquote class="twitter-tweet" lang="en"><p>Goodbye <a href="https://twitter.com/search?q=%23aussois2014&amp;src=hash">#aussois2014</a> <a href="http://t.co/ODupKKmGTZ">pic.twitter.com/ODupKKmGTZ</a></p>&mdash; Matteo Fischetti (@MFischetti) <a href="https://twitter.com/MFischetti/statuses/421642338759618560">January 10, 2014</a></blockquote>
-<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async="" src="http://stegua.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/17/public-transport-and-big-data/">Public Transport and Big Data</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-<time datetime="2013-11-17T14:10:00+01:00" pubdate data-updated="true">Nov 17<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/11/17/public-transport-and-big-data/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>Big Data</strong> is nowadays a <em>buzzword</em>. A simple query for “Big Data” on Google gives about 26,700,000 results. </p>
+  <entry>
+    <title type="html"><![CDATA[Public Transport and Big Data]]></title>
+    <link href="http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data/"/>
+    <updated>2013-11-17T14:10:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2013/11/17/public-transport-and-big-data</id>
+    <content type="html"><![CDATA[<p><strong>Big Data</strong> is nowadays a <em>buzzword</em>. A simple query for “Big Data” on Google gives about 26,700,000 results. </p>
 
 <p><strong>Public Transport</strong> is not really a <em>buzzword</em>, but still on Google you can get almost the same number as with “Big Data”: 26,400,000 results.</p>
 
@@ -1586,46 +1285,15 @@ its cost competitive. The ultimate goal should be to increase the number of peop
 <blockquote>
   <p>Do you know any project that uses AVM data, combined with Social Network inputs (e.g., from <a href="http://www.twitter.com">Twitter</a>), to elaborate <strong>Disruption Management</strong> strategies for Public Transport? If yes, do they use <strong>Mathematical Optimization</strong> at all?</p>
 </blockquote>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/01/reading-excuses/">Reading Excuses</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-<time datetime="2013-11-01T15:56:00+01:00" pubdate data-updated="true">Nov 1<span>st</span>, 2013</time>
-        
-         | <a href="/blog/2013/11/01/reading-excuses/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I love reading!</p>
+  <entry>
+    <title type="html"><![CDATA[Reading Excuses]]></title>
+    <link href="http://stegua.github.io/blog/2013/11/01/reading-excuses/"/>
+    <updated>2013-11-01T15:56:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2013/11/01/reading-excuses</id>
+    <content type="html"><![CDATA[<p>I love reading!</p>
 
 <p>I love reading about everything and I am glad that part of my work consists in reading.</p>
 
@@ -1642,46 +1310,15 @@ its cost competitive. The ultimate goal should be to increase the number of peop
 </blockquote>
 
 <p>If you are looking for excuses to avoid research, go through <a href="https://www.or-exchange.org/questions/681/what-paper-should-everyone-read">those answers</a> and select any paper you like, you will have <strong>outstanding</strong> and <strong>authoritative</strong> excuses!</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/28/gecol/">GeCol: A Graph Coloring Solver on Top of Gecode</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-<time datetime="2013-06-28T15:00:00+02:00" pubdate data-updated="true">Jun 28<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013/06/28/gecol/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><style type="text/css">
+  <entry>
+    <title type="html"><![CDATA[GeCol: a Graph Coloring solver on top of Gecode]]></title>
+    <link href="http://stegua.github.io/blog/2013/06/28/gecol/"/>
+    <updated>2013-06-28T15:00:00+02:00</updated>
+    <id>http://stegua.github.io/blog/2013/06/28/gecol</id>
+    <content type="html"><![CDATA[<style type="text/css">
 .title { color: #07235F; }
 .journal { font-style: italic; }
 </style>
@@ -1836,46 +1473,15 @@ vol. 120(1-3), pp. 197–207, 2002
 </p>
   </li>
 </ol>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/03/22/backtrack-programming-in-c/">Backtrack Programming in C</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-<time datetime="2013-03-22T12:45:00+01:00" pubdate data-updated="true">Mar 22<span>nd</span>, 2013</time>
-        
-         | <a href="/blog/2013/03/22/backtrack-programming-in-c/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><style type="text/css">
+  <entry>
+    <title type="html"><![CDATA[Backtrack Programming in c]]></title>
+    <link href="http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/"/>
+    <updated>2013-03-22T12:45:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c</id>
+    <content type="html"><![CDATA[<style type="text/css">
 .title { color: #07235F; }
 .journal { font-style: italic; }
 </style>
@@ -2095,196 +1701,1296 @@ vol. 120(1-3), pp. 197–207, 2002
   </li>
 </ol>
 
-</div>
+]]></content>
+  </entry>
   
+  <entry>
+    <title type="html"><![CDATA[From blackboard to code: Gomory Cuts using CPLEX]]></title>
+    <link href="http://stegua.github.io/blog/2013/02/05/gomory-cuts-with-cplex/"/>
+    <updated>2013-02-05T15:22:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2013/02/05/gomory-cuts-with-cplex</id>
+    <content type="html"><![CDATA[<p><strong>Edited on May 16th, 2013</strong>: fixes due to <a href="http://imada.sdu.dk/~marco/">M. Chiarandini</a></p>
+
+<p>On the blackboard, to solve small Integer Linear Programs with 2 variables and <em>less or equal</em> constraints is easy,
+since they can be plotted in the plane and the linear relaxation can be solved geometrically. 
+You can draw the lattice of integer points, and once you have found a new cutting plane, 
+you show that it <em>cuts off</em> the optimum solution of the LP relaxation.</p>
+
+<p>This post presents a naive (textbook) implementation of <strong>Fractional Gomory Cuts</strong> that uses the basic solution
+computed by CPLEX, the commercial Linear Programming solver used in our lab sessions.
+In practice, this post is an online supplement to one of my last exercise session.</p>
+
+<p>In order to solve the <em>“blackboard”</em> examples with <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>,
+it is necessary to use a couple of functions
+that a few years ago were undocumented. <a href="http://www.gurobi.com">GUROBI</a> has very similar functions,
+but they are currently undocumented. (<strong>Edited May 16th, 2013</strong>: From version 5.5, Gurobi has documented its 
+<a href="http://www.gurobi.com/documentation/5.5/reference-manual/node109">advanced simplex routines</a>)</p>
+
+<p>As usual, all the sources used to write this post are publicly available on 
+<a href="https://github.com/stegua/MyBlogEntries/tree/master/GomoryCut">my GitHub repository</a>.</p>
+
+<h3 id="the-basics">The basics</h3>
+<p>Given a Integer Linear Program in the form:</p>
+
+<script type="math/tex; mode=display">(P) \qquad \min \{ cx \mid Ax \leq b, \, x \geq 0, \, x \mbox{ integer} \}</script>
+
+<p>it is possible to rewrite the problem in standard form by adding slack variables:</p>
+
+<script type="math/tex; mode=display">(P) \qquad \min \{ cx \mid Ax + Ix_S = b, \, x \geq 0, \, x \mbox{ integer}, \, x_S \geq 0 \}</script>
+
+<p>where <script type="math/tex">I</script> is the identity matrix and <script type="math/tex">x_S</script> is a vector of slack variables, one for each constraint in <script type="math/tex">(P)</script>.
+Let us denote by <script type="math/tex">(\bar{P})</script> the linear relaxation of <script type="math/tex">(P)</script> obtained by relaxing the integrality constraint.</p>
+
+<p>The optimum solution vector of <script type="math/tex">(\bar{P})</script>, if it exists and it is finite, it is used to derive a basis
+(for a formal definition of <strong>basis</strong>, see [1] or [3]).
+Indeed, the basis partitions the columns of matrix <script type="math/tex">A</script> into two submatrices
+<script type="math/tex">B</script> and <script type="math/tex">N</script>, where <script type="math/tex">B</script> is given by the columns corresponding to the basic variables,
+and <script type="math/tex">N</script> by columns corresponding to variables out of the base (they are equal to zero in the optimal solution vector).</p>
+
+<p>Remember that, by definition, <script type="math/tex">B</script> is nonsingular and therefore is invertible. 
+Using the matrices <script type="math/tex">B</script> and <script type="math/tex">N</script>, it is easy to derive the following inequalities (for details, see any OR textbook, e.g., [1]): </p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+\begin{eqnarray}
+&Ax = b & \\
+&Bx_B + Nx_N = b& \\
+&x_B + B^{-1}N\,x_N = B^{-1}\,b & \qquad B \mbox{ is nonsingular} \\
+&x_B + \lfloor B^{-1}N \rfloor \,x_N \leq B^{-1}\,b &\qquad  \mbox{since }x \geq 0 \\
+&x_B + \lfloor B^{-1}N \rfloor \,x_N \leq \lfloor B^{-1}\,b \rfloor& \qquad x \mbox{ is integer}
+\end{eqnarray} %]]&gt;</script>
+
+<p>where the operator <script type="math/tex">\lfloor \cdot \rfloor</script> is applied component wise to the matrix elements.
+In practice, for each fractional basic variable, it is possible to generate a valid Gomory cut.</p>
+
+<p>The key step to generate Gomory cuts is to get an optimal basis or, even better, the inverse of the basis matrix <script type="math/tex">B^{-1}</script>
+multiplied by <script type="math/tex">A</script> and by <script type="math/tex">b</script>. Once we have that matrix, in order to generate a Gomory cut from a fractional
+basic variable, we just use the last equation in the previous derivation, applying it to each row of the system of inequalities</p>
+
+<p>Given the optimal basis, the optimal basic vector is <script type="math/tex">x_B=B^{-1}b</script>, since the non basic variables are equal to zero.
+Let <script type="math/tex">j</script> be the index of a fractional basic variable, and let <script type="math/tex">i</script> be the index of the constraint corresponding to
+variable <script type="math/tex">j</script> in the equations <script type="math/tex">x_B=B^{-1}A</script>, then the Gomory cut for variable <script type="math/tex">j</script> is:</p>
+
+<script type="math/tex; mode=display">x_j + \sum_{l \in N} \lfloor (B^{-1}N)_{il} \rfloor\,x_l \leq \lfloor (B^{-1}\,b)_i \rfloor</script>
+
+<h3 id="using-the-cplex-callable-library">Using the CPLEX callable library</h3>
+<p>The CPLEX callable library (written in C) has the following <em>advanced</em> functions:</p>
+
+<ul>
+  <li><a href="http://pic.dhe.ibm.com/infocenter/cosinfoc/v12r5/index.jsp?topic=%2Filog.odms.cplex.help%2Frefcallablelibrary%2Fhtml%2Ffunctions%2FCPXbinvarow.html">CPXbinvarow</a> computes the <em>i</em>-th row of the tableau</li>
+  <li><a href="http://pic.dhe.ibm.com/infocenter/cosinfoc/v12r5/index.jsp?topic=%2Filog.odms.cplex.help%2Frefcallablelibrary%2Fhtml%2Ffunctions%2FCPXbinvrow.html">CPXbinvrow</a> computes the <em>i</em>-th row of the basis inverse</li>
+  <li><a href="http://pic.dhe.ibm.com/infocenter/cosinfoc/v12r5/index.jsp?topic=%2Filog.odms.cplex.help%2Frefcallablelibrary%2Fhtml%2Ffunctions%2FCPXbinvacol.html">CPXbinvacol</a> computes the representation of the <em>j</em>-th column in terms of the basis</li>
+  <li><a href="http://pic.dhe.ibm.com/infocenter/cosinfoc/v12r5/index.jsp?topic=%2Filog.odms.cplex.help%2Frefcallablelibrary%2Fhtml%2Ffunctions%2FCPXbinvcol.html">CPXbinvcol</a> computes the <em>j</em>-th column of the basis inverse</li>
+</ul>
+
+<p>Using the first two functions, Gomory cuts from an optimal base can be generated as follows:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Gomory cut </span><a href="https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/cpx_gomory.c">Fork Me on GitHub</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span></span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Generate Gomory cuts:</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class="line"><span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="n">cut</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">/// Index of cut to be added</span>
+</span><span class="line"><span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+</span><span class="line"><span class="k">if</span> <span class="p">(</span> <span class="n">floor</span><span class="p">(</span><span class="n">b_bar</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="n">b_bar</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Row %d gives cut -&gt;   &quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+</span><span class="line">   <span class="n">POST_CMD</span><span class="p">(</span> <span class="n">CPXbinvarow</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="p">);</span>
+</span><span class="line">   <span class="n">rmatbeg</span><span class="p">[</span><span class="n">cut</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span><span class="p">;</span>
+</span><span class="line">   <span class="k">for</span> <span class="p">(</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n1</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span> <span class="c1">/// DANGER!</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span> <span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">         <span class="n">rmatind</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+</span><span class="line">         <span class="n">rmatval</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+</span><span class="line">         <span class="n">idx</span><span class="o">++</span><span class="p">;</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">      <span class="c1">/// Print the cut</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span> <span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;+&quot;</span><span class="p">);</span>
+</span><span class="line">      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%.1f x%d &quot;</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+</span><span class="line">   <span class="p">}</span>
+</span><span class="line">   <span class="n">gc_rhs</span><span class="p">[</span><span class="n">cut</span><span class="p">]</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">b_bar</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span> <span class="c1">/// DANGER!</span>
+</span><span class="line">   <span class="n">gc_sense</span><span class="p">[</span><span class="n">cut</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;L&#39;</span><span class="p">;</span>
+</span><span class="line">   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;&lt;= %.1f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">gc_rhs</span><span class="p">[</span><span class="n">cut</span><span class="p">]);</span>
+</span><span class="line">   <span class="n">cut</span><span class="o">++</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="c1">/// Add the new cuts</span>
+</span><span class="line"><span class="n">POST_CMD</span><span class="p">(</span> <span class="n">CPXaddrows</span> <span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n_cuts</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">gc_rhs</span><span class="p">,</span> <span class="n">gc_sense</span><span class="p">,</span>
+</span><span class="line">         <span class="n">rmatbeg</span><span class="p">,</span> <span class="n">rmatind</span><span class="p">,</span> <span class="n">rmatval</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The code reads row by row (index <em>i</em>) the inverse basis matrix <script type="math/tex">B^{-1}</script> multiplied by <script type="math/tex">A</script> (line 7),
+which is temporally stored in vector <code>z</code>,
+and then the code stores the corresponding Gomory cut in the compact matrix given by vectors <code>rmatbeg</code>, <code>rmatind</code>, and <code>rmatval</code> (lines 8-15).
+The array <code>b_bar</code> contains the vector <script type="math/tex">B^{-1}b</script> (line 21). In lines 26-27, all the cuts are added at once to the current LP data structure.</p>
+
+<p>On GitHub you find a small program that I wrote to generate Gomory cuts for problems written as <script type="math/tex">(P)</script>.
+The repository have an <a href="https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/README.md">example of execution</a> of my program.</p>
+
+<p>The code is simple only because it is designed for small IPs in the form
+<script type="math/tex"> \min\, \{\, cx \mid Ax\, \leq\,b,\, x\geq 0\}</script>.
+Otherwise, the code <strong>must</strong> consider the effects of preprocessing, different sense of the constraints,
+and additional constraints introduced because of range constraints.</p>
+
+<p>If you are interested in a <strong>real</strong> implementation of <strong>Mixed-Integer Gomory cuts</strong>, 
+that are a generalization of Fractional Gomory cuts to <strong>mixed integer linear programs</strong>, 
+please look at the <a href="http://scip.zib.de/doc/html/sepa__gomory_8h.shtml">SCIP source code</a>.</p>
+
+<h3 id="additional-readings">Additional readings</h3>
+<p>The introduction of Mixed Integer Gomory cuts 
+in CPLEX was <strong>The</strong> major breakthrough of CPLEX 6.5 and produced
+the version-to-version speed-up given by the blue bars in the chart below
+(source: <a href="http://www.ferc.gov/eventcalendar/Files/20100609110044-Bixby,%20Gurobi%20Optimization.pdf">Bixby’s slides available on the web</a>):</p>
+
+<p><img src="http://stegua.github.io/images/cplex65.png" /></p>
+
+<p>Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
+These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix
+requires the division by its determinant.</p>
+
+<blockquote>
+  <p>“In 1959, […] We started to experience the unpredictability of the computational results rather steadily” (Gomory, see [4]).”</p>
+</blockquote>
+
+<p>A recent paper by Cornuejols, Margot, and Nannicini deals with some of these issues [2].</p>
+
+<p>If you like to learn more about how the basis are computed in the CPLEX LP solver, there is very nice paper
+by Bixby [3]. The paper explains different approaches to get the first basic feasible solution and
+gives some hints of the CPLEX implementation of that time, i.e., 1992. Though the paper does not deal with Gomory
+cuts directly, it is a very pleasant reading.</p>
+
+<p>To conclude, for those of you interested in <a href="http://www.math.uiuc.edu/documenta/vol-ismp/vol-ismp.html">Optimization Stories</a>
+there is a nice chapter by G. Cornuejols about the <strong>Ongoing Story of Gomory Cuts</strong> [4].</p>
+
+<h2 id="references">References</h2>
+<ol>
+  <li>
+    <p>C.H. Papadimitriou, K. Steiglitz.
+<span class="title">Combinatorial Optimization: Algorithms and Complexity</span>. 1998.
+<a href="http://www.amazon.com/Combinatorial-Optimization-Algorithms-Complexity-Computer/dp/0486402584">[book]</a></p>
+  </li>
+  <li>
+    <p>G. Cornuejols, F. Margot and G. Nannicini.
+<span class="title">On the safety of Gomory cut generators</span>. Submitted in 2012.
+<span class="journal">Mathematical Programming Computation, under review.</span> 
+<a href="http://faculty.sutd.edu.sg/~nannicini/papers/testing_gomory.pdf">[preprint]</a></p>
+  </li>
+  <li>
+    <p>R.E. Bixby.
+<span class="title">Implementing the Simplex Method: The Initial Basis</span>.
+<span class="journal">Journal on Computing</span> vol. 4(3), pages 267&#8211;284, 1992.
+<a href="http://joc.journal.informs.org/content/4/3/267.short">[abstract]</a></p>
+  </li>
+  <li>
+    <p>G. Cornuejols.
+<span class="title">The Ongoing Story of Gomory Cuts</span>.
+<span class="journal">Documenta Mathematica - Optimization Stories.</span> Pages 221-226, 2012.
+<a href="http://www.math.uiuc.edu/documenta/vol-ismp/37_cornuejols-gerard.pdf">[preprint]</a></p>
+  </li>
+</ol>
+]]></content>
+  </entry>
   
+  <entry>
+    <title type="html"><![CDATA[How Italian Commuters Discovered Operations Research]]></title>
+    <link href="http://stegua.github.io/blog/2012/12/16/how-italian-commuters-discovered-or/"/>
+    <updated>2012-12-16T10:45:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2012/12/16/how-italian-commuters-discovered-or</id>
+    <content type="html"><![CDATA[<p>Last week, more then 700,000 Italian commuters discovered the importance of Operations Research (OR).
+Nobody explicitly mentioned OR, 
+but due to a horrible crew schedule of <a href="http://www.trenord.it">Trenord</a> 
+(a train operator with around 330 trains and 2700 employees),
+the commuters had a <strong>long, long, long nightmare</strong>. 
+During the whole week, several trains were cancelled (1375 in total) and most of the trains were delayed.
+A <a href="http://milano.corriere.it/milano/notizie/cronaca/12_dicembre_11/treni-cronaca-caos-episodi-2113111724378.shtml">newspaper</a> wrote that a commuter waiting to go home had the painful record of 11 consecutive trains cancelled.
+The Italian online edition of Wired has an <a href="http://daily.wired.it/news/tech/2012/12/13/trenord-treni-software-caos-85247.html">article about this horrible week</a>. 
+If you want to get an idea of the chaos you can search for “caos tilt software trenord” on google.it.</p>
 
+<p>Trenord officially said that the software that planned the crew schedule is faulty. 
+The software was bought last year from <a href="http://www.goalsystems.com">Goal Systems</a>, a Spanish company.
+Rumors say that Trenord paid the Goal System around <strong>1,500,000 Euro</strong>.
+Likely, the system is not faulty, but it “<em>only</em>” had bad input data.</p>
 
-    </article>
+<h2 id="what-newspapers-do-not-write">What newspapers do not write</h2>
+
+<p>Before the Goal System, Trenord was using a different software, produced by
+<a href="http://www.maior.it">Management Artificial Intelligence Operations Research srl (MAIOR)</a>
+that is used by several public transportation companies in Italy,
+included <a href="http://www.atm.it">ATM</a> that operates the subway and buses in Milan.
+In addition, MAIOR collaborates with the <em>Politecnico di Milano</em> and the <em>University of Pisa</em>
+to improve continuously its software.
+Honestly, I am biased, since I collaborate with MAIOR. 
+However, Trenord dismissed the software of MAOIR
+without any specific complaint, since the management had decided to buy the Goal System software.</p>
+
+<p>Newspapers do not ask the following question:</p>
+
+<blockquote>
+  <p>Why to change a piece of software, if the previous one was working correctly?</p>
+</blockquote>
+
+<p>In Italy, soccer players have a motto: “<em>squadra che vince non si cambia</em>”.
+Maybe at Trenord nobody plays soccer.</p>
+
+<h3 id="maior-is-back">MAIOR is back</h3>
+<p>Likely, next week will be better for the 700,000 commuters,
+since OR experts from MAIOR are traveling to Milan to 
+help Trenord to improve the situation.</p>
+
+<h3 id="disclaimer-post-edited-on-18th-december-2012">Disclaimer (post edited on 18th December 2012)</h3>
+<ol>
+  <li>I am a Pavia-Milano commuter disappointed of the chaotic week we had.</li>
+  <li>The information reported in this post were obtained with searches on google.it and published on Italian online magazines.</li>
+  <li>Surely, the Goal System is a piece of software as good as MAIOR software is.</li>
+  <li>This post does not intend to offend anyone. </li>
+</ol>
+]]></content>
+  </entry>
   
-  <div class="pagination">
-    
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
-  
-    <section>
-  <h1>About Me</h1>
-  <p>The views expressed on this blog are mine and do not necessarily reflect the views of my employers.</p>
-  <nav>
-  <div><a href="http://matematica.unipv.it/gualandi/">My Academic Home Page</a></div>
-  <div><a href="http://matematica.unipv.it/gualandi/research/">My Publications</a></div>
-  </nav>
-  </p>
-  <p>
-  I do not accept any advertisement. 
-  However, you can offer me <a href="http://paypal.me/stegua/2.10">coffee and brioche</a> or <a href="http://paypal.me/stegua/7.00">pizza capricciosa</a> through paypal.
-  </p>
-</section>
+  <entry>
+    <title type="html"><![CDATA[Challenging MIPs instances]]></title>
+    <link href="http://stegua.github.io/blog/2012/12/13/challenging-mips/"/>
+    <updated>2012-12-13T18:11:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2012/12/13/challenging-mips</id>
+    <content type="html"><![CDATA[<p>Today, I share seven challenging MIP instances as 
+<a href="http://en.wikipedia.org/wiki/MPS_%28format%29">.mps files</a>
+along with the AMPL <a href="https://github.com/stegua/MyBlogEntries/tree/master/Roadef2012">model and data files</a> 
+I used to generate them. 
+While I like the <a href="http://miplib.zib.de/">MIPLIBs</a>, I do prefer problem libraries similar to the 
+<a href="http://www.csplib.org/">CSPLIB</a> where
+you get both a problem description <strong>and</strong> a set of data. This allows anyone to try
+with her new model and/or method.</p>
 
-<section>
- <h2>Latest Tweets</h2>
-<a class="twitter-timeline" href="https://twitter.com/famo2spaghi" data-widget-id="303485589863407617">Tweets by @famo2spaghi</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-<script type="text/javascript">
-   $.domReady(function(){
-         getTwitterFeed("famo2spaghi", 3, true);
-         });
-</script>
-<script src="/javascripts/twitter.js" type="text/javascript"> </script>
+<p>The MIP instances I propose come from my formulation of
+the <a href="http://challenge.roadef.org/2012/en/sujet.php">Machine Reassignment Problem</a> 
+proposed for the <a href="http://roadef.org/content/index.htm">Roadef Challenge</a> sponsored by Google last year. 
+As I wrote in a <a href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/">previous post</a>, 
+the Challenge had <strong>huge</strong> instances and a <em>micro</em> time limit of 300 seconds.
+I said <em>micro</em> because I have in mind exact methods: there is little you can do in 300 seconds when you
+have a problem with potentially as many as <script type="math/tex">50000 \times 5000</script> binary variables. 
+If you want to use math programming and start with the solution of a linear programming relaxation of the problem,
+you have to be careful: it might happen that you cannot even solve the LP relaxation at the root node within 300 seconds.</p>
 
-<a href="http://twitter.com/famo2spaghi" class="twitter-follow-button" data-show-count="true">Follow @famo2spaghi</a>
+<p>That is why most of the participants tackled the Challenge mainly with heuristic algorithms.
+The only <em>general purpose</em> solver that qualified for the challenge is <a href="http://www.localsolver.com">Local Solver</a>,
+which has a nice abstraction (“somehow” similar to AMPL) to well-known local search algorithms and move operators.
+The Local Solver script used in the qualification phase is available 
+<a href="http://www.localsolver.com/misc/google_machine_reassignment.lsp">here</a>.</p>
 
-</section>
+<p>However, in my own opinion, it is interesting to try to solve at least the instances of the qualification phase
+with Integer Linear Programming (ILP) solvers such as 
+<a href="http://www.gurobi.com">Gurobi</a> and <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>.
+Can these branch-and-cut commercial solvers be competitive on such problems? </p>
 
+<h2 id="problem-overview">Problem Overview</h2>
 
-<section class="googleplus">
-  <h1>
-    <a href="https://plus.google.com/+StefanoGualandi?rel=author">
-      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
-      My Google+ profile
-    </a>
-  </h1>
-</section>
+<p>Consider you are given a set of processes <script type="math/tex">P</script>, a set of machines <script type="math/tex">M</script>,
+and an initial mapping <script type="math/tex">\pi</script> of each process to a single machine 
+(i.e., <script type="math/tex">\pi_p = i</script> if process <script type="math/tex">p</script> is initially assigned to machine <script type="math/tex">i</script>).
+Each process consumes several <em>resources</em>, e.g., CPU, memory, and bandwidth.
+In the challenge, some processes were defined to be
+<em>transient</em>: they consume resources both on the machine where they are initially located,
+and in the machine they are going to be after the reassignment.
+The problem asks to find a new assignment of processes to machines that minimizes a rather involved cost function.</p>
 
+<p>A basic ILP model will have a 0-1 variable <script type="math/tex">x_{pi}</script> equals to 1 if you
+(re)assign process <script type="math/tex">p</script> to machine <script type="math/tex">i</script>. The number of processes and the number of machines give
+a first clue on the size of the problem. 
+The constraints on the resource capacities yield a multi-dimensional knapsack subproblem for each machine.
+The Machine Reassignment Problem has other constraints (kind of logical 0-1 constraints), 
+but I do not want to bore you here with a full problem description. 
+If you like to see my model, please read the 
+<a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/ampl-scripts/roadef2012.mod">AMPL model file</a>. </p>
 
-<section>
-  <h2>Recent Posts</h2>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective/">An informal and biased Tutorial on Kantorovich-Wasserstein distances</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/">Exercise in Python: remove blanks from strings</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/04/column-enumeration/">Graph Coloring: Column Generation or Column Enumeration?</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/09/27/big-data-and-convex-optimization/">Big Data and Convex Optimization</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/19/the-impact-of-preprocessing/">The Impact of Preprocessing on the MIPLIB2003</a>
-      </li>
-    
-  </ul>
-</section>
+<h2 id="a-first-attempt-with-gurobi">A first attempt with Gurobi</h2>
+<p>In order to convince you that the proposed instances are challenging, I report some computational results.</p>
 
-<section>
-  <h2>GitHub Repos</h2>
-  <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  
-  <a href="https://github.com/stegua">@stegua</a> on GitHub
-  
-  <script type="text/javascript">
-    $.domReady(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
+<p>The table below reports for each instance the best result obtained by the participants
+of the challenge (second column). The remaining four columns give 
+the upper bound (UB), the lower bound (LB), the number of branch-and-bound nodes, and the computation time in seconds
+obtained with Gurobi 5.0.1, a timeout of 300 seconds, and the default parameter setting on a rather old desktop
+(single core, 2Gb of RAM).</p>
 
-        github.showRepos({
-            user: 'stegua',
-            count: 2,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Instance</th>
+      <th style="text-align: right">Best Known UB</th>
+      <th style="text-align: right">Upper Bound</th>
+      <th style="text-align: right">Lower Bound</th>
+      <th style="text-align: right">Nodes</th>
+      <th style="text-align: right">Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">a1-1</td>
+      <td style="text-align: right">44,306,501</td>
+      <td style="text-align: right"><strong>44,306,501</strong></td>
+      <td style="text-align: right"><strong>44,306,501</strong></td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">0.05</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-2</td>
+      <td style="text-align: right">777,532,896</td>
+      <td style="text-align: right">780,511,277</td>
+      <td style="text-align: right">777,530,829</td>
+      <td style="text-align: right">537</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-3</td>
+      <td style="text-align: right">583,005,717</td>
+      <td style="text-align: right"><strong>583,005,720</strong></td>
+      <td style="text-align: right"><strong>583,005,715</strong></td>
+      <td style="text-align: right">15</td>
+      <td style="text-align: right">48.76</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-4</td>
+      <td style="text-align: right">252,728,589</td>
+      <td style="text-align: right">320,104,617</td>
+      <td style="text-align: right">242,404,632</td>
+      <td style="text-align: right">24</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-5</td>
+      <td style="text-align: right">727,578,309</td>
+      <td style="text-align: right"><strong>727,578,316</strong></td>
+      <td style="text-align: right"><strong>727,578,296</strong></td>
+      <td style="text-align: right">221</td>
+      <td style="text-align: right">2.43</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-1</td>
+      <td style="text-align: right">198</td>
+      <td style="text-align: right">54,350,836</td>
+      <td style="text-align: right">110</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-2</td>
+      <td style="text-align: right">816,523,983</td>
+      <td style="text-align: right">1,876,768,120</td>
+      <td style="text-align: right">559,888,659</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-3</td>
+      <td style="text-align: right">1,306,868,761</td>
+      <td style="text-align: right">2,272,487,840</td>
+      <td style="text-align: right">1,007,955,933</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-4</td>
+      <td style="text-align: right">1,681,353,943</td>
+      <td style="text-align: right">3,223,516,130</td>
+      <td style="text-align: right">1,680,231,407</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">-</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-5</td>
+      <td style="text-align: right">336,170,182</td>
+      <td style="text-align: right">787,355,300</td>
+      <td style="text-align: right">307,041,984</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">-</td>
+    </tr>
+  </tbody>
+</table>
 
-<section>
-  <h1>Blogroll</h1>
-  <!-- IMPORTANT: Do not change the below ID as it will affect the functioning of the plugin-->
-    <ul id="blogroll-list"><li><a href='http://bartoszmilewski.com/' feedurl='http://bartoszmilewski.com/feed/' title = 'Concurrency, C++, Haskell'>Bartosz Milewski&#8217;s Programming Cafe</a></li><li><a href='http://cp-is-fun.blogspot.fr/' feedurl='' title = 'Constraint Programming is fun'>CP is fun</a></li><li><a href='http://bob4er.blogspot.com/' feedurl='http://bob4er.blogspot.com/feeds/posts/default' title = ''>disORiented</a></li><li><a href='http://erlingdandersen.blogspot.it/' feedurl='http://erlingdandersen.blogspot.com/feeds/posts/default' title = 'This blog is about my work at MOSEK ApS where I am the CEO, a computer programmer and tea maker'>Erling&#8217;s blog</a></li><li><a href='http://farkasdilemma.wordpress.com' feedurl='http://farkasdilemma.wordpress.com/feed' title = 'Austin Buchanan's Blog'>Farkas&#8217; Dilemma</a></li><li><a href='https://www.ibm.com/developerworks/mydeveloperworks/blogs/jfp/?lang=en' feedurl='https://www.ibm.com/developerworks/mydeveloperworks/blogs/roller-ui/rendering/feed/jfp/entries/atom?lang=en' title = 'Making Mathematical Optimization Pervasive'>IT Best Kept Secret Is Optimization</a></li><li><a href='http://mat.gsia.cmu.edu/blog/' feedurl='http://feeds.feedburner.com/MichaelTricksORB' title = 'Thoughts on the world of operations research'>Michael Trick’s Operations Research Blog</a></li><li><a href='http://www.hakank.org/constraint_programming_blog/' feedurl='http://www.hakank.org/constraint_programming_blog/atom.xml' title = 'This is my blog about constraint programming and related paradigms'>My Constraint Programming Blog</a></li><li><a href='http://nathanbrixius.wordpress.com/' feedurl='http://nathanbrixius.wordpress.com/feed/' title = 'Optimization, analytics, software'>Nathan Brixius</a></li><li><a href='http://zverovich.net/' feedurl='http://zverovich.net/atom.xml' title = 'Victor Zverovich'>Notes of a humble developer</a></li><li><a href='http://orbythebeach.wordpress.com/' feedurl='http://feeds.feedburner.com/OrByTheBeach' title = 'Operations Research, Computers, Education, and South Florida'>O.R. by the Beach</a></li><li><a href='http://optimizationzen.com/' feedurl='http://feeds.feedburner.com/optimizationzen' title = 'The Art of Decision Making'>Optimization Zen</a></li><li><a href='http://orinanobworld.blogspot.it/' feedurl='http://orinanobworld.blogspot.com/feeds/posts/default' title = 'A mix of operations research items and software tricks that I'll probably forget if I don't write them down somewhere'>OR in an OB World</a></li><li><a href='http://punkrockor.wordpress.com/' feedurl='http://punkrockor.wordpress.com/feed/' title = '~*~ peace, love, and operations research ~*~'>Punk Rock Operations Research</a></li><li><a href='http://spokutta.wordpress.com/' feedurl='http://spokutta.wordpress.com/feed/' title = 'Mathematics and related topics'>Sebastian Pokutta&#8217;s blog</a></li><li><a href='http://thiagoserra.com' feedurl='http://thiagoserra.com/feed' title = ''>Tatu-Search Optimization</a></li><li><a href='http://org.mie.utoronto.ca/blog/' feedurl='' title = 'An Operations Research blog from the University of Toronto'>The OR Café</a></li><li><a href='http://www.thequestforoptimality.com/' feedurl='http://www.thequestforoptimality.com/feed/' title = 'OR made fun and practical'>The Quest for Optimality</a></li></ul>
-    
-    <script type="text/javascript">
-      $(document).ready(function(){
-        updateFeeds(true);
-      });
-    </script>
-    <script src="/javascripts/tinysort-min.js"></script>
-    <script src="/javascripts/blogroll.js"></script>
-    
-</section>
+<p><br />
+Instances <strong>a1-1</strong>, <strong>a1-3</strong>, <strong>a1-5</strong> are solved to optimality within 300 seconds
+and hence they are not further considered.</p>
 
-  
-</aside>
+<p>The remaining seven instances are the challenging instances mentioned at the begging of this post.
+The instances <strong>a2-x</strong> are embarrassing: they have an UB that is far away from both the best known UB
+and the computed LB.
+Specifically, look at the instance <strong>a2-1</strong>: the best result of the challenge has value 198, Gurobi
+(using my model) finds a solution with cost 54,350,836: you may agree that this is “<em>slightly</em>” more than 198.
+At the same time the LB is only 110. </p>
 
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2019 - Stefano Gualandi -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+<p>Note that for all the <strong>a2-x</strong> instances the number of branch-and-bound nodes is zero.
+After 300 seconds the solver is still at the root node trying to generate cutting planes and/or
+running their primal heuristics. Using CPLEX 12.5 we got pretty similar results.</p>
+
+<p>This is why I think these instances are challenging for branch-and-cut solvers. </p>
+
+<h2 id="search-strategies-feasibility-vs-optimality">Search Strategies: Feasibility vs Optimality</h2>
+<p>Commercial solvers have usually a meta-parameter that controls the search focus by setting other parameters
+(how they are precisely set is undocumented: do you know more about?).
+The two basic options of this parameter are (1) to focus on looking for feasible solution
+or (2) to focus on proving optimality.
+The name of this parameter is <strong>MipEmphasis</strong> in CPLEX and <strong>MipFocus</strong> in Gurobi. 
+Since the LPs are quite time consuming and after 300 seconds the solver is still at the root node, 
+we can wonder whether generating cuts is of any help on these instances.</p>
+
+<p>If we set the MipFocus to <strong>feasibility</strong> and we explicitly <strong>disable all cut generators</strong>, would we get better results?</p>
+
+<p>Look at the table below:
+the values of the upper bounds of instances <strong>a1-2</strong>, <strong>a1-4</strong>, and <strong>a2-3</strong> are slightly better than before: 
+this is a good news. However, for instance <strong>a2-1</strong> the upper bound is worse, and for the other three instances there is no difference. Moreover, the LBs are always weaker: as expected, there is no free lunch!</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Instance</th>
+      <th style="text-align: right">Upper Bound</th>
+      <th style="text-align: right">Lower Bound</th>
+      <th style="text-align: right">Gap</th>
+      <th style="text-align: right">Nodes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">a1-2</td>
+      <td style="text-align: right">779,876,897</td>
+      <td style="text-align: right">777,530,808</td>
+      <td style="text-align: right">0.30%</td>
+      <td style="text-align: right">324</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-4</td>
+      <td style="text-align: right">317,802,133</td>
+      <td style="text-align: right">242,398,325</td>
+      <td style="text-align: right">23.72%</td>
+      <td style="text-align: right">48</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-1</td>
+      <td style="text-align: right">65,866,574</td>
+      <td style="text-align: right">66</td>
+      <td style="text-align: right">99.99%</td>
+      <td style="text-align: right">81</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-2</td>
+      <td style="text-align: right">1,876,768,120</td>
+      <td style="text-align: right">505,443,999</td>
+      <td style="text-align: right">73.06%</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-3</td>
+      <td style="text-align: right">1,428,873,892</td>
+      <td style="text-align: right">1,007,955,933</td>
+      <td style="text-align: right">29.45%</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-4</td>
+      <td style="text-align: right">3,223,516,130</td>
+      <td style="text-align: right">1,680,230,915</td>
+      <td style="text-align: right">47.87%</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-5</td>
+      <td style="text-align: right">787,355,300</td>
+      <td style="text-align: right">307,040,989</td>
+      <td style="text-align: right">61.00%</td>
+      <td style="text-align: right">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+If we want to keep a timeout of 300 seconds, there is little we can do, unless we develop an ad-hoc decomposition approach.</p>
+
+<blockquote>
+  <p>Can we improve those results with a branch-and-cut solver using a longer timeout?</p>
+</blockquote>
+
+<p>Most of the papers that uses branch-and-cut to solve hard problems have a timeout
+of at least one hour, and they start by running an heuristic for around 5 minutes.
+Therefore, we can think of using the best results obtained by the participants of the 
+challenge as starting solution. </p>
+
+<p>So, let us make a step backward: we enable all cut generators and we set all parameters at the default value.
+In addition we set the time limit to one hour. The table below gives the new results.
+With this setting we are able to “prove” near-optimality of instance <strong>a1-2</strong>, and we reduce
+significantly the gap of instance <strong>a2-4</strong>.
+However, the solver never improves the primal solutions: this means that we have not improved the results
+obtained in the qualification phase of the challenge.
+Note also that the number of nodes explored is still rather small despite the longer timeout.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Instance</th>
+      <th style="text-align: right">Upper Bound</th>
+      <th style="text-align: right">Lower Bound</th>
+      <th style="text-align: right">Gap</th>
+      <th style="text-align: right">Nodes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">a1-2</td>
+      <td style="text-align: right">777,532,896</td>
+      <td style="text-align: right">777,530,807</td>
+      <td style="text-align: right">~0.001%</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-4</td>
+      <td style="text-align: right">252,728,589</td>
+      <td style="text-align: right">242,404,642</td>
+      <td style="text-align: right">4.09%</td>
+      <td style="text-align: right">427</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-1</td>
+      <td style="text-align: right">198</td>
+      <td style="text-align: right">120</td>
+      <td style="text-align: right">39.39%</td>
+      <td style="text-align: right">2113</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-2</td>
+      <td style="text-align: right">816,523,983</td>
+      <td style="text-align: right">572,213,976</td>
+      <td style="text-align: right">29.92%</td>
+      <td style="text-align: right">18</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-3</td>
+      <td style="text-align: right">1,306,868,761</td>
+      <td style="text-align: right">1,068,028,987</td>
+      <td style="text-align: right">18.27%</td>
+      <td style="text-align: right">69</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-4</td>
+      <td style="text-align: right">1,681,353,943</td>
+      <td style="text-align: right">1,680,231,594</td>
+      <td style="text-align: right">0.06%</td>
+      <td style="text-align: right">133</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-5</td>
+      <td style="text-align: right">336,170,182</td>
+      <td style="text-align: right">307,042,542</td>
+      <td style="text-align: right">8.66%</td>
+      <td style="text-align: right">187</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+What if we disable all cuts and set the <strong>MipFocus</strong> to feasibility again?</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Instance</th>
+      <th style="text-align: right">Upper Bound</th>
+      <th style="text-align: right">Lower Bound</th>
+      <th style="text-align: right">Gap</th>
+      <th style="text-align: right">Nodes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">a1-2</td>
+      <td style="text-align: right">777,532,896</td>
+      <td style="text-align: right">777,530,807</td>
+      <td style="text-align: right">~0.001%</td>
+      <td style="text-align: right">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a1-4</td>
+      <td style="text-align: right">252,728,589</td>
+      <td style="text-align: right">242,398,708</td>
+      <td style="text-align: right">4.09%</td>
+      <td style="text-align: right">1359</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-1</td>
+      <td style="text-align: right"><strong>196</strong></td>
+      <td style="text-align: right">70</td>
+      <td style="text-align: right">64.28%</td>
+      <td style="text-align: right">818</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-2</td>
+      <td style="text-align: right">816,523,983</td>
+      <td style="text-align: right">505,467,074</td>
+      <td style="text-align: right">38.09%</td>
+      <td style="text-align: right">81</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-3</td>
+      <td style="text-align: right"><strong>1,303,662,728</strong></td>
+      <td style="text-align: right">1,008,286,290</td>
+      <td style="text-align: right">22.66%</td>
+      <td style="text-align: right">56</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-4</td>
+      <td style="text-align: right">1,681,353,943</td>
+      <td style="text-align: right">1,680,230,918</td>
+      <td style="text-align: right">0.07%</td>
+      <td style="text-align: right">108</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">a2-5</td>
+      <td style="text-align: right"><strong>336,158,091</strong></td>
+      <td style="text-align: right">307,040,989</td>
+      <td style="text-align: right">8.67%</td>
+      <td style="text-align: right">135</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+With this parameter setting, we improve the UB for 3 instances: <strong>a2-1</strong>, <strong>a2-3</strong>, and <strong>a2-5</strong>.
+However, the lower bounds are again much weaker. Look at instance <strong>a2-1</strong>: the lower bound is
+now 70 while before it was 120. If you look at instance <strong>a2-3</strong> you can see that even if
+we got a better primal solution, the gap is weaker, since the lower bound is worse.</p>
+
+<h2 id="rfc-any-idea">RFC: Any idea?</h2>
+<p>With the focus on feasibility you get better results, but you might miss the ability to prove optimality.
+With the focus on optimality you get better lower bounds, but you might not improve the primal bounds.</p>
+
+<blockquote>
+  <p>1) How to balance feasibility with optimality?</p>
+</blockquote>
+
+<p>To use branch-and-cut solver and to disable cut generators is counterintuitive, but if you do you, you get better
+primal bounds.  </p>
+
+<blockquote>
+  <p>2) Why should I use a branch-and-cut solver then? </p>
+</blockquote>
+
+<p>Do you have any idea out there?</p>
+
+<h3 id="minor-remark">Minor Remark</h3>
+<p>While writing this post, we got 3 solutions that are better than those obtained by the participants of 
+the qualification phase: 
+<a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/certificates/sol_a2_1.sol">a2-1</a>, 
+<a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/certificates/sol_a2_3.sol">a2-3</a>, and 
+<a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/certificates/sol_a2_5.sol">a2-5</a>
+(the three links give the certificates of the solutions). 
+We are almost there in proving optimality of <strong>a2-3</strong>, and we get better lower bounds than those 
+<a href="http://4c.ucc.ie/~hsimonis/reassignment.pdf">published</a> in [1].</p>
+
+<h2 id="references">References</h2>
+<style type="text/css">
+table { width:100%; }
+thead {
+   background-color: rgba(0,0,255,0.3);
+   color: black;
+   text-indent: 14px;
+   text-align: left;
+}
+td { padding:4px; }
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
+<ol>
+  <li>
+    <p> Deepak Mehta, Barry O’Sullivan, Helmut Simonis. 
+<span class="title">Comparing Solution Methods for the Machine Reassignment Problem</span>. 
+In Proc of CP 2012, Québec City, Canada, October 8-12, 2012.
 </p>
+  </li>
+</ol>
 
-</footer>
+<h1 id="credits">Credits</h1>
+<p>Thanks to <a href="https://plus.google.com/116327072470709585073/posts">Stefano Coniglio</a> 
+and to <a href="http://imada.sdu.dk/~marco/">Marco Chiarandini</a> for their passionate discussions about the posts
+in this blog. </p>
+]]></content>
+  </entry>
   
+  <entry>
+    <title type="html"><![CDATA[CP2012: Je me souviens]]></title>
+    <link href="http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens/"/>
+    <updated>2012-10-19T13:24:00+02:00</updated>
+    <id>http://stegua.github.io/blog/2012/10/19/cp2012-je-me-souviens</id>
+    <content type="html"><![CDATA[<p>Last week in Quebec City, there was the 
+<a href="http://www.cp2012.org/">18th International Conference on Principles and Practice of Constraint Programming</a>.
+This year the conference had a record of submissions (186 in total) and the program committee
+made a vey nice job in organizing the plenary sessions and the tutorials.
+You can find <a href="http://4c.ucc.ie/~hsimonis/CP2012/index.htm">very nice pictures</a> of the conference on <a href="http://4c.ucc.ie/~hsimonis/">Helmut’s web page</a>.</p>
 
-<script type="text/javascript">
-      var disqus_shortname = 'famo2spaghi';
-      
-        
-        var disqus_script = 'count.js';
-      
-    (function () {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
+<p>During the conference, the weather outside was pretty cold, but at the conference site
+the discussions were warm and the presentations were intriguing.</p>
 
+<p>In this post, I share an informal report of the conference as <a href="http://en.wikipedia.org/wiki/Je_me_souviens"><em>“Je me souviens”</em></a>. </p>
 
+<h3 id="challenges-in-smart-grids">Challenges in Smart Grids</h3>
+<p>The invited talks were excellent and my favorite one was given by Miguel F. Anjos
+on Optimization Challenges in Smart Grid Operations.
+Miguel is not exactly a CP programmer, he is more on discrete non linear 
+optimization, but his talk was a perfect mixed of applications, modeling, and solution techniques.
+Please, read and enjoy <a href="http://www.cp2012.org/slides/Anjos-OptChalSmartGrids-CP2012.pdf">his slides</a>.</p>
 
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+<p>I like to mention just one of his observations. Nowadays, electric cars are becoming more and more
+present. What would happen when each of us will have an electric car?
+Likely, during the night, while sleeping, we will connect our car to the grid to recharge the
+car batteries. This will lead to high variability in night peaks of energy demand.</p>
 
+<p>How to manage these peaks?</p>
 
+<p>Well, what Miguel has reported as a possible challenging option is to think of the collection of cars connected to the grid as a kind of huge battery. This sort of <em>collective</em> battery could be used to better handle the peaks of energy demands. Each car would play the game with a double role: if there is not an energy demand peak, you can recharge the car battery; otherwise, the car battery could be used as a power source and it could supply energy to the grid. This is an oversimplification, but as you can image there would be great challenges and opportunities for any <em>constraint optimizer</em> in terms of modeling and solution techniques. </p>
 
-  <script type="text/javascript">
-    (function() {
-      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
-      script.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
-    })();
-  </script>
+<p>I am curious to read more about, do you?</p>
 
+<h3 id="sessions-and-talks">Sessions and Talks</h3>
+<p>This year CP had the thicker conference proceedings, ever. Traditionally, the papers are presented in two parallel sessions. Two is not that much when you think that this year at <a href="http://ismp2012.mathopt.org/">ISMP</a> there were 40 parallel sessions…
+but still, you always regret that you could not attend the talk in the other session. Argh!</p>
 
+<p>Here I like to mention just two works. However, the program chair is trying 
+to make <a href="http://www.cp2012.org/accepted_papers.php">all the slides</a> available.
+Have a look at the program and at the slides: there are many good papers.</p>
 
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
+<p>In the application track, Deepak Mehta gave a nice talk about a joint work with Barry O’Sullivan and Helmut Simonis
+on <a href="http://4c.ucc.ie/~hsimonis/reassignment.pdf"><em>Comparing Solution Methods for the Machine Reassignment Problem</em></a>, a problem
+that Google has to solve every day in its 
+<a href="http://www.google.com/about/datacenters/gallery/#/tech">data centers</a> and that was the subject of the <a href="http://challenge.roadef.org/2012/en/sujet.php">Google/Roadef Challenge 2012</a>.
+The true challenge is given by the HUGE size of the instances and the very short timeout (300 seconds). The work presented by Deepak is really interesting and they got excellent results using CP-based Large Neighborhood Search: they classified second at the challenge.</p>
 
+<p>Related to the <strong>Machine Reassignment Problem</strong> there was a second interesting talk entitled 
+<em><a href="http://www.springerlink.com/content/52j3197311333658/">Weibull-based Benchmarks for Bin Packing</a></em>, 
+by Ignacio Castineiras, Milan De Cauwer and Barry O’Sullivan. 
+They have designed a parametric instance generator for bin packing problems based on the Weibull distribution.
+Having a parametric generator is crucial to perform exhaustive computational results and to
+identify those instances that are challenging for a particular solution technique.
+For instance, they have considered a CP-approach to bin packing problems and they have identified those Weibull shape values that yield challenging instances for such an approach.
+A nice feature is that their generator is able to create instances similar to those of the Google challenge…
+I hope they will release their generator soon!</p>
 
+<h3 id="the-doctoral-program">The Doctoral Program</h3>
+<p>Differently from other conferences (as for instance <a href="http://ipco2013.dim.uchile.cl/">IPCO</a>), CP gives PhD
+students the opportunity to present their ongoing work within a <a href="http://zivny.cz/dp12/">Doctoral Program</a>.
+The sponsors cover part of the costs for attending the conference.
+During the conference each student has a mentor who is supposed to
+help him. This year there were around 24 students and only very few of them
+had a paper accepted at the main conference. This means that without
+the Doctoral Program, most of these students would not had the opportunity to attend the conference.</p>
 
+<p>Geoffrey Chu awarded the 2012 ACP Doctoral Research Award for his thesis
+<strong><em>Improving Combinatorial Optimization</em></strong>. To give you an idea about the amount of his contributions, consider that after his thesis presentation, someone in the audience asked:</p>
 
+<p><em>“And you got only <strong>one PhD</strong> for all this work?”</em></p>
 
-</body>
-</html>
+<p><em>Chapeau!</em> Among other things, Chu has implemented <a href="http://www.g12.csse.unimelb.edu.au/minizinc/challenge2011/description_chuffed.txt">Chuffed</a> one of the most efficient CP solver
+that uses <em>lazy clause generation</em> and that ranked very well at the last
+<a href="http://www.g12.cs.mu.oz.au/minizinc/challenge2012/results2012.html">MiniZinc Challenge</a>, even if it was not one of the official competitors. </p>
+
+<p>For the record, the winner of the MiniZinc challenge of this year is (again) the <a href="http://www.gecode.org">Gecode team</a>. Congratulations!</p>
+
+<h3 id="next-year">Next Year</h3>
+<p>Next year CP will be held in Sweden, at Uppsala University on 16-20 September 2013.
+Will you be there? I hope so…</p>
+
+<p>In the meantime, if you were at the conference, which was your favorite talk and/or paper?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Dijkstra, Dantzig, and Shortest Paths]]></title>
+    <link href="http://stegua.github.io/blog/2012/09/19/dijkstra/"/>
+    <updated>2012-09-19T22:14:00+02:00</updated>
+    <id>http://stegua.github.io/blog/2012/09/19/dijkstra</id>
+    <content type="html"><![CDATA[<style type="text/css">
+table { width:100%; }
+thead {
+   background-color: rgba(0,0,255,0.3);
+   color: black;
+   text-indent: 14px;
+   text-align: left;
+}
+td { padding:4px; }
+tbody tr:nth-child(odd) { background-color: rgba(0, 0, 100, 0.2);  }
+tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
+<p>Here we go, my first blog entry, ever. Let’s start with two short quizzes.</p>
+
+<p><strong>1. The well known Dijkstra’s algorithm is:</strong><br />
+[a]  A greedy algorithm<br />
+[b]  A dynamic programming algorithm<br />
+[c]  A primal-dual algorithm<br />
+[d]  It was discovered by Dantzig  </p>
+
+<p><strong>2. Which is the best C++ implementation of Dijkstra’s algorithm among the following?</strong><br />
+[a] The <a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a><br />
+[b] The <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon Graph Library</a><br />
+[c] The <a href="http://code.google.com/p/or-tools/">Google OrTools</a><br />
+[d] Hei dude! We can do better!!!  </p>
+
+<p>What is your answer for the first question? … well, the answers are all correct!
+And for the second question? To know the correct answer, sorry, you have to read this post to the end…</p>
+
+<p>If you are curious to learn more about the <em>classification</em> of the Dijkstra’s algorithm proposed in the first three answers,
+please consider reading [1] and [2]. Honestly, I did not know that the algorithm was independently discovered by Dantzig [3] as a special
+case of Linear Programming. 
+However, Dantzig is credited for the first version of the bidirectional 
+Dijkstra’s algorithm (should we called it <strong>Dantzig’s algorithm</strong>?), which is nowadays the best performing
+algorithm on general graphs.
+The bidirectional Dijkstra’s algorithm is used as benchmark to measure the speed-up of modern specialized
+shortest path algorithms for road networks [4,5], those algorithms that are implemented, for instance, in our
+GPS navigation systems, in yours smartphones (I don’t have one, argh!), in Google Maps Directions, and Microsoft Bing Maps. </p>
+
+<p>Why a first blog entry on Dijkstra’s algorithm? That’s simple.</p>
+
+<ul>
+  <li>Have you ever implemented an <em>efficient</em> version of this well-known and widely studied algorithm?</li>
+  <li>Have you ever used the version that is implemented in well-reputed graph libraries, such as, the 
+<a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a>, 
+the <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon</a>, and/or 
+<a href="http://code.google.com/p/or-tools/">Google OrTools</a>?</li>
+</ul>
+
+<p>I did while programming in C++, and I want to share with you my experience.</p>
+
+<h2 id="the-algorithm">The Algorithm</h2>
+
+<p>The algorithm is quite simple. First partition the nodes of the input graph <em>G=(N,A)</em> in three
+sets: the sets of (1) <em>scanned</em>, (2) <em>reachable</em>, and (3) <em>unvisited</em> nodes.
+Every node has a distance label <script type="math/tex">d_i</script> and a predecessor vertex <script type="math/tex">p_i</script>. Initially, set the 
+label of the source node <script type="math/tex">d_s=0</script>, while set <script type="math/tex">d_i=+\infty</script> for all other nodes. Moreover,
+the node <em>s</em> is placed in the set of <em>reachable</em> nodes, while all the other nodes are <em>unvisited</em>.</p>
+
+<p>The algorithm proceedes as follows: select a <em>reachable</em> node <em>i</em> with minimum distance label,
+and move it in the set of <em>scanned</em> nodes, it will be never selected again. 
+For each arc <em>(i,j)</em> in the forward star of node <em>i</em> check if node <em>j</em> has distance label <script type="math/tex">d_j > d_i + c_{ij}</script>; 
+if it is the case, update the label <script type="math/tex">d_j = d_i + c_{ij}</script> and the predecessor vertex <script type="math/tex">p_j=i</script>.
+In addition, if the node was <em>unvisited</em>, move it in the 
+set of reachable nodes. If the selected node <em>i</em> is the destination node
+<em>t</em>, stop the algorithm.
+Otherwise, continue by selecting the next node <em>i</em> with minimum distance label.</p>
+
+<p>The algorithm stops either when it scans the destination node <em>t</em> or the set of reachable nodes is empty.
+For the nice properties of the algorithm consult any textbook in computer science or operations research. </p>
+
+<p>At this point it should be clear why Dijkstra’s algorithm is <strong>greedy</strong>: it always select a reachable node with
+minimum distance label. It is a <strong>dynamic programming</strong> algorithm because it maintains the 
+recursive relation 
+<script type="math/tex">d_j = \min \{d_i + c_{ij} \mid (i,j) \in A \}</script> 
+for all <script type="math/tex">j \in N</script>.
+If you are familiar with Linear Programming, you should recognize that the distance labels
+play the role of dual variable of a flow based formulation of the shortest path problem,
+and the Dijkstra’s algorithm costructs a <strong>primal</strong> solution (i.e. a path) that satisfies the <strong>dual</strong>
+constraints <script type="math/tex">d_j - d_i \leq c_{ij}</script>.</p>
+
+<h2 id="graphs-and-heaps">Graphs and Heaps</h2>
+
+<p>The algorithm uses two data structures: the input graph <em>G</em> and the set of reachable nodes <em>Q</em>.
+The graph <em>G</em> can be stored with an adjacency list, but be sure that the arcs are stored in contiguous memory,
+in order to reduce the chance of cache misses when scanning the forward stars. In my implementation, I have used
+a std::vector to store the forward star of each node.</p>
+
+<p>The second data structure, the most important, is the priority queue <em>Q</em>.
+The queue has to support three operations: <em>push</em>, <em>update</em>, and <em>extract-min</em>.
+The type of priority queue used determines the worst-case complexity of the Dijkstra’s algorithm.
+Theoretically, the best strongly polynomial worst-case complexity is achieved via a <strong>Fibonacci heap</strong>. 
+On road networks, the Multi Bucket heap yields a weakly polynomial worst-case complexity that
+is more efficient in practice [4,5]. Unfortunately, the Fibonacci Heap is a rather complex data structure,
+and lazy implementations end up in using a simpler Binomial Heap.</p>
+
+<p>The good news is that the Boost Library from version 1.49 has a <a href="http://www.boost.org/doc/libs/1_51_0/doc/html/heap.html">Heap library</a>.
+This library contains several type of heaps that share a common interface: 
+d-ary-heap, binomial-heap, fibonacci-heap, pairing-heap, and skew-heap.
+The worst-case complexity of the basic operations are summarized in a
+<a href="http://www.boost.org/doc/libs/1_51_0/doc/html/heap/data_structures.html#heap.data_structures.data_structure_configuration">nice table</a>. 
+Contrary to text-books, these heaps are ordered in non increasing order (they are max-heap instead of min-heap), that means
+that the top of the heap is always the element with highest priority. For implementing Dijkstra,
+where all arc lengths are non negative, this is not a problem: we can store the elements with
+the distance changed in sign (sorry for the rough explanation, but if you are <em>really</em> intrested it is better to read directly the source code).</p>
+
+<p>The big advantage of <strong>boost::heap</strong> is that it allows to program Dijkstra once, and to compile it
+with different heaps via templates. If you wonder why the Boost Graph Library does not use boost::heap,
+well, the reason is that BGL was implemented a few years ago, while boost::heap appeared this year.</p>
+
+<h2 id="benchmarking-on-road-networks">Benchmarking on Road Networks</h2>
+<p>Here is the point that maybe interests you the most: can we do better than well-reputed C++ graph libraries?</p>
+
+<p>I have tried three graph libraries: 
+<a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a> v1.51, 
+<a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon</a> v1.2.3, and 
+<a href="http://code.google.com/p/or-tools/">Google OrTools</a> cheked out from svn on Sep 7th, 2012.
+They all have a Dijkstra implementation, even if I don’t know the implementation details.
+As a plus, the three libraries have python wrappers (but I have not test it).
+The BGL is a header only library. Lemon came after BGL.
+BGL, Lemon, and my implementation use (different) Fibonacci Heaps, while I have not clear what type of priority queue is used by OrTools.</p>
+
+<p><strong>Disclaimer</strong>: Google OrTools is much more than a graph library: among others, it has a Constraint Programming solver with very nice
+features for Large Neighborhood Search; however, we are interested here only in its Dijkstra implementation.
+Constraint Programming will be the subject of another future post.</p>
+
+<p>A few tests on instances taken from the last <a href="http://www.dis.uniroma1.it/challenge9/download.shtml">DIMACS challenge on Shortest Path problems</a>
+show the pros and cons of each implementation. Three instances are generated using the <strong>rand</strong> graph generator, while 10 instances are
+road networks. The test are done on my late 2008 MacBookPro using the apple gcc-4.2 compiler.
+All the source code, scripts, and even this post text, are available on <a href="https://github.com/stegua/MyBlogEntries/tree/master/Dijkstra">github</a>.</p>
+
+<h2 id="rand-graphs">RAND Graphs</h2>
+
+<p>The first test compares the four implementations on 3 graphs with different density <em>d</em> that is the ratio <script type="math/tex">\frac{2m}{n(n-1)}</script>.
+The graphs are:</p>
+
+<ol>
+  <li><strong>Rand 1</strong>: with <em>n</em>=10000, <em>m</em>=100000, <em>d</em>=0.001</li>
+  <li><strong>Rand 2</strong>: with <em>n</em>=10000, <em>m</em>=1000000, <em>d</em>=0.01</li>
+  <li><strong>Rand 3</strong>: with <em>n</em>=10000, <em>m</em>=10000000, <em>d</em>=0.1</li>
+</ol>
+
+<p>For each graph, 50 queries between different pairs of source and destination nodes are performed.
+The table below reports the average of query times (total time divided by query numbers).
+The entries in bold highlight the shortest time per row.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Graph</th>
+      <th style="text-align: center">MyGraph</th>
+      <th style="text-align: center">BGL</th>
+      <th style="text-align: center">Lemon</th>
+      <th style="text-align: center">OrTools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Rand 1</td>
+      <td style="text-align: center"><strong>0.0052</strong></td>
+      <td style="text-align: center">0.0059</td>
+      <td style="text-align: center">0.0074</td>
+      <td style="text-align: center">1.2722</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Rand 2</td>
+      <td style="text-align: center"><strong>0.0134</strong></td>
+      <td style="text-align: center">0.0535</td>
+      <td style="text-align: center">0.0706</td>
+      <td style="text-align: center">1.6128</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Rand 3</td>
+      <td style="text-align: center"><strong>0.0705</strong></td>
+      <td style="text-align: center">0.5276</td>
+      <td style="text-align: center">0.7247</td>
+      <td style="text-align: center">4.2535</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+In these tests, it looks like my implementation is the winner… wow!
+Although, the true winner is the boost::heap library, since the nasty implementation details
+are delegated to that library.</p>
+
+<p>… but come on! These are artificial graphs: who is really interested in shortest paths on random graphs?</p>
+
+<h2 id="road-networks">Road Networks</h2>
+
+<p>The second test uses road networks that are <strong>very</strong> sparse graphs. 
+We report only average computation time in seconds over 50 different pair of source-destination nodes.
+We decided to leave out OrTools since it is not very performing on very sparse graphs.</p>
+
+<p>This table below shows the average query time for the standard implementations that use <strong>Fibonacci Heaps</strong>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Area</th>
+      <th style="text-align: center">nodes</th>
+      <th style="text-align: center">arcs</th>
+      <th style="text-align: center">MyGraph</th>
+      <th style="text-align: center">BGL</th>
+      <th style="text-align: center">Lemon</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Western USA</td>
+      <td style="text-align: center">6,262,104</td>
+      <td style="text-align: center">15,248,146</td>
+      <td style="text-align: center"><strong>2.7215</strong></td>
+      <td style="text-align: center">2.7804</td>
+      <td style="text-align: center">3.8181</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Eastern USA</td>
+      <td style="text-align: center">3,598,623</td>
+      <td style="text-align: center">8,778,114</td>
+      <td style="text-align: center">1.9425</td>
+      <td style="text-align: center"><strong>1.4255</strong></td>
+      <td style="text-align: center">2.7147</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Great Lakes</td>
+      <td style="text-align: center">2,758,119</td>
+      <td style="text-align: center">6,885,658</td>
+      <td style="text-align: center"><strong>0.1808</strong></td>
+      <td style="text-align: center">0.8946</td>
+      <td style="text-align: center">0.2602</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">California and Nevada</td>
+      <td style="text-align: center">1,890,815</td>
+      <td style="text-align: center">4,657,742</td>
+      <td style="text-align: center"><strong>0.5078</strong></td>
+      <td style="text-align: center">0.5808</td>
+      <td style="text-align: center">0.7083</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Northeast USA</td>
+      <td style="text-align: center">1,524,453</td>
+      <td style="text-align: center">3,897,636</td>
+      <td style="text-align: center">0.6061</td>
+      <td style="text-align: center"><strong>0.5662</strong></td>
+      <td style="text-align: center">0.8335</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Northwest USA</td>
+      <td style="text-align: center">1,207,945</td>
+      <td style="text-align: center">2,840,208</td>
+      <td style="text-align: center">0.3652</td>
+      <td style="text-align: center"><strong>0.3506</strong></td>
+      <td style="text-align: center">0.5152</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Florida</td>
+      <td style="text-align: center">1,070,376</td>
+      <td style="text-align: center">2,712,798</td>
+      <td style="text-align: center"><strong>0.1141</strong></td>
+      <td style="text-align: center">0.2753</td>
+      <td style="text-align: center">0.1574</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Colorado</td>
+      <td style="text-align: center">435,666</td>
+      <td style="text-align: center">1,057,066</td>
+      <td style="text-align: center">0.1423</td>
+      <td style="text-align: center"><strong>0.1117</strong></td>
+      <td style="text-align: center">0.1965</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">San Francisco Bay</td>
+      <td style="text-align: center">321,270</td>
+      <td style="text-align: center">800,172</td>
+      <td style="text-align: center">0.1721</td>
+      <td style="text-align: center"><strong>0.0836</strong></td>
+      <td style="text-align: center">0.2399</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">New York City</td>
+      <td style="text-align: center">264,346</td>
+      <td style="text-align: center">733,846</td>
+      <td style="text-align: center"><strong>0.0121</strong></td>
+      <td style="text-align: center">0.0677</td>
+      <td style="text-align: center">0.0176</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+From this table, BGL and my implementation are equally good, while Lemon comes after.
+What would happen if we use a diffent type of heap?</p>
+
+<p>This second table shows the average query time for the Lemon graph library with a specialized 
+<a href="http://lemon.cs.elte.hu/pub/doc/latest/a00048.html">Binary Heap</a> implementation,
+and my own implementation with generic <strong>2-Heap</strong> and <strong>3-Heap</strong> (binary and ternary heaps) and with a <strong>Skew Heap</strong>.
+Note that in order to use a different heap I just modify a single line of code.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Area</th>
+      <th style="text-align: center">nodes</th>
+      <th style="text-align: center">arcs</th>
+      <th style="text-align: center">2-Heap</th>
+      <th style="text-align: center">3-Heap</th>
+      <th style="text-align: center">Skew Heap</th>
+      <th style="text-align: center">Lemon 2-Heap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Western USA</td>
+      <td style="text-align: center">6,262,104</td>
+      <td style="text-align: center">15,248,146</td>
+      <td style="text-align: center">1.977</td>
+      <td style="text-align: center">1.934</td>
+      <td style="text-align: center">2.104</td>
+      <td style="text-align: center"><strong>1.359</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Eastern USA</td>
+      <td style="text-align: center">3,598,623</td>
+      <td style="text-align: center">8,778,114</td>
+      <td style="text-align: center">1.406</td>
+      <td style="text-align: center">1.372</td>
+      <td style="text-align: center">1.492</td>
+      <td style="text-align: center"><strong>0.938</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Great Lakes</td>
+      <td style="text-align: center">2,758,119</td>
+      <td style="text-align: center">6,885,658</td>
+      <td style="text-align: center">0.132</td>
+      <td style="text-align: center">0.130</td>
+      <td style="text-align: center">0.135</td>
+      <td style="text-align: center"><strong>0.109</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">California and Nevada</td>
+      <td style="text-align: center">1,890,815</td>
+      <td style="text-align: center">4,657,742</td>
+      <td style="text-align: center">0.361</td>
+      <td style="text-align: center">0.353</td>
+      <td style="text-align: center">0.372</td>
+      <td style="text-align: center"><strong>0.241</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Northeast USA</td>
+      <td style="text-align: center">1,524,453</td>
+      <td style="text-align: center">3,897,636</td>
+      <td style="text-align: center">0.433</td>
+      <td style="text-align: center">0.421</td>
+      <td style="text-align: center">0.457</td>
+      <td style="text-align: center"><strong>0.287</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Northwest USA</td>
+      <td style="text-align: center">1,207,945</td>
+      <td style="text-align: center">2,840,208</td>
+      <td style="text-align: center">0.257</td>
+      <td style="text-align: center">0.252</td>
+      <td style="text-align: center">0.256</td>
+      <td style="text-align: center"><strong>0.166</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Florida</td>
+      <td style="text-align: center">1,070,376</td>
+      <td style="text-align: center">2,712,798</td>
+      <td style="text-align: center">0.083</td>
+      <td style="text-align: center">0.081</td>
+      <td style="text-align: center">0.080</td>
+      <td style="text-align: center"><strong>0.059</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Colorado</td>
+      <td style="text-align: center">435,666</td>
+      <td style="text-align: center">1,057,066</td>
+      <td style="text-align: center">0.100</td>
+      <td style="text-align: center">0.098</td>
+      <td style="text-align: center">0.100</td>
+      <td style="text-align: center"><strong>0.064</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">San Francisco Bay</td>
+      <td style="text-align: center">321,270</td>
+      <td style="text-align: center">800,172</td>
+      <td style="text-align: center">0.121</td>
+      <td style="text-align: center">0.117</td>
+      <td style="text-align: center">0.122</td>
+      <td style="text-align: center"><strong>0.075</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">New York City</td>
+      <td style="text-align: center">264,346</td>
+      <td style="text-align: center">733,846</td>
+      <td style="text-align: center">0.009</td>
+      <td style="text-align: center">0.009</td>
+      <td style="text-align: center">0.009</td>
+      <td style="text-align: center"><strong>0.007</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+Mmmm… I am no longer the winner: COIN-OR Lemon is!</p>
+
+<p>This is likely due to the specialized binary heap implementation of the Lemon library.
+Instead, the boost::heap library has a <strong>d-ary-heap</strong>, that for <em>d=2</em> is a generic binary heap.</p>
+
+<h2 id="so-what">So what?</h2>
+
+<p>Dijkstra’s algorithm is so beatiful because it has the <em>elegance of simplicity</em>.</p>
+
+<p>Using an existing efficient heap data structure, it is easy to implement an <strong>“efficient”</strong> version of the algorithm.</p>
+
+<p>However, if you have spare time, or you need to solve shortest path problems on a specific type of graphs (e.g., road networks),
+you might give a try with existing graph libraries, before investing developing time in your own implementation.
+In addition, be sure to read [4] and the references therein contained.</p>
+
+<p>All the code I have used to write this post is available on <a href="https://github.com/stegua/MyBlogEntries/tree/master/Dijkstra">github</a>. 
+If you have any comment or criticism, do not hesitate to comment below.</p>
+
+<h3 id="references">References</h3>
+
+<ol>
+  <li>
+    <p> Pohl, I.
+<span class="title">Bi-directional and heuristic search in path problems</span>. 
+Department of Computer Science, Stanford University, 1969.
+<a href="http://www.slac.stanford.edu/cgi-wrap/getdoc/slac-r-104.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>Sniedovich, M.
+<span class="title">Dijkstra&#8217;s algorithm revisited: the dynamic programming connexion</span>.
+<span class="journal">Control and cybernetics</span> vol. 35(3), pages 599-620, 2006.
+<a href="http://oxygene.ibspan.waw.pl:3000/contents/export?filename=Sniedovich.pdf">[pdf]</a></p>
+  </li>
+  <li>
+    <p>Dantzig, G.B.
+<span class="title">Linear Programming and Extensions</span>.
+Princeton University Press, Princeton, NJ, 1962.</p>
+  </li>
+  <li>
+    <p>Delling, D. and Sanders, P. and Schultes, D. and Wagner, D.
+<span class="title">Engineering route planning algorithms</span>.
+<span class="journal">Algorithmics of large and complex networks</span>
+Lecture Notes in Computer Science, Volume 5515, pages 117-139, 2009.
+<a href="http://dx.doi.org/10.1007/978-3-642-02094-0_7">[doi]</a></p>
+  </li>
+  <li>
+    <p>Goldberg, A.V. and Harrelson, C.
+<span class="title">Computing the shortest path: A-star search meets graph theory</span>.
+<span class="journal">Proc. of the sixteenth annual ACM-SIAM symposium on Discrete algorithms</span>, 156-165, 2005.
+<a href="http://research.microsoft.com/apps/pubs/default.aspx?id=64511">[pdf]</a></p>
+  </li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

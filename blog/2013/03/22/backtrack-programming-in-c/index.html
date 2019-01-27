@@ -1,0 +1,605 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Backtrack Programming in c - Spaghetti Optimization</title>
+  <meta name="author" content="Stefano Gualandi">
+
+  
+  <meta name="description" content=".title { color: #07235F; }
+.journal { font-style: italic; } Recently, I have discovered a nice tiny library (1 file!) that supports Backtrack &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Spaghetti Optimization" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- IMPORTANT PLEASE READ THIS: Delete the below line if your blog already uses jQuery in some form. Otherwise a conflict might be created and your blog might not work properly. -->
+<!-- Use the below line only if your blog doesn't already use jQuery. Please check your head.html and custom/head.html to be sure. -->
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> -->
+<!-- Below lines are necessary for Google Feeds API to work properly. Add them to your head.html or custom/head.html files in the _includes directory of your Octopress blog's source folder -->
+<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("feeds", "1");</script> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-34931940-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+    <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+    <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+    <meta property="og:url" content="http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/">
+<meta property="og:type" content="website" />
+
+<meta property="og:title" content="Backtrack Programming in c">
+<meta property="og:description" content="">
+ 
+
+ 
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+   MathJax.Hub.Config({messageStyle: "none"})
+   </script>
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Spaghetti Optimization</a></h1>
+  
+    <h2>My cookbook about Math, Algorithms, and Programming</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:stegua.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/credits">Credits</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+   
+  <header>
+    
+      <h1 class="entry-title">Backtrack Programming in C</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+<time datetime="2013-03-22T12:45:00+01:00" pubdate data-updated="true">Mar 22<span>nd</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><style type="text/css">
+.title { color: #07235F; }
+.journal { font-style: italic; }
+</style>
+
+<p>Recently, I have discovered a nice tiny library (1 file!) that supports <a href="http://en.wikipedia.org/wiki/Backtracking">Backtrack Programming</a> in <strong>standard C</strong>.
+The library is called <a href="http://www.akira.ruc.dk/~keld/research/CBACK/">CBack</a> and 
+is developed by <a href="http://www.akira.ruc.dk/~keld/">Keld Helsgaun</a>, who is known in the Operations Research 
+and Computer Science communities for his efficient implementation of the 
+Lin-Kernighan heuristics for the <a href="http://www.akira.ruc.dk/~keld/research/LKH/">Travelling Salesman Problem</a>.</p>
+
+<p><strong>CBack</strong> offers basically two functions that are described in [1] as follows:</p>
+
+<ol>
+  <li><strong><code>Choice(N)</code></strong>: “<em>is used when a choice is to be made among a number of alternatives, where <strong>N</strong> is a positive integer denoting the number of alternatives</em>”.</li>
+  <li><strong><code>Backtrack()</code></strong>: “<em>causes the program to backtrack, that is to say, return to the most recent call of Choice, which has not yet returned all its values</em>”.</li>
+</ol>
+
+<p>With these two functions is pretty simple to develop exact enumeration algorithms.
+The <strong>CBack</strong> library comes with several examples, such as algorithms for the <a href="http://en.wikipedia.org/wiki/Eight_queens_puzzle">N-queens</a> problem and the <a href="http://en.wikipedia.org/wiki/15_puzzle">15-puzzle</a>.
+Below, I will show you how to use <strong>CBack</strong> to implement a simple algorithm that finds a <a href="http://en.wikipedia.org/wiki/Clique_problem">Maximum Clique</a> in an undirected graph.</p>
+
+<p>As usual, the source code used to write this post is publicly available on
+<a href="https://github.com/stegua/MyBlogEntries/tree/master/Backtracking">my GitHub repository</a>.</p>
+
+<h2 id="basic-use-of-cback">Basic use of CBack</h2>
+<p>The <strong>CBack</strong> documentation shows as first example the following code snippet:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span></span><span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span><span class="line"><span class="n">j</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span><span class="line"><span class="n">printf</span><span class="p">(</span><span class="s">&quot;i = %d, j = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">);</span>
+</span><span class="line"><span class="n">Backtrack</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The output produced by the snippet is:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Output</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span></span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class="line"><span class="n">i</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If you are familiar with backtrack programming (e.g., <a href="http://en.wikipedia.org/wiki/Prolog">Prolog</a>), you should not be surprised by the output, and you can jump to the next section. Otherwise, 
+the Figure below sketches the program execution. </p>
+
+<p><img src="http://stegua.github.io/images/backtrack.png" /></p>
+
+<p>When the program executes the <code>Choice(N=3)</code> statement, that is the first call to the first choice (line 2), value 1 is assigned to variable <code>i</code>. Behind the scene, the <em>Choice</em> function stores the current execution state of the program in its own stack,
+and records the next possible choices (i.e. the other possible program branches),
+that are values <code>2</code> and <code>3</code>. Next, the second <code>Choice(N=2)</code> assigns value 1 to <code>j</code> (line 3),
+and again the state of the program is stored for later use. Then, the <code>printf</code> outputs <code>i = 1 , j = 1</code> (line 4 and first line of output). Now, it is time to <em>backtrack</em> (line 5). </p>
+
+<p>What is happening here?</p>
+
+<p>Look again at the figure above: When the <code>Backtrack()</code> function is invoked, the algorithm <em>backtracks</em> and continues the execution
+from the most recent <strong>Choice</strong> stored in its stack, i.e. it assigns to variable <code>j</code> value 2, and <code>printf</code> outputs <code>i = 1, j = 2</code>. Later, the <code>Backtrack()</code> is invoked again, and this time the algorithm backtracks until the previous possible choice that corresponds to the assignment of value 2 to variable <code>i</code>, and it executes <code>i = 2</code>. Once the second choice for variable <code>i</code> is performed, there are again two possible choices for variable <code>j</code>, since the program has backtracked to a point that precedes that statement. Thus, the program executes <code>j = 1</code>, and <code>printf</code> outputs <code>i = 2, j = 1</code>. At this point, the program <em>backtracks</em> again, and consider the next possible choice, <code>j = 2</code>. This is repeated until all possible choices for <code>Choice(3)</code> and <code>Choice(2)</code> are exhausted, yielding the 6 possible combinations of <code>i</code> and <code>j</code> that the problem gave as output.</p>
+
+<p>Indeed, during the execution, the program has implicitly visited in a depth-first manner the <em>search tree</em> of the previous figure.
+CBack supports also different search strategy, such as <em>best first</em>, but I will not cover that topic here.</p>
+
+<p>In order to store and restore the program execution state (well, more precisely the <em>calling environment</em>), <code>Choice(N)</code> and <code>Backtrack</code> use two <strong>threatening</strong> C standard functions, <code>setjmp</code> and <code>longjmp</code>. 
+For the details of their use in CBack, see [1].</p>
+
+<h2 id="a-basic-maximum-clique-algorithm">A Basic Maximum Clique Algorithm</h2>
+<p>The reason why I like this library, apart from remembering me the time I was programming with <a href="http://www.mozart-oz.org/">Mozart</a>, is that it permits to implement quickly exact algorithms based on enumeration. While enumeration is usually disregarded as <em>inefficient</em> (“<em>ehi, it is just brute force</em>!”), it is still one of the best method to solve small instances of almost any combinatorial optimization problem. In addition, many sophisticated exact algorithms use plain enumeration as a subroutine, when during the search process the size of the problem becomes small enough.</p>
+
+<p>Consider now the <strong>Maximum Clique Problem</strong>: Given an undirected graph <script type="math/tex">G=(V,E)</script>, the problem is to find the largest complete subgraph of <script type="math/tex">G</script>. More formally, you look for the largest subset <script type="math/tex">C</script> of the vertex set <script type="math/tex">V</script> such that for any pair of nodes <script type="math/tex">{i,j}</script> in <script type="math/tex">C \times C</script> there exists an arc <script type="math/tex">{i,j} \in E</script>.  </p>
+
+<p>The well-known branch-and-bound algorithm of Carraghan and Pardalos [2] is based on enumeration. The implementation of Applegate and Johnson, called <a href="ftp://dimacs.rutgers.edu/pub/dsj/clique/dfmax.c">dfmax.c</a>, is a very efficient implementation of that algorithm. Next, I show a basic implementation of the same algorithm that uses <strong>CBack</strong> for backtracking.</p>
+
+<p>The Carraghan and Pardalos algorithm uses three sets: the current clique <script type="math/tex">C</script>, the largest clique found so far <script type="math/tex">C^*</script>, and the set of candidate vertices <script type="math/tex">P</script>. The pseudo code of the algorithm is as follows (as described in [3]):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Basic Maximum Clique Algorithm</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span></span><span class="n">function</span> <span class="nf">findClique</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+</span><span class="line">   <span class="k">if</span> <span class="o">|</span><span class="n">C</span><span class="o">|</span> <span class="o">&gt;</span> <span class="o">|</span><span class="n">C</span><span class="o">*|</span> <span class="n">then</span> <span class="n">C</span><span class="o">*</span> <span class="o">&lt;-</span> <span class="n">C</span>  <span class="c1">// store the best clique</span>
+</span><span class="line">   <span class="k">if</span> <span class="o">|</span><span class="n">C</span><span class="o">|</span> <span class="o">+</span> <span class="o">|</span><span class="n">P</span><span class="o">|</span> <span class="o">&gt;</span> <span class="o">|</span><span class="n">C</span><span class="o">*|</span> <span class="n">then</span>
+</span><span class="line">      <span class="k">for</span> <span class="n">all</span> <span class="n">v</span> <span class="n">in</span> <span class="n">P</span> <span class="c1">// the order does matter </span>
+</span><span class="line">         <span class="n">P</span> <span class="o">&lt;-</span> <span class="n">P</span> <span class="err">\</span> <span class="p">{</span><span class="n">v</span><span class="p">}</span>
+</span><span class="line">         <span class="n">C</span><span class="err">&#39;</span> <span class="o">&lt;-</span> <span class="n">C</span> <span class="n">u</span> <span class="p">{</span><span class="n">v</span><span class="p">}</span>
+</span><span class="line">         <span class="n">P</span><span class="err">&#39;</span> <span class="o">&lt;-</span> <span class="n">P</span>  <span class="err">\</span><span class="n">intersect</span> <span class="n">N</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>  <span class="c1">// neighbors of p</span>
+</span><span class="line">         <span class="n">findClique</span><span class="p">(</span><span class="n">C</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">P</span><span class="err">&#39;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="n">function</span> <span class="n">main</span><span class="p">()</span>
+</span><span class="line">   <span class="n">C</span><span class="o">*</span> <span class="o">&lt;-</span> <span class="p">{}</span>  <span class="c1">// empty set, C* global variable</span>
+</span><span class="line">   <span class="n">findClique</span><span class="p">({},</span><span class="n">V</span><span class="p">)</span>
+</span><span class="line">   <span class="k">return</span> <span class="n">C</span><span class="o">*</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>As you can see, the backtracking is here described in terms of a recursive function. However, using CBack, we can implement the same algorithm without using recursion.</p>
+
+<h2 id="maximum-clique-with-cback">Maximum Clique with CBack</h2>
+<p>We use an array <code>S</code> of <script type="math/tex">n</script> integers, one for each vertex of <script type="math/tex">V</script>.
+If <code>S[v]=0</code>, then vertex <script type="math/tex">i</script> belongs to the candidate set <script type="math/tex">P</script>; if <code>S[v]=1</code>, then vertex <script type="math/tex">i</script> is in <script type="math/tex">C</script>; if <code>S[v]=2</code>, then vertex <script type="math/tex">i</script> cannot be neither in <script type="math/tex">P</script> nor in <script type="math/tex">C</script>. The variable <code>s</code> stores the size of current clique.</p>
+
+<p>Let me show you directly the C code:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Max Clique via Branch-and-Bound</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span></span><span class="k">for</span> <span class="p">(</span><span class="n">v</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">v</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">   <span class="c1">/// If the current clique cannot be extended to a clique</span>
+</span><span class="line">   <span class="c1">/// larger than C*, where LB=|C*|, then backtrack</span>
+</span><span class="line">   <span class="k">if</span> <span class="p">(</span> <span class="n">s</span> <span class="o">+</span> <span class="n">P</span> <span class="o">&lt;=</span> <span class="n">LB</span> <span class="p">)</span>
+</span><span class="line">      <span class="n">Backtrack</span><span class="p">();</span>
+</span><span class="line">   <span class="k">if</span> <span class="p">(</span> <span class="n">S</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">{</span>  <span class="c1">/// Skip removed vertices  </span>
+</span><span class="line">      <span class="c1">/// Choice: Either v is in C (S[v]=1) or is not (S[v]=2)</span>
+</span><span class="line">      <span class="n">S</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">Choice</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span> <span class="n">S</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">{</span> <span class="c1">/// P &lt;- P \ {v} </span>
+</span><span class="line">         <span class="n">P</span><span class="o">--</span><span class="p">;</span>  <span class="c1">/// Decrease the size of the candidate set </span>
+</span><span class="line">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="c1">/// S[v]=1: C &lt;- C u {v}</span>
+</span><span class="line">         <span class="n">s</span><span class="o">++</span><span class="p">;</span>   <span class="c1">/// Update current clique size </span>
+</span><span class="line">         <span class="k">if</span> <span class="p">(</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="n">LB</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="n">LB</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>  <span class="c1">/// Store the new best clique</span>
+</span><span class="line">            <span class="k">for</span> <span class="p">(</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">w</span> <span class="o">&lt;=</span> <span class="n">v</span><span class="p">;</span> <span class="n">w</span><span class="o">++</span> <span class="p">)</span>
+</span><span class="line">               <span class="n">C</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">w</span><span class="p">];</span>
+</span><span class="line">         <span class="p">}</span>
+</span><span class="line">         <span class="c1">/// Restrict the candidate set </span>
+</span><span class="line">         <span class="k">for</span> <span class="p">(</span> <span class="n">w</span> <span class="o">=</span> <span class="n">V</span><span class="p">[</span><span class="n">v</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="n">V</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="p">;</span> <span class="n">w</span><span class="o">--</span> <span class="p">)</span>
+</span><span class="line">            <span class="k">if</span> <span class="p">(</span> <span class="n">S</span><span class="p">[</span><span class="n">E</span><span class="p">[</span><span class="n">w</span><span class="p">]]</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">               <span class="n">S</span><span class="p">[</span><span class="n">E</span><span class="p">[</span><span class="n">w</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class="line">               <span class="n">P</span><span class="o">--</span><span class="p">;</span> <span class="c1">/// Decrease the size of the candidate set </span>
+</span><span class="line">            <span class="p">}</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">   <span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="n">Backtrack</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Well, I like this code pretty much, despite being a “<em>plain old</em>” C program.
+The algorithm and code can be improved in several ways (ordering the vertices, improving the pruning, using upper bounds from heuristic vertex coloring, using induced degree as in [2]), but still, the main loop and the backtrack machinery is all there, in a few lines of code!</p>
+
+<p>Maybe you wonder about the efficiency of this code, but at the moment I have not a precise answer. For sure, the ordering of the vertices is crucial, and can make a huge difference on solving the <a href="http://iridia.ulb.ac.be/~fmascia/maximum_clique/DIMACS-benchmark">max-clique DIMACS instances</a>. I have used CBack to implement my own version of the Ostengard’s max-clique algorithm [4], but my implementation is somehow slower. I suspect that the difference is due to data structure used to store the graph (Ostengard’s implementation relies on bitsets), but not in the way the backtracking is achieved. Although, to answer to such question could be a subject of another post.</p>
+
+<p>In conclusion, if you need to implement an exact enumerative algorithm, <a href="http://www.akira.ruc.dk/~keld/research/CBACK/">CBack</a> could be an option to consider.</p>
+
+<h3 id="references">References</h3>
+
+<ol>
+  <li>
+    <p>Keld Helsgaun. 
+<span class="title">CBack: A Simple Tool for Backtrack Programming in C</span>. 
+<span class="journal">Software: Practice and Experience</span>, 
+vol. 25(8), pp. 905-934, 2006. 
+<a href="http://dx.doi.org/10.1002/spe.4380250805">[doi]</a>
+</p>
+  </li>
+  <li>
+    <p>Carraghan and Pardalos. 
+<span class="title">An exact algorithm for the maximum clique problem</span>. 
+<span class="journal">Operations Research Letters</span>, 
+vol. 9(6), pp. 375-382, 1990, 
+<a href="http://www.dcs.gla.ac.uk/~pat/jchoco/clique/papersClique/carraghanPardalos90.pdf">[pdf]</a>
+</p>
+  </li>
+  <li>
+    <p>Torsten Fahle. 
+<span class="title">Simple and Fast: Improving a Branch-and-Bound Algorithm</span>. 
+In Proc <span class="journal">ESA 2002</span>, LNCS 2461, pp. 485-498.
+<a href="http://dx.doi.org/10.1007/3-540-45749-6_44">[doi]</a>
+</p>
+  </li>
+  <li>
+    <p>Patric R.J. Ostergard.
+<span class="title">A fast algorithm for the maximum clique problem</span>.
+<span class="journal">Discrete Applied Mathematics</span>, 
+vol. 120(1-3), pp. 197–207, 2002
+<a href="http://citeseerx.ist.psu.edu/viewdoc/similar?doi=10.1.1.28.7666&amp;type=cc">[pdf]</a>
+</p>
+  </li>
+</ol>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Stefano Gualandi</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+<time datetime="2013-03-22T12:45:00+01:00" class="updated">Updated Mar 22<span>nd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/dimacs/'>DIMACS</a>, <a class='category' href='/blog/categories/branch-and-bound/'>branch-and-bound</a>, <a class='category' href='/blog/categories/combinatorial-optimization/'>combinatorial optimization</a>, <a class='category' href='/blog/categories/max-clique/'>max clique</a>, <a class='category' href='/blog/categories/max-stable-set/'>max stable set</a>, <a class='category' href='/blog/categories/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/" data-via="famo2spaghi" data-counturl="http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="small"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/02/05/gomory-cuts-with-cplex/" title="Previous Post: From blackboard to code: Gomory Cuts using CPLEX">&laquo; From blackboard to code: Gomory Cuts using CPLEX</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/06/28/gecol/" title="Next Post: GeCol: a Graph Coloring solver on top of Gecode">GeCol: a Graph Coloring solver on top of Gecode &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>The views expressed on this blog are mine and do not necessarily reflect the views of my employers.</p>
+  <nav>
+  <div><a href="http://matematica.unipv.it/gualandi/">My Academic Home Page</a></div>
+  <div><a href="http://matematica.unipv.it/gualandi/research/">My Publications</a></div>
+  </nav>
+  </p>
+  <p>
+  I do not accept any advertisement. 
+  However, you can offer me <a href="http://paypal.me/stegua/2.10">coffee and brioche</a> or <a href="http://paypal.me/stegua/7.00">pizza capricciosa</a> through paypal.
+  </p>
+</section>
+
+<section>
+ <h2>Latest Tweets</h2>
+<a class="twitter-timeline" href="https://twitter.com/famo2spaghi" data-widget-id="303485589863407617">Tweets by @famo2spaghi</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<script type="text/javascript">
+   $.domReady(function(){
+         getTwitterFeed("famo2spaghi", 3, true);
+         });
+</script>
+<script src="/javascripts/twitter.js" type="text/javascript"> </script>
+
+<a href="http://twitter.com/famo2spaghi" class="twitter-follow-button" data-show-count="true">Follow @famo2spaghi</a>
+
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/+StefanoGualandi?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      My Google+ profile
+    </a>
+  </h1>
+</section>
+
+
+<section>
+  <h2>Recent Posts</h2>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2018/12/31/wasserstein-distances-an-operations-research-perspective/">An informal and biased Tutorial on Kantorovich-Wasserstein distances</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/">Exercise in Python: remove blanks from strings</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/07/04/column-enumeration/">Graph Coloring: Column Generation or Column Enumeration?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/27/big-data-and-convex-optimization/">Big Data and Convex Optimization</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/19/the-impact-of-preprocessing/">The Impact of Preprocessing on the MIPLIB2003</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h2>GitHub Repos</h2>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/stegua">@stegua</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'stegua',
+            count: 2,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Blogroll</h1>
+  <!-- IMPORTANT: Do not change the below ID as it will affect the functioning of the plugin-->
+    <ul id="blogroll-list"><li><a href='http://bartoszmilewski.com/' feedurl='http://bartoszmilewski.com/feed/' title = 'Concurrency, C++, Haskell'>Bartosz Milewski's Programming Cafe</a></li><li><a href='http://cp-is-fun.blogspot.fr/' feedurl='' title = 'Constraint Programming is fun'>CP is fun</a></li><li><a href='http://bob4er.blogspot.com/' feedurl='http://bob4er.blogspot.com/feeds/posts/default' title = ''>disORiented</a></li><li><a href='http://erlingdandersen.blogspot.it/' feedurl='http://erlingdandersen.blogspot.com/feeds/posts/default' title = 'This blog is about my work at MOSEK ApS where I am the CEO, a computer programmer and tea maker'>Erling's blog</a></li><li><a href='http://farkasdilemma.wordpress.com' feedurl='http://farkasdilemma.wordpress.com/feed' title = 'Austin Buchanan's Blog'>Farkas' Dilemma</a></li><li><a href='https://www.ibm.com/developerworks/mydeveloperworks/blogs/jfp/?lang=en' feedurl='https://www.ibm.com/developerworks/mydeveloperworks/blogs/roller-ui/rendering/feed/jfp/entries/atom?lang=en' title = 'Making Mathematical Optimization Pervasive'>IT Best Kept Secret Is Optimization</a></li><li><a href='http://mat.gsia.cmu.edu/blog/' feedurl='http://feeds.feedburner.com/MichaelTricksORB' title = 'Thoughts on the world of operations research'>Michael Trick’s Operations Research Blog</a></li><li><a href='http://www.hakank.org/constraint_programming_blog/' feedurl='http://www.hakank.org/constraint_programming_blog/atom.xml' title = 'This is my blog about constraint programming and related paradigms'>My Constraint Programming Blog</a></li><li><a href='http://nathanbrixius.wordpress.com/' feedurl='http://nathanbrixius.wordpress.com/feed/' title = 'Optimization, analytics, software'>Nathan Brixius</a></li><li><a href='http://zverovich.net/' feedurl='http://zverovich.net/atom.xml' title = 'Victor Zverovich'>Notes of a humble developer</a></li><li><a href='http://orbythebeach.wordpress.com/' feedurl='http://feeds.feedburner.com/OrByTheBeach' title = 'Operations Research, Computers, Education, and South Florida'>O.R. by the Beach</a></li><li><a href='http://optimizationzen.com/' feedurl='http://feeds.feedburner.com/optimizationzen' title = 'The Art of Decision Making'>Optimization Zen</a></li><li><a href='http://orinanobworld.blogspot.it/' feedurl='http://orinanobworld.blogspot.com/feeds/posts/default' title = 'A mix of operations research items and software tricks that I'll probably forget if I don't write them down somewhere'>OR in an OB World</a></li><li><a href='http://punkrockor.wordpress.com/' feedurl='http://punkrockor.wordpress.com/feed/' title = '~*~ peace, love, and operations research ~*~'>Punk Rock Operations Research</a></li><li><a href='http://spokutta.wordpress.com/' feedurl='http://spokutta.wordpress.com/feed/' title = 'Mathematics and related topics'>Sebastian Pokutta's blog</a></li><li><a href='http://thiagoserra.com' feedurl='http://thiagoserra.com/feed' title = ''>Tatu-Search Optimization</a></li><li><a href='http://org.mie.utoronto.ca/blog/' feedurl='' title = 'An Operations Research blog from the University of Toronto'>The OR Café</a></li><li><a href='http://www.thequestforoptimality.com/' feedurl='http://www.thequestforoptimality.com/feed/' title = 'OR made fun and practical'>The Quest for Optimality</a></li></ul>
+    
+    <script type="text/javascript">
+      $(document).ready(function(){
+        updateFeeds(true);
+      });
+    </script>
+    <script src="/javascripts/tinysort-min.js"></script>
+    <script src="/javascripts/blogroll.js"></script>
+    
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2019 - Stefano Gualandi -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'famo2spaghi';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/';
+        var disqus_url = 'http://stegua.github.io/blog/2013/03/22/backtrack-programming-in-c/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

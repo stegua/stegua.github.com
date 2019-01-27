@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: basic algorithms | Spaghetti Optimization]]></title>
+  <link href="http://stegua.github.io/blog/categories/basic-algorithms/atom.xml" rel="self"/>
+  <link href="http://stegua.github.io/"/>
+  <updated>2019-01-27T15:36:24+01:00</updated>
+  <id>http://stegua.github.io/</id>
+  <author>
+    <name><![CDATA[Stefano Gualandi]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Exercise in Python: remove blanks from strings]]></title>
+    <link href="http://stegua.github.io/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings/"/>
+    <updated>2017-01-24T16:51:00+01:00</updated>
+    <id>http://stegua.github.io/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings</id>
+    <content type="html"><![CDATA[<p>This morning, after reading <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">this very nice post</a>, I decided to challenge myself in Python and to have a look at the impact of <a href="https://en.wikipedia.org/wiki/Branch_misprediction">mispredicted branches</a> in a language different from C/C++. The basic idea was to use only <a href="https://docs.python.org/3.6/library/functions.html">Python builtins</a>: external libraries are not allowed!</p>
+
+<p>As a benchmark, I grabbed a large text file from <a href="http://norvig.com/big.txt">P. Norvig’s website</a>, which is 6’488’666 byte long.</p>
+
+<p><strong>The final answer?</strong> Yes, <strong>mispredicted branches</strong> have a huge impact in Python too.</p>
+
+<p><strong>The hidden answer?</strong> Python dictionaries ever stop to surprise me: they are REALLY efficient.</p>
+
+<p><strong>NOTE</strong>: The followig code snippets were executed in a Python 3.5 notebook, on a windows machine, running Windows 10 and <a href="https://www.continuum.io/downloads">Anaconda Python 3.5 64 bits</a>.
+You can find my notebook on my <a href="https://github.com/stegua/MyBlogEntries">Blog GitHub repo</a>. Don’t ask me why, but this blog entry is better visualized directly on <a href="https://github.com/stegua/MyBlogEntries/blob/master/Remove%2Bblanks%2Bfrom%2Ba%2Bstring.ipynb">GitHub</a>.</p>
+
+<p><strong>UPDATE</strong>: Well, most of the time I would use my first implementation based on the <code>filter</code> builtin function, and I would try for alternative implementations only after a profiler has shown
+that removing blanks is a true bottleneck of my whole program. As written in the title, this post is meant as a basic exercise in Python.</p>
+
+<h3 id="first-attempt-functional-style">First attempt: Functional style</h3>
+<p>In Python, I prefer to write as much code in functional style as possible, relying on the 3 basic functions:</p>
+
+<ol>
+  <li><a href="https://docs.python.org/3/library/functions.html#map"><code>map</code></a></li>
+  <li><a href="https://docs.python.org/3/library/functions.html#filter"><code>filter</code></a></li>
+  <li><a href="https://docs.python.org/3/library/functools.html#functools.reduce"><code>reduce</code></a> (this is in the functools module and it is not a true builtin)</li>
+</ol>
+
+<p>Therefore, after few preliminaries, here is my first code snippet:</p>
+
+<p>```python
+import cProfile</p>
+
+<h1 id="download-file-from-httpnorvigcombigtxt">Download file from: ‘http://norvig.com/big.txt’</h1>
+<p>big = open(‘big.txt’, ‘r’)</p>
+
+<h1 id="read-the-while-file">Read the while file</h1>
+<p>test = big.read()</p>
+
+<p>def RemoveBlanksFilter(in_str):
+    result = filter(lambda c: c != ‘\r’ and c != ‘\t’ and c != ‘ ‘, in_str)
+    return ““.join(result)</p>
+
+<p>test_result = RemoveBlanksFilter(test)</p>
+
+<p>cProfile.run(‘RemoveBlanksFilter(test)’)
+```</p>
+
+<pre><code>         6488671 function calls in 1.956 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    1.955    1.955 &lt;ipython-input-3-eeb7d3495697&gt;:1(RemoveBlanksFilter)
+  6488666    0.870    0.000    0.870    0.000 &lt;ipython-input-3-eeb7d3495697&gt;:2(&lt;lambda&gt;)
+        1    0.000    0.000    1.956    1.956 &lt;string&gt;:1(&lt;module&gt;)
+        1    0.000    0.000    1.956    1.956 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    1.085    1.085    1.955    1.955 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Wow, I didn’t realize that I would have call the lambda function for every single byte of my input file. This is clearly too much overhead.</p>
+
+<h3 id="nd-attempt-remove-function-calls-overhead">2nd attempt: remove function calls overhead</h3>
+<p>Let me drop my functional style, and write a plain old for-loop:</p>
+
+<p>```python
+def RemoveBlanks(in_str):
+    result = []
+    for c in in_str:
+        if c != ‘\r’ and c != ‘\t’ and c != ‘ ‘:
+            result.append(c)
+    return ““.join(result)</p>
+
+<p>print(‘Is test passed:’, test_result == RemoveBlanks(test))
+```</p>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<p><code>python
+cProfile.run('RemoveBlanks(test)')
+</code></p>
+
+<pre><code>         5452148 function calls in 1.566 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    1.210    1.210    1.553    1.553 &lt;ipython-input-6-5e45e3056bc2&gt;:1(RemoveBlanks)
+        1    0.012    0.012    1.566    1.566 &lt;string&gt;:1(&lt;module&gt;)
+        1    0.000    0.000    1.566    1.566 {built-in method builtins.exec}
+  5452143    0.310    0.000    0.310    0.000 {method 'append' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.033    0.033    0.033    0.033 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Mmm… we just shift the problem to the list append function calls. Maybe we can do better by working in place.</p>
+
+<h3 id="rd-attempt-work-in-place">3rd attempt: work in place</h3>
+<p>Well, almost in place: Python string are immutable; therefore, we first copy the string into a list, and then we work in place over the copied list.</p>
+
+<p>```python
+def RemoveBlanksInPlace(in_str):
+    buffer = list(in_str)
+    pos = 0
+    for c in in_str:
+        if c != ‘\r’ and c != ‘\t’ and c != ‘ ‘:
+            buffer[pos] = c
+            pos += 1
+    return ““.join(buffer[:pos])</p>
+
+<p>print(‘Is test passed:’, test_result == RemoveBlanksInPlace(test))
+```</p>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<p><code>python
+cProfile.run('RemoveBlanksInPlace(test)')
+</code></p>
+
+<pre><code>         5 function calls in 1.158 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    1.113    1.113    1.145    1.145 &lt;ipython-input-9-99d36ae6359e&gt;:1(RemoveBlanksInPlace)
+        1    0.013    0.013    1.158    1.158 &lt;string&gt;:1(&lt;module&gt;)
+        1    0.000    0.000    1.158    1.158 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.032    0.032    0.032    0.032 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Ok, working in place does have an impact. Let me go on the true point: avoiding <em>mispredicted branches</em>.</p>
+
+<h3 id="th-attempt-to-avoid-mispredicted-branches">4th attempt: to avoid mispredicted branches</h3>
+<p>As in the <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">original blog post</a>:</p>
+
+<p>```python
+def RemoveBlanksNoBranch(in_str):
+    # Build table
+    table = []
+    for ic in range(256):
+        c = chr(ic)
+        if c == ‘\r’ or c == ‘\t’ or c == ‘ ‘:
+            table.append(0)
+        else:
+            table.append(1)</p>
+
+<pre><code># Removal
+buffer = list(in_str)
+pos = 0
+for c in in_str:
+    buffer[pos] = c
+    pos += table[ord(c)]  # ord() is a function --&gt; bottleneck
+return "".join(buffer[:pos])
+</code></pre>
+
+<p>print(‘Is test passed:’, test_result == RemoveBlanksNoBranch(test))
+```</p>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<p><code>python
+cProfile.run('RemoveBlanksNoBranch(test)')
+</code></p>
+
+<pre><code>         6489183 function calls in 1.474 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    1.235    1.235    1.460    1.460 &lt;ipython-input-12-1bd75a3de21d&gt;:1(RemoveBlanksNoBranch)
+        1    0.014    0.014    1.474    1.474 &lt;string&gt;:1(&lt;module&gt;)
+      256    0.000    0.000    0.000    0.000 {built-in method builtins.chr}
+        1    0.000    0.000    1.474    1.474 {built-in method builtins.exec}
+  6488666    0.192    0.000    0.192    0.000 {built-in method builtins.ord}
+      256    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.033    0.033    0.033    0.033 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Ouch!!! These are getting even worse! Why? Well, ‘ord’ is a function, so we are getting back the overhead of function calls. Can we do better by using a dictionary instead of an array?</p>
+
+<h3 id="th-attempt-use-a-dictionary">5th attempt: use a dictionary</h3>
+<p>Let me use a dictionary in order to avoid the ‘ord’ function calls.</p>
+
+<p>```python
+def RemoveBlanksNoBranchDict(in_str):
+    if type(in_str) != str:
+        raise TypeError(‘This function works only for strings’)</p>
+
+<pre><code># Build table
+table = {}
+for ic in range(256):
+    c = chr(ic)
+    if c == '\r' or c == '\t' or c == ' ':
+        table[c] = 0
+    else:
+        table[c] = 1
+            
+# Removal
+buffer = list(in_str)
+pos = 0
+for c in in_str:
+    buffer[pos] = c
+    pos += table[c]
+return "".join(buffer[:pos])
+</code></pre>
+
+<p>print(‘Is test passed:’, test_result == RemoveBlanksNoBranchDict(test))
+```</p>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<p><code>python
+cProfile.run('RemoveBlanksNoBranchDict(test)')
+</code></p>
+
+<pre><code>         261 function calls in 0.771 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.724    0.724    0.758    0.758 &lt;ipython-input-15-46ad4c3f0b26&gt;:1(RemoveBlanksNoBranchDict)
+        1    0.013    0.013    0.771    0.771 &lt;string&gt;:1(&lt;module&gt;)
+      256    0.000    0.000    0.000    0.000 {built-in method builtins.chr}
+        1    0.000    0.000    0.771    0.771 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.034    0.034    0.034    0.034 {method 'join' of 'str' objects}
+</code></pre>
+
+<p>Oooh, yes! Now we can see that without <strong>mispredicted branches</strong> we can really speed up our algorithm.</p>
+
+<p>Is this the best pythonic solution? No, surely not, but still it is an interesting remark to keep in mind when coding.</p>
+
+<h3 id="final-remark-a-simple-pythonic-solution">Final remark: a simple pythonic solution</h3>
+<p>Likely, the simplest pythonic solution is just to use the ‘replace’ string function as follows:</p>
+
+<p>```python
+def RemoveBlanksBuiltin(in_str):
+    s1 = in_str.replace(‘\r’,’’)
+    s2 = s1.replace(‘\t’,’’)
+    return s2.replace(‘ ‘,’’)</p>
+
+<p>print(‘Is test passed:’, test_result == RemoveBlanksBuiltin(test))
+```</p>
+
+<pre><code>Is test passed: True
+</code></pre>
+
+<p><code>python
+cProfile.run('RemoveBlanksBuiltin(test)')
+</code></p>
+
+<pre><code>         7 function calls in 0.065 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.001    0.001    0.064    0.064 &lt;ipython-input-18-58fd6655cfba&gt;:1(RemoveBlanksBuiltin)
+        1    0.001    0.001    0.065    0.065 &lt;string&gt;:1(&lt;module&gt;)
+        1    0.000    0.000    0.065    0.065 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        3    0.063    0.021    0.063    0.021 {method 'replace' of 'str' objects}
+</code></pre>
+
+<p>Here we are, the best solution is indeed to use a builtin function, whenever it is possible, even if this was not the real aim of this exercise.</p>
+
+<p>Please, let me know if you have some comments or a different solution in Python.</p>
+]]></content>
+  </entry>
+  
+</feed>
