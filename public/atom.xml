@@ -4,7 +4,7 @@
   <title><![CDATA[Spaghetti Optimization]]></title>
   <link href="http://stegua.github.io/atom.xml" rel="self"/>
   <link href="http://stegua.github.io/"/>
-  <updated>2019-01-27T13:54:34+01:00</updated>
+  <updated>2019-01-27T13:57:44+01:00</updated>
   <id>http://stegua.github.io/</id>
   <author>
     <name><![CDATA[Stefano Gualandi]]></name>
@@ -1060,6 +1060,76 @@ with a timeout of 10 minutes on my laptop. If you compare these numbers with the
 <a href="http://www.sciencedirect.com/science/article/pii/S1572528608000716">[pdf]</a></p>
   </li>
 </ol>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Steiner Tree, Cutting Planes, and the importance of an Epsilon]]></title>
+    <link href="http://stegua.github.io/blog/2014/10/11/steiner-tree/"/>
+    <updated>2014-10-11T16:14:00+02:00</updated>
+    <id>http://stegua.github.io/blog/2014/10/11/steiner-tree</id>
+    <content type="html"><![CDATA[<p>This is a technical post about the following question:</p>
+
+<blockquote>
+  <p>When solving the <a href="">Steiner Tree problem</a> via <a href="">branch-and-cut</a>, which is the impact of adding <strong>a small epsilon</strong> to the weights of the separation problem?</p>
+</blockquote>
+
+<p>The answer is: the epsilon has a <strong>HUGE</strong> impact! </p>
+
+<p>If you don’t believe me, look at the plot below: it reports the dual bound as function of the number of iterations, with the blue and red lines refer to adding or not adding a small epsilon to the weighs of the separation problem (which is a standard <strong>max flow</strong> problem).</p>
+
+<p>If you are curious about the reason of such impact, maybe you can find this post interesting.</p>
+
+<p>If you are not curious, but you need a starting point to implement a branch-and-cut solver for the Steiner Tree problem, based on <a href="">Gurobi</a> and the <a href="">Lemon Graph Library</a>, you can jump directly to <a href="">my github repo</a> with the code used to write this post, while you can go to <a href="">Steiner Tree Lib</a> to get a number of standard instances.</p>
+
+<p>If you are not curious and you are not interested about the Steiner Tree problem, you can just stop to read this post.</p>
+
+<h2 id="steiner-tree-via-branch-and-cut">Steiner Tree via Branch-and-Cut</h2>
+
+<p>The Steiner Tree problem is defined on an undirected graph $G=(V,E)$ and a set of terminal
+nodes $T \subseteq V$. Every edge $e={i,j} \in E$ has a cost $c_e$. The problem asks to find a tree in $G$ that spans the nodes in $T$.</p>
+
+<p>In this post, we use a Integer Linear Programming model defined on the directed graph $H=(V,A)$, obtained from $G$ by inserting in $A$ the two arcs $(i,j)$ and $(j,i)$ for each edge ${i,j}  in E$; the cost of the arcs are equal to the cost of the corresponding edges.
+In addition, we select a vertex that plays the role of the <strong>root</strong> vertex $r$: the Steiner Tree problem becomes the problem of finding an arborescence rooted in $r$ that <strong>reach</strong> every node in $T$. </p>
+
+<p>Formally, we introduce a 0-1 variable $x_e$ for each arc in $A$, and write the following model:</p>
+
+<script type="math/tex; mode=display">(P) = \min \sum_{e \in A} c_e x_e \mid \sum_{e \in \delta^+(S)} x_e \geq 1, \forall S \subset V, r \in S, \exists t \in T: t \in V \setminus S</script>
+
+<table>
+  <tbody>
+    <tr>
+      <td>All the magic of this model is in the <strong>reachibility</strong> constraints: for each cut of the digraph with the root node on one side (i.e., in $r \in S$) and any terminal node $t$ on the other side (i.e., $t \in V \setminus S$), we must have at least 1 arc variable $x_e$ that traverses the cut equal to 1. Indeed, these constraints are exponential in number, since the number of subsets of $V$ is $O(2^{</td>
+      <td>V</td>
+      <td>})$:</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p>the only option to consider this exponential number of constraints is via branch-and-cut</p>
+</blockquote>
+
+<p>We solve a relaxation of the problem with a small subset of constraints, and we add new constraints “on demand”, only when we find a candidate solution that violates any of these constraints.</p>
+
+<p>The problem of looking for a violated constrained is usually called the <strong>separation problem</strong>, and here is defined as follows:</p>
+
+<p>Given a $x^*$ solution to (P), define for each arc a capacity $u_e$ equal to $x_e$.
+At this point, for each terminal node $t$, find the maximal flow from $r$ to $t$. Remember that for duality, to each maximal flow corresponds a minimum cut, and note that if the capacity of this cut is strictly smaller than 1, you have find a violated inequality of the problem.</p>
+
+<p>Here is they key part of this post. Given $\bar{x}$, we set each arc capacity $u_e=\bar{x}_e$
+and we solve a sequence of max-flow problem to look for a cut of minimum capacity.</p>
+
+<blockquote>
+  <p>What does it happen if in the separation problem we set $u_e=\bar{x}_e + \epsilon$ ??</p>
+</blockquote>
+
+<blockquote>
+  <p>How significant can be the impact of an epsilon?</p>
+</blockquote>
+
+<p>about a short code to solve via branch-and-cut the classical <a href="">Steiner Tree Problem</a>, one of those fundamental Combinatorial Optimization problems that are not solvable in polynomial time (technically, it is <a href="">NP-hard</a>).</p>
+
 ]]></content>
   </entry>
   
