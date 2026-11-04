@@ -49,7 +49,7 @@ import cProfile</p>
 <h1 id="download-file-from-httpnorvigcombigtxt">Download file from: ‘http://norvig.com/big.txt’</h1>
 <p>big = open(‘big.txt’, ‘r’)</p>
 
-<h1 id="read-the-while-file">Read the while file</h1>
+<h1 id="read-the-while-file">Read the whole file</h1>
 <p>test = big.read()</p>
 
 <p>def RemoveBlanksFilter(in_str):
