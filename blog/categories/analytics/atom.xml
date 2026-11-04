@@ -24,7 +24,7 @@
 
 <h3 id="why-is-public-transport-so-important">Why is Public Transport so important?</h3>
 
-<p>Because <em>many</em> of us use <a href="http://en.wikipedia.org/wiki/Public_transport">Public Transport</a> every day, but <em>most</em> of us still use their own car to go to work, to bring child at school, and to go shopping. This has a negative impact on the quality of life of everyone and is clearly inefficient since it does cost more: </p>
+<p>Because <em>many</em> of us use <a href="http://en.wikipedia.org/wiki/Public_transport">Public Transport</a> every day, but <em>most</em> of us still use their own car to go to work, to bring children to school, and to go shopping. This has a negative impact on the quality of life of everyone and is clearly inefficient since it does cost more: </p>
 
 <ol>
   <li>More money.</li>
@@ -41,11 +41,11 @@ its cost competitive. The ultimate goal should be to increase the number of peop
 
 <h3 id="transport-operators-are-big-data-producers-are-they">Transport Operators are <strong>Big Data</strong> producers (are they?)</h3>
 
-<p>Modern transport operators have installed so called <em>Automatic Vehicle Monitoring (AVM)</em> systems that use several technologies to monitor the fleet of vehicles that operates the service (e.g., metro coaches, buses, metro trains, trains, …).</p>
+<p>Modern transport operators have installed so-called <em>Automatic Vehicle Monitoring (AVM)</em> systems that use several technologies to monitor the fleet of vehicles that operates the service (e.g., metro coaches, buses, metro trains, trains, …).</p>
 
-<p>The stream of data produced by an AVM might be considered as <strong>Big Data</strong> because of its <strong>volume</strong> and <strong>velocity</strong> (see <a href="https://www.ibm.com/developerworks/community/blogs/jfp/entry/big_data_for_dummies23?lang=en">Big Data For Dummies</a>, by J.F. Puget). Each vehicle produces at regular intervals (measured in seconds) data concerning its position and status. This information is stored in remote data centers. The data for a single day might not be considered as “Big”, however once you start to analyze the historical data, the volume increases significantly. For instance, a public transport operator could easily have around 2000 thousands vehicles that operate 24 hours a day, producing data potentially every second.</p>
+<p>The stream of data produced by an AVM might be considered as <strong>Big Data</strong> because of its <strong>volume</strong> and <strong>velocity</strong> (see <a href="https://www.ibm.com/developerworks/community/blogs/jfp/entry/big_data_for_dummies23?lang=en">Big Data For Dummies</a>, by J.F. Puget). Each vehicle produces at regular intervals (measured in seconds) data concerning its position and status. This information is stored in remote data centers. The data for a single day might not be considered as “Big”, however once you start to analyze the historical data, the volume increases significantly. For instance, a public transport operator could easily have around 2000 vehicles that operate 24 hours a day, producing data potentially every second.</p>
 
-<p>At the moment, this stream of data misses the third dimension of Big Data that is <strong>variety</strong>. However, new projects that aim at integrating this information with the stream of data coming from social networks are quickly reaching maturity. One of such project is <a href="http://www.superhub-project.eu/">SuperHub</a>, a FP7 project that has recently won the best exhibit award in Cluster 2 <em>“Smart and sustainable cities for 2020+”</em>, at the <a href="http://www.superhub-project.eu/media-centre/124-ict2013-conference-best-exhibit-award-.html">ICT2013 Conference</a> in Vilnius.</p>
+<p>At the moment, this stream of data misses the third dimension of Big Data that is <strong>variety</strong>. However, new projects that aim at integrating this information with the stream of data coming from social networks are quickly reaching maturity. One such project is <a href="http://www.superhub-project.eu/">SuperHub</a>, an FP7 project that has recently won the best exhibit award in Cluster 2 <em>“Smart and sustainable cities for 2020+”</em>, at the <a href="http://www.superhub-project.eu/media-centre/124-ict2013-conference-best-exhibit-award-.html">ICT2013 Conference</a> in Vilnius.</p>
 
 <p>I don’t know whether transport operators are really <strong>Big Data</strong> producers or they are merely <strong>Small Data</strong> producers, but data collected using AVMs are nowadays mainly used to report and monitor the daily activities.</p>
 

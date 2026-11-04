@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Backtrack Programming in c]]></title>
+    <title type="html"><![CDATA[Backtrack Programming in C]]></title>
     <link href="http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c/"/>
     <updated>2013-03-22T12:45:00+01:00</updated>
     <id>http://stegua.github.com/blog/2013/03/22/backtrack-programming-in-c</id>
@@ -36,7 +36,7 @@ Lin-Kernighan heuristics for the <a href="http://www.akira.ruc.dk/~keld/research
   <li><strong><code>Backtrack()</code></strong>: “<em>causes the program to backtrack, that is to say, return to the most recent call of Choice, which has not yet returned all its values</em>”.</li>
 </ol>
 
-<p>With these two functions is pretty simple to develop exact enumeration algorithms.
+<p>With these two functions it is pretty simple to develop exact enumeration algorithms.
 The <strong>CBack</strong> library comes with several examples, such as algorithms for the <a href="http://en.wikipedia.org/wiki/Eight_queens_puzzle">N-queens</a> problem and the <a href="http://en.wikipedia.org/wiki/15_puzzle">15-puzzle</a>.
 Below, I will show you how to use <strong>CBack</strong> to implement a simple algorithm that finds a <a href="http://en.wikipedia.org/wiki/Clique_problem">Maximum Clique</a> in an undirected graph.</p>
 
@@ -70,7 +70,7 @@ the Figure below sketches the program execution. </p>
 
 <p><img src="http://stegua.github.io/images/backtrack.png"></p>
 
-<p>When the program executes the <code>Choice(N=3)</code> statement, that is the first call to the first choice (line 2), value 1 is assigned to variable <code>i</code>. Behind the scene, the <em>Choice</em> function stores the current execution state of the program in its own stack,
+<p>When the program executes the <code>Choice(N=3)</code> statement, that is the first call to the first choice (line 2), value 1 is assigned to variable <code>i</code>. Behind the scenes, the <em>Choice</em> function stores the current execution state of the program in its own stack,
 and records the next possible choices (i.e. the other possible program branches),
 that are values <code>2</code> and <code>3</code>. Next, the second <code>Choice(N=2)</code> assigns value 1 to <code>j</code> (line 3),
 and again the state of the program is stored for later use. Then, the <code>printf</code> outputs <code>i = 1 , j = 1</code> (line 4 and first line of output). Now, it is time to <em>backtrack</em> (line 5). </p>
@@ -78,16 +78,16 @@ and again the state of the program is stored for later use. Then, the <code>prin
 <p>What is happening here?</p>
 
 <p>Look again at the figure above: When the <code>Backtrack()</code> function is invoked, the algorithm <em>backtracks</em> and continues the execution
-from the most recent <strong>Choice</strong> stored in its stack, i.e. it assigns to variable <code>j</code> value 2, and <code>printf</code> outputs <code>i = 1, j = 2</code>. Later, the <code>Backtrack()</code> is invoked again, and this time the algorithm backtracks until the previous possible choice that corresponds to the assignment of value 2 to variable <code>i</code>, and it executes <code>i = 2</code>. Once the second choice for variable <code>i</code> is performed, there are again two possible choices for variable <code>j</code>, since the program has backtracked to a point that precedes that statement. Thus, the program executes <code>j = 1</code>, and <code>printf</code> outputs <code>i = 2, j = 1</code>. At this point, the program <em>backtracks</em> again, and consider the next possible choice, <code>j = 2</code>. This is repeated until all possible choices for <code>Choice(3)</code> and <code>Choice(2)</code> are exhausted, yielding the 6 possible combinations of <code>i</code> and <code>j</code> that the problem gave as output.</p>
+from the most recent <strong>Choice</strong> stored in its stack, i.e. it assigns to variable <code>j</code> value 2, and <code>printf</code> outputs <code>i = 1, j = 2</code>. Later, the <code>Backtrack()</code> is invoked again, and this time the algorithm backtracks until the previous possible choice that corresponds to the assignment of value 2 to variable <code>i</code>, and it executes <code>i = 2</code>. Once the second choice for variable <code>i</code> is performed, there are again two possible choices for variable <code>j</code>, since the program has backtracked to a point that precedes that statement. Thus, the program executes <code>j = 1</code>, and <code>printf</code> outputs <code>i = 2, j = 1</code>. At this point, the program <em>backtracks</em> again, and considers the next possible choice, <code>j = 2</code>. This is repeated until all possible choices for <code>Choice(3)</code> and <code>Choice(2)</code> are exhausted, yielding the 6 possible combinations of <code>i</code> and <code>j</code> that the program gave as output.</p>
 
 <p>Indeed, during the execution, the program has implicitly visited in a depth-first manner the <em>search tree</em> of the previous figure.
-CBack supports also different search strategy, such as <em>best first</em>, but I will not cover that topic here.</p>
+CBack supports also different search strategies, such as <em>best first</em>, but I will not cover that topic here.</p>
 
 <p>In order to store and restore the program execution state (well, more precisely the <em>calling environment</em>), <code>Choice(N)</code> and <code>Backtrack</code> use two <strong>threatening</strong> C standard functions, <code>setjmp</code> and <code>longjmp</code>. 
 For the details of their use in CBack, see [1].</p>
 
 <h2 id="a-basic-maximum-clique-algorithm">A Basic Maximum Clique Algorithm</h2>
-<p>The reason why I like this library, apart from remembering me the time I was programming with <a href="http://www.mozart-oz.org/">Mozart</a>, is that it permits to implement quickly exact algorithms based on enumeration. While enumeration is usually disregarded as <em>inefficient</em> (“<em>ehi, it is just brute force</em>!”), it is still one of the best method to solve small instances of almost any combinatorial optimization problem. In addition, many sophisticated exact algorithms use plain enumeration as a subroutine, when during the search process the size of the problem becomes small enough.</p>
+<p>The reason why I like this library, apart from reminding me of the time I was programming with <a href="http://www.mozart-oz.org/">Mozart</a>, is that it permits one to implement quickly exact algorithms based on enumeration. While enumeration is usually disregarded as <em>inefficient</em> (“<em>ehi, it is just brute force</em>!”), it is still one of the best methods to solve small instances of almost any combinatorial optimization problem. In addition, many sophisticated exact algorithms use plain enumeration as a subroutine, when during the search process the size of the problem becomes small enough.</p>
 
 <p>Consider now the <strong>Maximum Clique Problem</strong>: Given an undirected graph <script type="math/tex">G=(V,E)</script>, the problem is to find the largest complete subgraph of <script type="math/tex">G</script>. More formally, you look for the largest subset <script type="math/tex">C</script> of the vertex set <script type="math/tex">V</script> such that for any pair of nodes <script type="math/tex">{i,j}</script> in <script type="math/tex">C \times C</script> there exists an arc <script type="math/tex">{i,j} \in E</script>.  </p>
 
@@ -114,7 +114,7 @@ As you can see, the backtracking is here described in terms of a recursive funct
 
 <h2 id="maximum-clique-with-cback">Maximum Clique with CBack</h2>
 <p>We use an array <code>S</code> of <script type="math/tex">n</script> integers, one for each vertex of <script type="math/tex">V</script>.
-If <code>S[v]=0</code>, then vertex <script type="math/tex">i</script> belongs to the candidate set <script type="math/tex">P</script>; if <code>S[v]=1</code>, then vertex <script type="math/tex">i</script> is in <script type="math/tex">C</script>; if <code>S[v]=2</code>, then vertex <script type="math/tex">i</script> cannot be neither in <script type="math/tex">P</script> nor in <script type="math/tex">C</script>. The variable <code>s</code> stores the size of current clique.</p>
+If <code>S[v]=0</code>, then vertex <script type="math/tex">i</script> belongs to the candidate set <script type="math/tex">P</script>; if <code>S[v]=1</code>, then vertex <script type="math/tex">i</script> is in <script type="math/tex">C</script>; if <code>S[v]=2</code>, then vertex <script type="math/tex">i</script> can be neither in <script type="math/tex">P</script> nor in <script type="math/tex">C</script>. The variable <code>s</code> stores the size of the current clique.</p>
 
 <p>Let me show you directly the C code:</p>
 
@@ -149,9 +149,9 @@ Backtrack();
 </code></p>
 
 <p>Well, I like this code pretty much, despite being a “<em>plain old</em>” C program.
-The algorithm and code can be improved in several ways (ordering the vertices, improving the pruning, using upper bounds from heuristic vertex coloring, using induced degree as in [2]), but still, the main loop and the backtrack machinery is all there, in a few lines of code!</p>
+The algorithm and code can be improved in several ways (ordering the vertices, improving the pruning, using upper bounds from heuristic vertex coloring, using induced degree as in [2]), but still, the main loop and the backtrack machinery are all there, in a few lines of code!</p>
 
-<p>Maybe you wonder about the efficiency of this code, but at the moment I have not a precise answer. For sure, the ordering of the vertices is crucial, and can make a huge difference on solving the <a href="http://iridia.ulb.ac.be/~fmascia/maximum_clique/DIMACS-benchmark">max-clique DIMACS instances</a>. I have used CBack to implement my own version of the Ostengard’s max-clique algorithm [4], but my implementation is somehow slower. I suspect that the difference is due to data structure used to store the graph (Ostengard’s implementation relies on bitsets), but not in the way the backtracking is achieved. Although, to answer to such question could be a subject of another post.</p>
+<p>Maybe you wonder about the efficiency of this code, but at the moment I do not have a precise answer. For sure, the ordering of the vertices is crucial, and can make a huge difference on solving the <a href="http://iridia.ulb.ac.be/~fmascia/maximum_clique/DIMACS-benchmark">max-clique DIMACS instances</a>. I have used CBack to implement my own version of Ostergard’s max-clique algorithm [4], but my implementation is somewhat slower. I suspect that the difference is due to the data structure used to store the graph (Ostergard’s implementation relies on bitsets), but not in the way the backtracking is achieved. Although, to answer such a question could be a subject of another post.</p>
 
 <p>In conclusion, if you need to implement an exact enumerative algorithm, <a href="http://www.akira.ruc.dk/~keld/research/CBACK/">CBack</a> could be an option to consider.</p>
 

@@ -161,26 +161,26 @@ tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
 [a] The <a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a><br />
 [b] The <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon Graph Library</a><br />
 [c] The <a href="http://code.google.com/p/or-tools/">Google OrTools</a><br />
-[d] Hei dude! We can do better!!!  </p>
+[d] Hey dude! We can do better!!!  </p>
 
 <p>What is your answer for the first question? … well, the answers are all correct!
 And for the second question? To know the correct answer, sorry, you have to read this post to the end…</p>
 
-<p>If you are curious to learn more about the <em>classification</em> of the Dijkstra’s algorithm proposed in the first three answers,
+<p>If you are curious to learn more about the <em>classification</em> of Dijkstra’s algorithm proposed in the first three answers,
 please consider reading [1] and [2]. Honestly, I did not know that the algorithm was independently discovered by Dantzig [3] as a special
 case of Linear Programming. 
-However, Dantzig is credited for the first version of the bidirectional 
-Dijkstra’s algorithm (should we called it <strong>Dantzig’s algorithm</strong>?), which is nowadays the best performing
+However, Dantzig is credited with the first version of the bidirectional 
+Dijkstra’s algorithm (should we call it <strong>Dantzig’s algorithm</strong>?), which is nowadays the best performing
 algorithm on general graphs.
-The bidirectional Dijkstra’s algorithm is used as benchmark to measure the speed-up of modern specialized
+The bidirectional Dijkstra’s algorithm is used as a benchmark to measure the speed-up of modern specialized
 shortest path algorithms for road networks [4,5], those algorithms that are implemented, for instance, in our
-GPS navigation systems, in yours smartphones (I don’t have one, argh!), in Google Maps Directions, and Microsoft Bing Maps. </p>
+GPS navigation systems, in your smartphones (I don’t have one, argh!), in Google Maps Directions, and Microsoft Bing Maps. </p>
 
 <p>Why a first blog entry on Dijkstra’s algorithm? That’s simple.</p>
 
 <ul>
   <li>Have you ever implemented an <em>efficient</em> version of this well-known and widely studied algorithm?</li>
-  <li>Have you ever used the version that is implemented in well-reputed graph libraries, such as, the 
+  <li>Have you ever used the version that is implemented in well-reputed graph libraries, such as the 
 <a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a>, 
 the <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon</a>, and/or 
 <a href="http://code.google.com/p/or-tools/">Google OrTools</a>?</li>
@@ -190,17 +190,17 @@ the <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon</a>, and/or
 
 <h2 id="the-algorithm">The Algorithm</h2>
 
-<p>The algorithm is quite simple. First partition the nodes of the input graph <em>G=(N,A)</em> in three
+<p>The algorithm is quite simple. First partition the nodes of the input graph <em>G=(N,A)</em> into three
 sets: the sets of (1) <em>scanned</em>, (2) <em>reachable</em>, and (3) <em>unvisited</em> nodes.
 Every node has a distance label <script type="math/tex">d_i</script> and a predecessor vertex <script type="math/tex">p_i</script>. Initially, set the 
 label of the source node <script type="math/tex">d_s=0</script>, while set <script type="math/tex">d_i=+\infty</script> for all other nodes. Moreover,
 the node <em>s</em> is placed in the set of <em>reachable</em> nodes, while all the other nodes are <em>unvisited</em>.</p>
 
-<p>The algorithm proceedes as follows: select a <em>reachable</em> node <em>i</em> with minimum distance label,
-and move it in the set of <em>scanned</em> nodes, it will be never selected again. 
+<p>The algorithm proceeds as follows: select a <em>reachable</em> node <em>i</em> with minimum distance label,
+and move it into the set of <em>scanned</em> nodes, it will never be selected again. 
 For each arc <em>(i,j)</em> in the forward star of node <em>i</em> check if node <em>j</em> has distance label <script type="math/tex">d_j > d_i + c_{ij}</script>; 
 if it is the case, update the label <script type="math/tex">d_j = d_i + c_{ij}</script> and the predecessor vertex <script type="math/tex">p_j=i</script>.
-In addition, if the node was <em>unvisited</em>, move it in the 
+In addition, if the node was <em>unvisited</em>, move it into the 
 set of reachable nodes. If the selected node <em>i</em> is the destination node
 <em>t</em>, stop the algorithm.
 Otherwise, continue by selecting the next node <em>i</em> with minimum distance label.</p>
@@ -208,14 +208,14 @@ Otherwise, continue by selecting the next node <em>i</em> with minimum distance 
 <p>The algorithm stops either when it scans the destination node <em>t</em> or the set of reachable nodes is empty.
 For the nice properties of the algorithm consult any textbook in computer science or operations research. </p>
 
-<p>At this point it should be clear why Dijkstra’s algorithm is <strong>greedy</strong>: it always select a reachable node with
+<p>At this point it should be clear why Dijkstra’s algorithm is <strong>greedy</strong>: it always selects a reachable node with
 minimum distance label. It is a <strong>dynamic programming</strong> algorithm because it maintains the 
 recursive relation 
 <script type="math/tex">d_j = \min \{d_i + c_{ij} \mid (i,j) \in A \}</script> 
 for all <script type="math/tex">j \in N</script>.
 If you are familiar with Linear Programming, you should recognize that the distance labels
-play the role of dual variable of a flow based formulation of the shortest path problem,
-and the Dijkstra’s algorithm costructs a <strong>primal</strong> solution (i.e. a path) that satisfies the <strong>dual</strong>
+play the role of dual variables of a flow based formulation of the shortest path problem,
+and Dijkstra’s algorithm constructs a <strong>primal</strong> solution (i.e. a path) that satisfies the <strong>dual</strong>
 constraints <script type="math/tex">d_j - d_i \leq c_{ij}</script>.</p>
 
 <h2 id="graphs-and-heaps">Graphs and Heaps</h2>
@@ -227,23 +227,23 @@ a std::vector to store the forward star of each node.</p>
 
 <p>The second data structure, the most important, is the priority queue <em>Q</em>.
 The queue has to support three operations: <em>push</em>, <em>update</em>, and <em>extract-min</em>.
-The type of priority queue used determines the worst-case complexity of the Dijkstra’s algorithm.
+The type of priority queue used determines the worst-case complexity of Dijkstra’s algorithm.
 Theoretically, the best strongly polynomial worst-case complexity is achieved via a <strong>Fibonacci heap</strong>. 
 On road networks, the Multi Bucket heap yields a weakly polynomial worst-case complexity that
 is more efficient in practice [4,5]. Unfortunately, the Fibonacci Heap is a rather complex data structure,
-and lazy implementations end up in using a simpler Binomial Heap.</p>
+and lazy implementations end up using a simpler Binomial Heap.</p>
 
 <p>The good news is that the Boost Library from version 1.49 has a <a href="http://www.boost.org/doc/libs/1_51_0/doc/html/heap.html">Heap library</a>.
-This library contains several type of heaps that share a common interface: 
+This library contains several types of heaps that share a common interface: 
 d-ary-heap, binomial-heap, fibonacci-heap, pairing-heap, and skew-heap.
-The worst-case complexity of the basic operations are summarized in a
+The worst-case complexities of the basic operations are summarized in a
 <a href="http://www.boost.org/doc/libs/1_51_0/doc/html/heap/data_structures.html#heap.data_structures.data_structure_configuration">nice table</a>. 
-Contrary to text-books, these heaps are ordered in non increasing order (they are max-heap instead of min-heap), that means
+Contrary to textbooks, these heaps are ordered in non-increasing order (they are max-heap instead of min-heap), that means
 that the top of the heap is always the element with highest priority. For implementing Dijkstra,
-where all arc lengths are non negative, this is not a problem: we can store the elements with
-the distance changed in sign (sorry for the rough explanation, but if you are <em>really</em> intrested it is better to read directly the source code).</p>
+where all arc lengths are non-negative, this is not a problem: we can store the elements with
+the distance changed in sign (sorry for the rough explanation, but if you are <em>really</em> interested it is better to read directly the source code).</p>
 
-<p>The big advantage of <strong>boost::heap</strong> is that it allows to program Dijkstra once, and to compile it
+<p>The big advantage of <strong>boost::heap</strong> is that it allows one to program Dijkstra once, and to compile it
 with different heaps via templates. If you wonder why the Boost Graph Library does not use boost::heap,
 well, the reason is that BGL was implemented a few years ago, while boost::heap appeared this year.</p>
 
@@ -253,11 +253,11 @@ well, the reason is that BGL was implemented a few years ago, while boost::heap 
 <p>I have tried three graph libraries: 
 <a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a> v1.51, 
 <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon</a> v1.2.3, and 
-<a href="http://code.google.com/p/or-tools/">Google OrTools</a> cheked out from svn on Sep 7th, 2012.
+<a href="http://code.google.com/p/or-tools/">Google OrTools</a> checked out from svn on Sep 7th, 2012.
 They all have a Dijkstra implementation, even if I don’t know the implementation details.
-As a plus, the three libraries have python wrappers (but I have not test it).
+As a plus, the three libraries have python wrappers (but I have not tested them).
 The BGL is a header only library. Lemon came after BGL.
-BGL, Lemon, and my implementation use (different) Fibonacci Heaps, while I have not clear what type of priority queue is used by OrTools.</p>
+BGL, Lemon, and my implementation use (different) Fibonacci Heaps, while it is not clear to me what type of priority queue is used by OrTools.</p>
 
 <p><strong>Disclaimer</strong>: Google OrTools is much more than a graph library: among others, it has a Constraint Programming solver with very nice
 features for Large Neighborhood Search; however, we are interested here only in its Dijkstra implementation.
@@ -265,7 +265,7 @@ Constraint Programming will be the subject of another future post.</p>
 
 <p>A few tests on instances taken from the last <a href="http://www.dis.uniroma1.it/challenge9/download.shtml">DIMACS challenge on Shortest Path problems</a>
 show the pros and cons of each implementation. Three instances are generated using the <strong>rand</strong> graph generator, while 10 instances are
-road networks. The test are done on my late 2008 MacBookPro using the apple gcc-4.2 compiler.
+road networks. The tests are done on my late 2008 MacBookPro using the apple gcc-4.2 compiler.
 All the source code, scripts, and even this post text, are available on <a href="https://github.com/stegua/MyBlogEntries/tree/master/Dijkstra">github</a>.</p>
 
 <h2 id="rand-graphs">RAND Graphs</h2>
@@ -280,7 +280,7 @@ The graphs are:</p>
 </ol>
 
 <p>For each graph, 50 queries between different pairs of source and destination nodes are performed.
-The table below reports the average of query times (total time divided by query numbers).
+The table below reports the average of query times (total time divided by the number of queries).
 The entries in bold highlight the shortest time per row.</p>
 
 <table>
@@ -320,7 +320,7 @@ The entries in bold highlight the shortest time per row.</p>
 
 <p><br />
 In these tests, it looks like my implementation is the winner… wow!
-Although, the true winner is the boost::heap library, since the nasty implementation details
+However, the true winner is the boost::heap library, since the nasty implementation details
 are delegated to that library.</p>
 
 <p>… but come on! These are artificial graphs: who is really interested in shortest paths on random graphs?</p>
@@ -328,8 +328,8 @@ are delegated to that library.</p>
 <h2 id="road-networks">Road Networks</h2>
 
 <p>The second test uses road networks that are <strong>very</strong> sparse graphs. 
-We report only average computation time in seconds over 50 different pair of source-destination nodes.
-We decided to leave out OrTools since it is not very performing on very sparse graphs.</p>
+We report only average computation time in seconds over 50 different pairs of source-destination nodes.
+We decided to leave out OrTools since it does not perform very well on very sparse graphs.</p>
 
 <p>This table below shows the average query time for the standard implementations that use <strong>Fibonacci Heaps</strong>.</p>
 
@@ -430,7 +430,7 @@ We decided to leave out OrTools since it is not very performing on very sparse g
 
 <p><br />
 From this table, BGL and my implementation are equally good, while Lemon comes after.
-What would happen if we use a diffent type of heap?</p>
+What would happen if we use a different type of heap?</p>
 
 <p>This second table shows the average query time for the Lemon graph library with a specialized 
 <a href="http://lemon.cs.elte.hu/pub/doc/latest/a00048.html">Binary Heap</a> implementation,
@@ -551,12 +551,12 @@ Instead, the boost::heap library has a <strong>d-ary-heap</strong>, that for <em
 
 <h2 id="so-what">So what?</h2>
 
-<p>Dijkstra’s algorithm is so beatiful because it has the <em>elegance of simplicity</em>.</p>
+<p>Dijkstra’s algorithm is so beautiful because it has the <em>elegance of simplicity</em>.</p>
 
 <p>Using an existing efficient heap data structure, it is easy to implement an <strong>“efficient”</strong> version of the algorithm.</p>
 
 <p>However, if you have spare time, or you need to solve shortest path problems on a specific type of graphs (e.g., road networks),
-you might give a try with existing graph libraries, before investing developing time in your own implementation.
+you might give a try with existing graph libraries, before investing development time in your own implementation.
 In addition, be sure to read [4] and the references therein contained.</p>
 
 <p>All the code I have used to write this post is available on <a href="https://github.com/stegua/MyBlogEntries/tree/master/Dijkstra">github</a>. 

@@ -20,13 +20,13 @@
     <id>http://stegua.github.com/blog/2017/01/24/exercise-in-python-remove-blanks-from-strings</id>
     <content type="html"><![CDATA[<p>This morning, after reading <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">this very nice post</a>, I decided to challenge myself in Python and to have a look at the impact of <a href="https://en.wikipedia.org/wiki/Branch_misprediction">mispredicted branches</a> in a language different from C/C++. The basic idea was to use only <a href="https://docs.python.org/3.6/library/functions.html">Python builtins</a>: external libraries are not allowed!</p>
 
-<p>As a benchmark, I grabbed a large text file from <a href="http://norvig.com/big.txt">P. Norvig’s website</a>, which is 6’488’666 byte long.</p>
+<p>As a benchmark, I grabbed a large text file from <a href="http://norvig.com/big.txt">P. Norvig’s website</a>, which is 6’488’666 bytes long.</p>
 
 <p><strong>The final answer?</strong> Yes, <strong>mispredicted branches</strong> have a huge impact in Python too.</p>
 
-<p><strong>The hidden answer?</strong> Python dictionaries ever stop to surprise me: they are REALLY efficient.</p>
+<p><strong>The hidden answer?</strong> Python dictionaries never stop surprising me: they are REALLY efficient.</p>
 
-<p><strong>NOTE</strong>: The followig code snippets were executed in a Python 3.5 notebook, on a windows machine, running Windows 10 and <a href="https://www.continuum.io/downloads">Anaconda Python 3.5 64 bits</a>.
+<p><strong>NOTE</strong>: The following code snippets were executed in a Python 3.5 notebook, on a windows machine, running Windows 10 and <a href="https://www.continuum.io/downloads">Anaconda Python 3.5 64 bits</a>.
 You can find my notebook on my <a href="https://github.com/stegua/MyBlogEntries">Blog GitHub repo</a>. Don’t ask me why, but this blog entry is better visualized directly on <a href="https://github.com/stegua/MyBlogEntries/blob/master/Remove%2Bblanks%2Bfrom%2Ba%2Bstring.ipynb">GitHub</a>.</p>
 
 <p><strong>UPDATE</strong>: Well, most of the time I would use my first implementation based on the <code>filter</code> builtin function, and I would try for alternative implementations only after a profiler has shown
@@ -41,7 +41,7 @@ that removing blanks is a true bottleneck of my whole program. As written in the
   <li><a href="https://docs.python.org/3/library/functools.html#functools.reduce"><code>reduce</code></a> (this is in the functools module and it is not a true builtin)</li>
 </ol>
 
-<p>Therefore, after few preliminaries, here is my first code snippet:</p>
+<p>Therefore, after a few preliminaries, here is my first code snippet:</p>
 
 <p>```python
 import cProfile</p>
@@ -74,7 +74,7 @@ import cProfile</p>
         1    1.085    1.085    1.955    1.955 {method 'join' of 'str' objects}
 </code></pre>
 
-<p>Wow, I didn’t realize that I would have call the lambda function for every single byte of my input file. This is clearly too much overhead.</p>
+<p>Wow, I didn’t realize that I would have to call the lambda function for every single byte of my input file. This is clearly too much overhead.</p>
 
 <h3 id="nd-attempt-remove-function-calls-overhead">2nd attempt: remove function calls overhead</h3>
 <p>Let me drop my functional style, and write a plain old for-loop:</p>
@@ -113,7 +113,7 @@ cProfile.run('RemoveBlanks(test)')
 <p>Mmm… we just shift the problem to the list append function calls. Maybe we can do better by working in place.</p>
 
 <h3 id="rd-attempt-work-in-place">3rd attempt: work in place</h3>
-<p>Well, almost in place: Python string are immutable; therefore, we first copy the string into a list, and then we work in place over the copied list.</p>
+<p>Well, almost in place: Python strings are immutable; therefore, we first copy the string into a list, and then we work in place over the copied list.</p>
 
 <p>```python
 def RemoveBlanksInPlace(in_str):
@@ -147,7 +147,7 @@ cProfile.run('RemoveBlanksInPlace(test)')
         1    0.032    0.032    0.032    0.032 {method 'join' of 'str' objects}
 </code></pre>
 
-<p>Ok, working in place does have an impact. Let me go on the true point: avoiding <em>mispredicted branches</em>.</p>
+<p>Ok, working in place does have an impact. Let me get to the true point: avoiding <em>mispredicted branches</em>.</p>
 
 <h3 id="th-attempt-to-avoid-mispredicted-branches">4th attempt: to avoid mispredicted branches</h3>
 <p>As in the <a href="http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/">original blog post</a>:</p>

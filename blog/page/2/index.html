@@ -146,7 +146,7 @@ you show that it <em>cuts off</em> the optimum solution of the LP relaxation.</p
 
 <p>This post presents a naive (textbook) implementation of <strong>Fractional Gomory Cuts</strong> that uses the basic solution
 computed by CPLEX, the commercial Linear Programming solver used in our lab sessions.
-In practice, this post is an online supplement to one of my last exercise session.</p>
+In practice, this post is an online supplement to one of my last exercise sessions.</p>
 
 <p>In order to solve the <em>“blackboard”</em> examples with <a href="http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/">CPLEX</a>,
 it is necessary to use a couple of functions
@@ -158,7 +158,7 @@ but they are currently undocumented. (<strong>Edited May 16th, 2013</strong>: Fr
 <a href="https://github.com/stegua/MyBlogEntries/tree/master/GomoryCut">my GitHub repository</a>.</p>
 
 <h3 id="the-basics">The basics</h3>
-<p>Given a Integer Linear Program in the form:</p>
+<p>Given an Integer Linear Program in the form:</p>
 
 <script type="math/tex; mode=display">(P) \qquad \min \{ cx \mid Ax \leq b, \, x \geq 0, \, x \mbox{ integer} \}</script>
 
@@ -169,7 +169,7 @@ but they are currently undocumented. (<strong>Edited May 16th, 2013</strong>: Fr
 <p>where <script type="math/tex">I</script> is the identity matrix and <script type="math/tex">x_S</script> is a vector of slack variables, one for each constraint in <script type="math/tex">(P)</script>.
 Let us denote by <script type="math/tex">(\bar{P})</script> the linear relaxation of <script type="math/tex">(P)</script> obtained by relaxing the integrality constraint.</p>
 
-<p>The optimum solution vector of <script type="math/tex">(\bar{P})</script>, if it exists and it is finite, it is used to derive a basis
+<p>The optimum solution vector of <script type="math/tex">(\bar{P})</script>, if it exists and it is finite, is used to derive a basis
 (for a formal definition of <strong>basis</strong>, see [1] or [3]).
 Indeed, the basis partitions the columns of matrix <script type="math/tex">A</script> into two submatrices
 <script type="math/tex">B</script> and <script type="math/tex">N</script>, where <script type="math/tex">B</script> is given by the columns corresponding to the basic variables,
@@ -192,7 +192,7 @@ In practice, for each fractional basic variable, it is possible to generate a va
 
 <p>The key step to generate Gomory cuts is to get an optimal basis or, even better, the inverse of the basis matrix <script type="math/tex">B^{-1}</script>
 multiplied by <script type="math/tex">A</script> and by <script type="math/tex">b</script>. Once we have that matrix, in order to generate a Gomory cut from a fractional
-basic variable, we just use the last equation in the previous derivation, applying it to each row of the system of inequalities</p>
+basic variable, we just use the last equation in the previous derivation, applying it to each row of the system of inequalities.</p>
 
 <p>Given the optimal basis, the optimal basic vector is <script type="math/tex">x_B=B^{-1}b</script>, since the non basic variables are equal to zero.
 Let <script type="math/tex">j</script> be the index of a fractional basic variable, and let <script type="math/tex">i</script> be the index of the constraint corresponding to
@@ -269,12 +269,12 @@ variable <script type="math/tex">j</script> in the equations <script type="math/
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>The code reads row by row (index <em>i</em>) the inverse basis matrix <script type="math/tex">B^{-1}</script> multiplied by <script type="math/tex">A</script> (line 7),
-which is temporally stored in vector <code>z</code>,
+which is temporarily stored in vector <code>z</code>,
 and then the code stores the corresponding Gomory cut in the compact matrix given by vectors <code>rmatbeg</code>, <code>rmatind</code>, and <code>rmatval</code> (lines 8-15).
 The array <code>b_bar</code> contains the vector <script type="math/tex">B^{-1}b</script> (line 21). In lines 26-27, all the cuts are added at once to the current LP data structure.</p>
 
 <p>On GitHub you find a small program that I wrote to generate Gomory cuts for problems written as <script type="math/tex">(P)</script>.
-The repository have an <a href="https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/README.md">example of execution</a> of my program.</p>
+The repository has an <a href="https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/README.md">example of execution</a> of my program.</p>
 
 <p>The code is simple only because it is designed for small IPs in the form
 <script type="math/tex"> \min\, \{\, cx \mid Ax\, \leq\,b,\, x\geq 0\}</script>.
@@ -293,20 +293,20 @@ the version-to-version speed-up given by the blue bars in the chart below
 
 <p><img src="http://stegua.github.io/images/cplex65.png" /></p>
 
-<p>Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
+<p>Gomory cuts are still a subject of research, since they pose a number of implementation challenges. 
 These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix
 requires the division by its determinant.</p>
 
 <blockquote>
-  <p>“In 1959, […] We started to experience the unpredictability of the computational results rather steadily” (Gomory, see [4]).”</p>
+  <p>“In 1959, […] We started to experience the unpredictability of the computational results rather steadily” (Gomory, see [4]).</p>
 </blockquote>
 
 <p>A recent paper by Cornuejols, Margot, and Nannicini deals with some of these issues [2].</p>
 
-<p>If you like to learn more about how the basis are computed in the CPLEX LP solver, there is very nice paper
+<p>If you like to learn more about how the bases are computed in the CPLEX LP solver, there is a very nice paper
 by Bixby [3]. The paper explains different approaches to get the first basic feasible solution and
 gives some hints of the CPLEX implementation of that time, i.e., 1992. Though the paper does not deal with Gomory
-cuts directly, it is a very pleasant reading.</p>
+cuts directly, it is a very pleasant read.</p>
 
 <p>To conclude, for those of you interested in <a href="http://www.math.uiuc.edu/documenta/vol-ismp/vol-ismp.html">Optimization Stories</a>
 there is a nice chapter by G. Cornuejols about the <strong>Ongoing Story of Gomory Cuts</strong> [4].</p>
@@ -376,7 +376,7 @@ there is a nice chapter by G. Cornuejols about the <strong>Ongoing Story of Gomo
   </header>
 
 
-  <div class="entry-content"><p>Last week, more then 700,000 Italian commuters discovered the importance of Operations Research (OR).
+  <div class="entry-content"><p>Last week, more than 700,000 Italian commuters discovered the importance of Operations Research (OR).
 Nobody explicitly mentioned OR, 
 but due to a horrible crew schedule of <a href="http://www.trenord.it">Trenord</a> 
 (a train operator with around 330 trains and 2700 employees),
@@ -393,20 +393,20 @@ Likely, the system is not faulty, but it “<em>only</em>” had bad input data.
 
 <h2 id="what-newspapers-do-not-write">What newspapers do not write</h2>
 
-<p>Before the Goal System, Trenord was using a different software, produced by
+<p>Before the Goal System, Trenord was using a different piece of software, produced by
 <a href="http://www.maior.it">Management Artificial Intelligence Operations Research srl (MAIOR)</a>
 that is used by several public transportation companies in Italy,
-included <a href="http://www.atm.it">ATM</a> that operates the subway and buses in Milan.
+including <a href="http://www.atm.it">ATM</a> that operates the subway and buses in Milan.
 In addition, MAIOR collaborates with the <em>Politecnico di Milano</em> and the <em>University of Pisa</em>
-to improve continuously its software.
+to continuously improve its software.
 Honestly, I am biased, since I collaborate with MAIOR. 
-However, Trenord dismissed the software of MAOIR
+However, Trenord dismissed the software of MAIOR
 without any specific complaint, since the management had decided to buy the Goal System software.</p>
 
 <p>Newspapers do not ask the following question:</p>
 
 <blockquote>
-  <p>Why to change a piece of software, if the previous one was working correctly?</p>
+  <p>Why change a piece of software, if the previous one was working correctly?</p>
 </blockquote>
 
 <p>In Italy, soccer players have a motto: “<em>squadra che vince non si cambia</em>”.
@@ -419,8 +419,8 @@ help Trenord to improve the situation.</p>
 
 <h3 id="disclaimer-post-edited-on-18th-december-2012">Disclaimer (post edited on 18th December 2012)</h3>
 <ol>
-  <li>I am a Pavia-Milano commuter disappointed of the chaotic week we had.</li>
-  <li>The information reported in this post were obtained with searches on google.it and published on Italian online magazines.</li>
+  <li>I am a Pavia-Milano commuter disappointed by the chaotic week we had.</li>
+  <li>The information reported in this post was obtained with searches on google.it and published on Italian online magazines.</li>
   <li>Surely, the Goal System is a piece of software as good as MAIOR software is.</li>
   <li>This post does not intend to offend anyone. </li>
 </ol>
@@ -501,16 +501,16 @@ and an initial mapping <script type="math/tex">\pi</script> of each process to a
 Each process consumes several <em>resources</em>, e.g., CPU, memory, and bandwidth.
 In the challenge, some processes were defined to be
 <em>transient</em>: they consume resources both on the machine where they are initially located,
-and in the machine they are going to be after the reassignment.
+and on the machine they are going to be after the reassignment.
 The problem asks to find a new assignment of processes to machines that minimizes a rather involved cost function.</p>
 
-<p>A basic ILP model will have a 0-1 variable <script type="math/tex">x_{pi}</script> equals to 1 if you
+<p>A basic ILP model will have a 0-1 variable <script type="math/tex">x_{pi}</script> equal to 1 if you
 (re)assign process <script type="math/tex">p</script> to machine <script type="math/tex">i</script>. The number of processes and the number of machines give
 a first clue on the size of the problem. 
 The constraints on the resource capacities yield a multi-dimensional knapsack subproblem for each machine.
 The Machine Reassignment Problem has other constraints (kind of logical 0-1 constraints), 
 but I do not want to bore you here with a full problem description. 
-If you like to see my model, please read the 
+If you would like to see my model, please read the 
 <a href="https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/ampl-scripts/roadef2012.mod">AMPL model file</a>. </p>
 
 <h2 id="a-first-attempt-with-gurobi">A first attempt with Gurobi</h2>
@@ -520,7 +520,7 @@ If you like to see my model, please read the
 of the challenge (second column). The remaining four columns give 
 the upper bound (UB), the lower bound (LB), the number of branch-and-bound nodes, and the computation time in seconds
 obtained with Gurobi 5.0.1, a timeout of 300 seconds, and the default parameter setting on a rather old desktop
-(single core, 2Gb of RAM).</p>
+(single core, 2GB of RAM).</p>
 
 <table>
   <thead>
@@ -621,8 +621,8 @@ obtained with Gurobi 5.0.1, a timeout of 300 seconds, and the default parameter 
 Instances <strong>a1-1</strong>, <strong>a1-3</strong>, <strong>a1-5</strong> are solved to optimality within 300 seconds
 and hence they are not further considered.</p>
 
-<p>The remaining seven instances are the challenging instances mentioned at the begging of this post.
-The instances <strong>a2-x</strong> are embarrassing: they have an UB that is far away from both the best known UB
+<p>The remaining seven instances are the challenging instances mentioned at the beginning of this post.
+The instances <strong>a2-x</strong> are embarrassing: they have a UB that is far away from both the best known UB
 and the computed LB.
 Specifically, look at the instance <strong>a2-1</strong>: the best result of the challenge has value 198, Gurobi
 (using my model) finds a solution with cost 54,350,836: you may agree that this is “<em>slightly</em>” more than 198.
@@ -630,14 +630,14 @@ At the same time the LB is only 110. </p>
 
 <p>Note that for all the <strong>a2-x</strong> instances the number of branch-and-bound nodes is zero.
 After 300 seconds the solver is still at the root node trying to generate cutting planes and/or
-running their primal heuristics. Using CPLEX 12.5 we got pretty similar results.</p>
+running its primal heuristics. Using CPLEX 12.5 we got pretty similar results.</p>
 
 <p>This is why I think these instances are challenging for branch-and-cut solvers. </p>
 
 <h2 id="search-strategies-feasibility-vs-optimality">Search Strategies: Feasibility vs Optimality</h2>
-<p>Commercial solvers have usually a meta-parameter that controls the search focus by setting other parameters
-(how they are precisely set is undocumented: do you know more about?).
-The two basic options of this parameter are (1) to focus on looking for feasible solution
+<p>Commercial solvers usually have a meta-parameter that controls the search focus by setting other parameters
+(how they are precisely set is undocumented: do you know more about it?).
+The two basic options of this parameter are (1) to focus on looking for feasible solutions
 or (2) to focus on proving optimality.
 The name of this parameter is <strong>MipEmphasis</strong> in CPLEX and <strong>MipFocus</strong> in Gurobi. 
 Since the LPs are quite time consuming and after 300 seconds the solver is still at the root node, 
@@ -647,7 +647,7 @@ we can wonder whether generating cuts is of any help on these instances.</p>
 
 <p>Look at the table below:
 the values of the upper bounds of instances <strong>a1-2</strong>, <strong>a1-4</strong>, and <strong>a2-3</strong> are slightly better than before: 
-this is a good news. However, for instance <strong>a2-1</strong> the upper bound is worse, and for the other three instances there is no difference. Moreover, the LBs are always weaker: as expected, there is no free lunch!</p>
+this is good news. However, for instance <strong>a2-1</strong> the upper bound is worse, and for the other three instances there is no difference. Moreover, the LBs are always weaker: as expected, there is no free lunch!</p>
 
 <table>
   <thead>
@@ -719,12 +719,12 @@ If we want to keep a timeout of 300 seconds, there is little we can do, unless w
   <p>Can we improve those results with a branch-and-cut solver using a longer timeout?</p>
 </blockquote>
 
-<p>Most of the papers that uses branch-and-cut to solve hard problems have a timeout
-of at least one hour, and they start by running an heuristic for around 5 minutes.
+<p>Most of the papers that use branch-and-cut to solve hard problems have a timeout
+of at least one hour, and they start by running a heuristic for around 5 minutes.
 Therefore, we can think of using the best results obtained by the participants of the 
 challenge as starting solution. </p>
 
-<p>So, let us make a step backward: we enable all cut generators and we set all parameters at the default value.
+<p>So, let us take a step back: we enable all cut generators and we set all parameters at the default value.
 In addition we set the time limit to one hour. The table below gives the new results.
 With this setting we are able to “prove” near-optimality of instance <strong>a1-2</strong>, and we reduce
 significantly the gap of instance <strong>a2-4</strong>.
@@ -875,7 +875,7 @@ With the focus on optimality you get better lower bounds, but you might not impr
   <p>1) How to balance feasibility with optimality?</p>
 </blockquote>
 
-<p>To use branch-and-cut solver and to disable cut generators is counterintuitive, but if you do you, you get better
+<p>To use a branch-and-cut solver and to disable cut generators is counterintuitive, but if you do, you get better
 primal bounds.  </p>
 
 <blockquote>
@@ -965,7 +965,7 @@ in this blog. </p>
   <div class="entry-content"><p>Last week in Quebec City, there was the 
 <a href="http://www.cp2012.org/">18th International Conference on Principles and Practice of Constraint Programming</a>.
 This year the conference had a record of submissions (186 in total) and the program committee
-made a vey nice job in organizing the plenary sessions and the tutorials.
+did a very nice job in organizing the plenary sessions and the tutorials.
 You can find <a href="http://4c.ucc.ie/~hsimonis/CP2012/index.htm">very nice pictures</a> of the conference on <a href="http://4c.ucc.ie/~hsimonis/">Helmut’s web page</a>.</p>
 
 <p>During the conference, the weather outside was pretty cold, but at the conference site
@@ -977,25 +977,25 @@ the discussions were warm and the presentations were intriguing.</p>
 <p>The invited talks were excellent and my favorite one was given by Miguel F. Anjos
 on Optimization Challenges in Smart Grid Operations.
 Miguel is not exactly a CP programmer, he is more on discrete non linear 
-optimization, but his talk was a perfect mixed of applications, modeling, and solution techniques.
+optimization, but his talk was a perfect mix of applications, modeling, and solution techniques.
 Please, read and enjoy <a href="http://www.cp2012.org/slides/Anjos-OptChalSmartGrids-CP2012.pdf">his slides</a>.</p>
 
-<p>I like to mention just one of his observations. Nowadays, electric cars are becoming more and more
-present. What would happen when each of us will have an electric car?
+<p>I’d like to mention just one of his observations. Nowadays, electric cars are becoming more and more
+present. What would happen when each of us has an electric car?
 Likely, during the night, while sleeping, we will connect our car to the grid to recharge the
 car batteries. This will lead to high variability in night peaks of energy demand.</p>
 
 <p>How to manage these peaks?</p>
 
-<p>Well, what Miguel has reported as a possible challenging option is to think of the collection of cars connected to the grid as a kind of huge battery. This sort of <em>collective</em> battery could be used to better handle the peaks of energy demands. Each car would play the game with a double role: if there is not an energy demand peak, you can recharge the car battery; otherwise, the car battery could be used as a power source and it could supply energy to the grid. This is an oversimplification, but as you can image there would be great challenges and opportunities for any <em>constraint optimizer</em> in terms of modeling and solution techniques. </p>
+<p>Well, what Miguel has reported as a possible challenging option is to think of the collection of cars connected to the grid as a kind of huge battery. This sort of <em>collective</em> battery could be used to better handle the peaks of energy demands. Each car would play the game with a double role: if there is not an energy demand peak, you can recharge the car battery; otherwise, the car battery could be used as a power source and it could supply energy to the grid. This is an oversimplification, but as you can imagine there would be great challenges and opportunities for any <em>constraint optimizer</em> in terms of modeling and solution techniques. </p>
 
-<p>I am curious to read more about, do you?</p>
+<p>I am curious to read more about it, are you?</p>
 
 <h3 id="sessions-and-talks">Sessions and Talks</h3>
-<p>This year CP had the thicker conference proceedings, ever. Traditionally, the papers are presented in two parallel sessions. Two is not that much when you think that this year at <a href="http://ismp2012.mathopt.org/">ISMP</a> there were 40 parallel sessions…
+<p>This year CP had the thickest conference proceedings, ever. Traditionally, the papers are presented in two parallel sessions. Two is not that much when you think that this year at <a href="http://ismp2012.mathopt.org/">ISMP</a> there were 40 parallel sessions…
 but still, you always regret that you could not attend the talk in the other session. Argh!</p>
 
-<p>Here I like to mention just two works. However, the program chair is trying 
+<p>Here I’d like to mention just two works. However, the program chair is trying 
 to make <a href="http://www.cp2012.org/accepted_papers.php">all the slides</a> available.
 Have a look at the program and at the slides: there are many good papers.</p>
 
@@ -1003,33 +1003,33 @@ Have a look at the program and at the slides: there are many good papers.</p>
 on <a href="http://4c.ucc.ie/~hsimonis/reassignment.pdf"><em>Comparing Solution Methods for the Machine Reassignment Problem</em></a>, a problem
 that Google has to solve every day in its 
 <a href="http://www.google.com/about/datacenters/gallery/#/tech">data centers</a> and that was the subject of the <a href="http://challenge.roadef.org/2012/en/sujet.php">Google/Roadef Challenge 2012</a>.
-The true challenge is given by the HUGE size of the instances and the very short timeout (300 seconds). The work presented by Deepak is really interesting and they got excellent results using CP-based Large Neighborhood Search: they classified second at the challenge.</p>
+The true challenge is given by the HUGE size of the instances and the very short timeout (300 seconds). The work presented by Deepak is really interesting and they got excellent results using CP-based Large Neighborhood Search: they ranked second at the challenge.</p>
 
 <p>Related to the <strong>Machine Reassignment Problem</strong> there was a second interesting talk entitled 
 <em><a href="http://www.springerlink.com/content/52j3197311333658/">Weibull-based Benchmarks for Bin Packing</a></em>, 
 by Ignacio Castineiras, Milan De Cauwer and Barry O’Sullivan. 
 They have designed a parametric instance generator for bin packing problems based on the Weibull distribution.
-Having a parametric generator is crucial to perform exhaustive computational results and to
+Having a parametric generator is crucial to perform exhaustive computational experiments and to
 identify those instances that are challenging for a particular solution technique.
 For instance, they have considered a CP-approach to bin packing problems and they have identified those Weibull shape values that yield challenging instances for such an approach.
 A nice feature is that their generator is able to create instances similar to those of the Google challenge…
 I hope they will release their generator soon!</p>
 
 <h3 id="the-doctoral-program">The Doctoral Program</h3>
-<p>Differently from other conferences (as for instance <a href="http://ipco2013.dim.uchile.cl/">IPCO</a>), CP gives PhD
+<p>Unlike other conferences (as for instance <a href="http://ipco2013.dim.uchile.cl/">IPCO</a>), CP gives PhD
 students the opportunity to present their ongoing work within a <a href="http://zivny.cz/dp12/">Doctoral Program</a>.
 The sponsors cover part of the costs for attending the conference.
 During the conference each student has a mentor who is supposed to
 help him. This year there were around 24 students and only very few of them
 had a paper accepted at the main conference. This means that without
-the Doctoral Program, most of these students would not had the opportunity to attend the conference.</p>
+the Doctoral Program, most of these students would not have had the opportunity to attend the conference.</p>
 
-<p>Geoffrey Chu awarded the 2012 ACP Doctoral Research Award for his thesis
+<p>Geoffrey Chu was awarded the 2012 ACP Doctoral Research Award for his thesis
 <strong><em>Improving Combinatorial Optimization</em></strong>. To give you an idea about the amount of his contributions, consider that after his thesis presentation, someone in the audience asked:</p>
 
 <p><em>“And you got only <strong>one PhD</strong> for all this work?”</em></p>
 
-<p><em>Chapeau!</em> Among other things, Chu has implemented <a href="http://www.g12.csse.unimelb.edu.au/minizinc/challenge2011/description_chuffed.txt">Chuffed</a> one of the most efficient CP solver
+<p><em>Chapeau!</em> Among other things, Chu has implemented <a href="http://www.g12.csse.unimelb.edu.au/minizinc/challenge2011/description_chuffed.txt">Chuffed</a> one of the most efficient CP solvers
 that uses <em>lazy clause generation</em> and that ranked very well at the last
 <a href="http://www.g12.cs.mu.oz.au/minizinc/challenge2012/results2012.html">MiniZinc Challenge</a>, even if it was not one of the official competitors. </p>
 
@@ -1106,26 +1106,26 @@ tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
 [a] The <a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a><br />
 [b] The <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon Graph Library</a><br />
 [c] The <a href="http://code.google.com/p/or-tools/">Google OrTools</a><br />
-[d] Hei dude! We can do better!!!  </p>
+[d] Hey dude! We can do better!!!  </p>
 
 <p>What is your answer for the first question? … well, the answers are all correct!
 And for the second question? To know the correct answer, sorry, you have to read this post to the end…</p>
 
-<p>If you are curious to learn more about the <em>classification</em> of the Dijkstra’s algorithm proposed in the first three answers,
+<p>If you are curious to learn more about the <em>classification</em> of Dijkstra’s algorithm proposed in the first three answers,
 please consider reading [1] and [2]. Honestly, I did not know that the algorithm was independently discovered by Dantzig [3] as a special
 case of Linear Programming. 
-However, Dantzig is credited for the first version of the bidirectional 
-Dijkstra’s algorithm (should we called it <strong>Dantzig’s algorithm</strong>?), which is nowadays the best performing
+However, Dantzig is credited with the first version of the bidirectional 
+Dijkstra’s algorithm (should we call it <strong>Dantzig’s algorithm</strong>?), which is nowadays the best performing
 algorithm on general graphs.
-The bidirectional Dijkstra’s algorithm is used as benchmark to measure the speed-up of modern specialized
+The bidirectional Dijkstra’s algorithm is used as a benchmark to measure the speed-up of modern specialized
 shortest path algorithms for road networks [4,5], those algorithms that are implemented, for instance, in our
-GPS navigation systems, in yours smartphones (I don’t have one, argh!), in Google Maps Directions, and Microsoft Bing Maps. </p>
+GPS navigation systems, in your smartphones (I don’t have one, argh!), in Google Maps Directions, and Microsoft Bing Maps. </p>
 
 <p>Why a first blog entry on Dijkstra’s algorithm? That’s simple.</p>
 
 <ul>
   <li>Have you ever implemented an <em>efficient</em> version of this well-known and widely studied algorithm?</li>
-  <li>Have you ever used the version that is implemented in well-reputed graph libraries, such as, the 
+  <li>Have you ever used the version that is implemented in well-reputed graph libraries, such as the 
 <a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a>, 
 the <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon</a>, and/or 
 <a href="http://code.google.com/p/or-tools/">Google OrTools</a>?</li>
@@ -1135,17 +1135,17 @@ the <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon</a>, and/or
 
 <h2 id="the-algorithm">The Algorithm</h2>
 
-<p>The algorithm is quite simple. First partition the nodes of the input graph <em>G=(N,A)</em> in three
+<p>The algorithm is quite simple. First partition the nodes of the input graph <em>G=(N,A)</em> into three
 sets: the sets of (1) <em>scanned</em>, (2) <em>reachable</em>, and (3) <em>unvisited</em> nodes.
 Every node has a distance label <script type="math/tex">d_i</script> and a predecessor vertex <script type="math/tex">p_i</script>. Initially, set the 
 label of the source node <script type="math/tex">d_s=0</script>, while set <script type="math/tex">d_i=+\infty</script> for all other nodes. Moreover,
 the node <em>s</em> is placed in the set of <em>reachable</em> nodes, while all the other nodes are <em>unvisited</em>.</p>
 
-<p>The algorithm proceedes as follows: select a <em>reachable</em> node <em>i</em> with minimum distance label,
-and move it in the set of <em>scanned</em> nodes, it will be never selected again. 
+<p>The algorithm proceeds as follows: select a <em>reachable</em> node <em>i</em> with minimum distance label,
+and move it into the set of <em>scanned</em> nodes, it will never be selected again. 
 For each arc <em>(i,j)</em> in the forward star of node <em>i</em> check if node <em>j</em> has distance label <script type="math/tex">d_j > d_i + c_{ij}</script>; 
 if it is the case, update the label <script type="math/tex">d_j = d_i + c_{ij}</script> and the predecessor vertex <script type="math/tex">p_j=i</script>.
-In addition, if the node was <em>unvisited</em>, move it in the 
+In addition, if the node was <em>unvisited</em>, move it into the 
 set of reachable nodes. If the selected node <em>i</em> is the destination node
 <em>t</em>, stop the algorithm.
 Otherwise, continue by selecting the next node <em>i</em> with minimum distance label.</p>
@@ -1153,14 +1153,14 @@ Otherwise, continue by selecting the next node <em>i</em> with minimum distance 
 <p>The algorithm stops either when it scans the destination node <em>t</em> or the set of reachable nodes is empty.
 For the nice properties of the algorithm consult any textbook in computer science or operations research. </p>
 
-<p>At this point it should be clear why Dijkstra’s algorithm is <strong>greedy</strong>: it always select a reachable node with
+<p>At this point it should be clear why Dijkstra’s algorithm is <strong>greedy</strong>: it always selects a reachable node with
 minimum distance label. It is a <strong>dynamic programming</strong> algorithm because it maintains the 
 recursive relation 
 <script type="math/tex">d_j = \min \{d_i + c_{ij} \mid (i,j) \in A \}</script> 
 for all <script type="math/tex">j \in N</script>.
 If you are familiar with Linear Programming, you should recognize that the distance labels
-play the role of dual variable of a flow based formulation of the shortest path problem,
-and the Dijkstra’s algorithm costructs a <strong>primal</strong> solution (i.e. a path) that satisfies the <strong>dual</strong>
+play the role of dual variables of a flow based formulation of the shortest path problem,
+and Dijkstra’s algorithm constructs a <strong>primal</strong> solution (i.e. a path) that satisfies the <strong>dual</strong>
 constraints <script type="math/tex">d_j - d_i \leq c_{ij}</script>.</p>
 
 <h2 id="graphs-and-heaps">Graphs and Heaps</h2>
@@ -1172,23 +1172,23 @@ a std::vector to store the forward star of each node.</p>
 
 <p>The second data structure, the most important, is the priority queue <em>Q</em>.
 The queue has to support three operations: <em>push</em>, <em>update</em>, and <em>extract-min</em>.
-The type of priority queue used determines the worst-case complexity of the Dijkstra’s algorithm.
+The type of priority queue used determines the worst-case complexity of Dijkstra’s algorithm.
 Theoretically, the best strongly polynomial worst-case complexity is achieved via a <strong>Fibonacci heap</strong>. 
 On road networks, the Multi Bucket heap yields a weakly polynomial worst-case complexity that
 is more efficient in practice [4,5]. Unfortunately, the Fibonacci Heap is a rather complex data structure,
-and lazy implementations end up in using a simpler Binomial Heap.</p>
+and lazy implementations end up using a simpler Binomial Heap.</p>
 
 <p>The good news is that the Boost Library from version 1.49 has a <a href="http://www.boost.org/doc/libs/1_51_0/doc/html/heap.html">Heap library</a>.
-This library contains several type of heaps that share a common interface: 
+This library contains several types of heaps that share a common interface: 
 d-ary-heap, binomial-heap, fibonacci-heap, pairing-heap, and skew-heap.
-The worst-case complexity of the basic operations are summarized in a
+The worst-case complexities of the basic operations are summarized in a
 <a href="http://www.boost.org/doc/libs/1_51_0/doc/html/heap/data_structures.html#heap.data_structures.data_structure_configuration">nice table</a>. 
-Contrary to text-books, these heaps are ordered in non increasing order (they are max-heap instead of min-heap), that means
+Contrary to textbooks, these heaps are ordered in non-increasing order (they are max-heap instead of min-heap), that means
 that the top of the heap is always the element with highest priority. For implementing Dijkstra,
-where all arc lengths are non negative, this is not a problem: we can store the elements with
-the distance changed in sign (sorry for the rough explanation, but if you are <em>really</em> intrested it is better to read directly the source code).</p>
+where all arc lengths are non-negative, this is not a problem: we can store the elements with
+the distance changed in sign (sorry for the rough explanation, but if you are <em>really</em> interested it is better to read directly the source code).</p>
 
-<p>The big advantage of <strong>boost::heap</strong> is that it allows to program Dijkstra once, and to compile it
+<p>The big advantage of <strong>boost::heap</strong> is that it allows one to program Dijkstra once, and to compile it
 with different heaps via templates. If you wonder why the Boost Graph Library does not use boost::heap,
 well, the reason is that BGL was implemented a few years ago, while boost::heap appeared this year.</p>
 
@@ -1198,11 +1198,11 @@ well, the reason is that BGL was implemented a few years ago, while boost::heap 
 <p>I have tried three graph libraries: 
 <a href="http://www.boost.org/doc/libs/1_51_0/libs/graph/doc/index.html">Boost Graph Library (BGL)</a> v1.51, 
 <a href="http://lemon.cs.elte.hu/trac/lemon">COIN-OR Lemon</a> v1.2.3, and 
-<a href="http://code.google.com/p/or-tools/">Google OrTools</a> cheked out from svn on Sep 7th, 2012.
+<a href="http://code.google.com/p/or-tools/">Google OrTools</a> checked out from svn on Sep 7th, 2012.
 They all have a Dijkstra implementation, even if I don’t know the implementation details.
-As a plus, the three libraries have python wrappers (but I have not test it).
+As a plus, the three libraries have python wrappers (but I have not tested them).
 The BGL is a header only library. Lemon came after BGL.
-BGL, Lemon, and my implementation use (different) Fibonacci Heaps, while I have not clear what type of priority queue is used by OrTools.</p>
+BGL, Lemon, and my implementation use (different) Fibonacci Heaps, while it is not clear to me what type of priority queue is used by OrTools.</p>
 
 <p><strong>Disclaimer</strong>: Google OrTools is much more than a graph library: among others, it has a Constraint Programming solver with very nice
 features for Large Neighborhood Search; however, we are interested here only in its Dijkstra implementation.
@@ -1210,7 +1210,7 @@ Constraint Programming will be the subject of another future post.</p>
 
 <p>A few tests on instances taken from the last <a href="http://www.dis.uniroma1.it/challenge9/download.shtml">DIMACS challenge on Shortest Path problems</a>
 show the pros and cons of each implementation. Three instances are generated using the <strong>rand</strong> graph generator, while 10 instances are
-road networks. The test are done on my late 2008 MacBookPro using the apple gcc-4.2 compiler.
+road networks. The tests are done on my late 2008 MacBookPro using the apple gcc-4.2 compiler.
 All the source code, scripts, and even this post text, are available on <a href="https://github.com/stegua/MyBlogEntries/tree/master/Dijkstra">github</a>.</p>
 
 <h2 id="rand-graphs">RAND Graphs</h2>
@@ -1225,7 +1225,7 @@ The graphs are:</p>
 </ol>
 
 <p>For each graph, 50 queries between different pairs of source and destination nodes are performed.
-The table below reports the average of query times (total time divided by query numbers).
+The table below reports the average of query times (total time divided by the number of queries).
 The entries in bold highlight the shortest time per row.</p>
 
 <table>
@@ -1265,7 +1265,7 @@ The entries in bold highlight the shortest time per row.</p>
 
 <p><br />
 In these tests, it looks like my implementation is the winner… wow!
-Although, the true winner is the boost::heap library, since the nasty implementation details
+However, the true winner is the boost::heap library, since the nasty implementation details
 are delegated to that library.</p>
 
 <p>… but come on! These are artificial graphs: who is really interested in shortest paths on random graphs?</p>
@@ -1273,8 +1273,8 @@ are delegated to that library.</p>
 <h2 id="road-networks">Road Networks</h2>
 
 <p>The second test uses road networks that are <strong>very</strong> sparse graphs. 
-We report only average computation time in seconds over 50 different pair of source-destination nodes.
-We decided to leave out OrTools since it is not very performing on very sparse graphs.</p>
+We report only average computation time in seconds over 50 different pairs of source-destination nodes.
+We decided to leave out OrTools since it does not perform very well on very sparse graphs.</p>
 
 <p>This table below shows the average query time for the standard implementations that use <strong>Fibonacci Heaps</strong>.</p>
 
@@ -1375,7 +1375,7 @@ We decided to leave out OrTools since it is not very performing on very sparse g
 
 <p><br />
 From this table, BGL and my implementation are equally good, while Lemon comes after.
-What would happen if we use a diffent type of heap?</p>
+What would happen if we use a different type of heap?</p>
 
 <p>This second table shows the average query time for the Lemon graph library with a specialized 
 <a href="http://lemon.cs.elte.hu/pub/doc/latest/a00048.html">Binary Heap</a> implementation,
@@ -1496,12 +1496,12 @@ Instead, the boost::heap library has a <strong>d-ary-heap</strong>, that for <em
 
 <h2 id="so-what">So what?</h2>
 
-<p>Dijkstra’s algorithm is so beatiful because it has the <em>elegance of simplicity</em>.</p>
+<p>Dijkstra’s algorithm is so beautiful because it has the <em>elegance of simplicity</em>.</p>
 
 <p>Using an existing efficient heap data structure, it is easy to implement an <strong>“efficient”</strong> version of the algorithm.</p>
 
 <p>However, if you have spare time, or you need to solve shortest path problems on a specific type of graphs (e.g., road networks),
-you might give a try with existing graph libraries, before investing developing time in your own implementation.
+you might give a try with existing graph libraries, before investing development time in your own implementation.
 In addition, be sure to read [4] and the references therein contained.</p>
 
 <p>All the code I have used to write this post is available on <a href="https://github.com/stegua/MyBlogEntries/tree/master/Dijkstra">github</a>. 
