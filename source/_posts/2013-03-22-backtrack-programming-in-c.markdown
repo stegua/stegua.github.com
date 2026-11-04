@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Backtrack Programming in c"
+title: "Backtrack Programming in C"
 date: 2013-03-22 12:45
 updated: 2013-03-22 12:45
 comments: true
@@ -25,7 +25,7 @@ Lin-Kernighan heuristics for the [Travelling Salesman Problem](http://www.akira.
 1. **```Choice(N)```**: "_is used when a choice is to be made among a number of alternatives, where **N** is a positive integer denoting the number of alternatives_".
 2. **```Backtrack()```**: "_causes the program to backtrack, that is to say, return to the most recent call of Choice, which has not yet returned all its values_".
 
-With these two functions is pretty simple to develop exact enumeration algorithms.
+With these two functions it is pretty simple to develop exact enumeration algorithms.
 The **CBack** library comes with several examples, such as algorithms for the [N-queens](http://en.wikipedia.org/wiki/Eight_queens_puzzle) problem and the [15-puzzle](http://en.wikipedia.org/wiki/15_puzzle).
 Below, I will show you how to use **CBack** to implement a simple algorithm that finds a [Maximum Clique](http://en.wikipedia.org/wiki/Clique_problem) in an undirected graph.
 
@@ -59,7 +59,7 @@ the Figure below sketches the program execution.
 
 {% img http://stegua.github.io/images/backtrack.png %}
 
-When the program executes the ```Choice(N=3)``` statement, that is the first call to the first choice (line 2), value 1 is assigned to variable ```i```. Behind the scene, the *Choice* function stores the current execution state of the program in its own stack,
+When the program executes the ```Choice(N=3)``` statement, that is the first call to the first choice (line 2), value 1 is assigned to variable ```i```. Behind the scenes, the *Choice* function stores the current execution state of the program in its own stack,
 and records the next possible choices (i.e. the other possible program branches),
 that are values ```2``` and ```3```. Next, the second ```Choice(N=2)``` assigns value 1 to ```j``` (line 3),
 and again the state of the program is stored for later use. Then, the ```printf``` outputs ```i = 1 , j = 1``` (line 4 and first line of output). Now, it is time to *backtrack* (line 5). 
@@ -67,16 +67,16 @@ and again the state of the program is stored for later use. Then, the ```printf`
 What is happening here?
 
 Look again at the figure above: When the ```Backtrack()``` function is invoked, the algorithm *backtracks* and continues the execution
-from the most recent **Choice** stored in its stack, i.e. it assigns to variable ```j``` value 2, and ```printf``` outputs ```i = 1, j = 2```. Later, the ```Backtrack()``` is invoked again, and this time the algorithm backtracks until the previous possible choice that corresponds to the assignment of value 2 to variable ```i```, and it executes ```i = 2```. Once the second choice for variable ```i``` is performed, there are again two possible choices for variable ```j```, since the program has backtracked to a point that precedes that statement. Thus, the program executes ```j = 1```, and ```printf``` outputs ```i = 2, j = 1```. At this point, the program _backtracks_ again, and consider the next possible choice, ```j = 2```. This is repeated until all possible choices for ```Choice(3)``` and ```Choice(2)``` are exhausted, yielding the 6 possible combinations of ```i``` and ```j``` that the problem gave as output.
+from the most recent **Choice** stored in its stack, i.e. it assigns to variable ```j``` value 2, and ```printf``` outputs ```i = 1, j = 2```. Later, the ```Backtrack()``` is invoked again, and this time the algorithm backtracks until the previous possible choice that corresponds to the assignment of value 2 to variable ```i```, and it executes ```i = 2```. Once the second choice for variable ```i``` is performed, there are again two possible choices for variable ```j```, since the program has backtracked to a point that precedes that statement. Thus, the program executes ```j = 1```, and ```printf``` outputs ```i = 2, j = 1```. At this point, the program _backtracks_ again, and considers the next possible choice, ```j = 2```. This is repeated until all possible choices for ```Choice(3)``` and ```Choice(2)``` are exhausted, yielding the 6 possible combinations of ```i``` and ```j``` that the program gave as output.
 
 Indeed, during the execution, the program has implicitly visited in a depth-first manner the *search tree* of the previous figure.
-CBack supports also different search strategy, such as *best first*, but I will not cover that topic here.
+CBack supports also different search strategies, such as *best first*, but I will not cover that topic here.
 
 In order to store and restore the program execution state (well, more precisely the *calling environment*), ```Choice(N)``` and ```Backtrack``` use two **threatening** C standard functions, ```setjmp``` and ```longjmp```. 
 For the details of their use in CBack, see [1].
 
 ## A Basic Maximum Clique Algorithm
-The reason why I like this library, apart from remembering me the time I was programming with [Mozart](http://www.mozart-oz.org/), is that it permits to implement quickly exact algorithms based on enumeration. While enumeration is usually disregarded as _inefficient_ ("_ehi, it is just brute force_!"), it is still one of the best method to solve small instances of almost any combinatorial optimization problem. In addition, many sophisticated exact algorithms use plain enumeration as a subroutine, when during the search process the size of the problem becomes small enough.
+The reason why I like this library, apart from reminding me of the time I was programming with [Mozart](http://www.mozart-oz.org/), is that it permits one to implement quickly exact algorithms based on enumeration. While enumeration is usually disregarded as _inefficient_ ("_ehi, it is just brute force_!"), it is still one of the best methods to solve small instances of almost any combinatorial optimization problem. In addition, many sophisticated exact algorithms use plain enumeration as a subroutine, when during the search process the size of the problem becomes small enough.
 
 Consider now the **Maximum Clique Problem**: Given an undirected graph $$G=(V,E)$$, the problem is to find the largest complete subgraph of $$G$$. More formally, you look for the largest subset $$C$$ of the vertex set $$V$$ such that for any pair of nodes $${i,j}$$ in $$C \times C$$ there exists an arc $${i,j} \in E$$.  
 
@@ -103,7 +103,7 @@ As you can see, the backtracking is here described in terms of a recursive funct
 
 ## Maximum Clique with CBack
 We use an array ```S``` of $$n$$ integers, one for each vertex of $$V$$.
-If ```S[v]=0```, then vertex $$i$$ belongs to the candidate set $$P$$; if ```S[v]=1```, then vertex $$i$$ is in $$C$$; if ```S[v]=2```, then vertex $$i$$ cannot be neither in $$P$$ nor in $$C$$. The variable ```s``` stores the size of current clique.
+If ```S[v]=0```, then vertex $$i$$ belongs to the candidate set $$P$$; if ```S[v]=1```, then vertex $$i$$ is in $$C$$; if ```S[v]=2```, then vertex $$i$$ can be neither in $$P$$ nor in $$C$$. The variable ```s``` stores the size of the current clique.
 
 Let me show you directly the C code:
 
@@ -138,9 +138,9 @@ Backtrack();
 ```
 
 Well, I like this code pretty much, despite being a "_plain old_" C program.
-The algorithm and code can be improved in several ways (ordering the vertices, improving the pruning, using upper bounds from heuristic vertex coloring, using induced degree as in [2]), but still, the main loop and the backtrack machinery is all there, in a few lines of code!
+The algorithm and code can be improved in several ways (ordering the vertices, improving the pruning, using upper bounds from heuristic vertex coloring, using induced degree as in [2]), but still, the main loop and the backtrack machinery are all there, in a few lines of code!
 
-Maybe you wonder about the efficiency of this code, but at the moment I have not a precise answer. For sure, the ordering of the vertices is crucial, and can make a huge difference on solving the [max-clique DIMACS instances](http://iridia.ulb.ac.be/~fmascia/maximum_clique/DIMACS-benchmark). I have used CBack to implement my own version of the Ostengard's max-clique algorithm [4], but my implementation is somehow slower. I suspect that the difference is due to data structure used to store the graph (Ostengard's implementation relies on bitsets), but not in the way the backtracking is achieved. Although, to answer to such question could be a subject of another post.
+Maybe you wonder about the efficiency of this code, but at the moment I do not have a precise answer. For sure, the ordering of the vertices is crucial, and can make a huge difference on solving the [max-clique DIMACS instances](http://iridia.ulb.ac.be/~fmascia/maximum_clique/DIMACS-benchmark). I have used CBack to implement my own version of Ostergard's max-clique algorithm [4], but my implementation is somewhat slower. I suspect that the difference is due to the data structure used to store the graph (Ostergard's implementation relies on bitsets), but not in the way the backtracking is achieved. Although, to answer such a question could be a subject of another post.
 
 In conclusion, if you need to implement an exact enumerative algorithm, [CBack](http://www.akira.ruc.dk/~keld/research/CBACK/) could be an option to consider.
 

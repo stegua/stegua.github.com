@@ -26,7 +26,7 @@ tbody tr:nth-child(even) { background-color: rgba(0, 0, 100, 0.1); }
 .journal { font-style: italic; }
 </style>
 
-In this post, I like to share a simple idea on how to solve to optimality some [hard instances](http://www.info.univ-angers.fr/pub/porumbel/graphs/) of the [Graph Coloring](http://en.wikipedia.org/wiki/Graph_coloring) problem. This simple idea yields a "new time" record for a couple of hard instances. 
+In this post, I'd like to share a simple idea on how to solve to optimality some [hard instances](http://www.info.univ-angers.fr/pub/porumbel/graphs/) of the [Graph Coloring](http://en.wikipedia.org/wiki/Graph_coloring) problem. This simple idea yields a "new time" record for a couple of hard instances. 
 
 To date, the best **exact** approach to solve Graph Coloring 
 is based on *[Branch-and-Price](http://en.wikipedia.org/wiki/Branch_and_price)* [1, 2, 3].
@@ -39,7 +39,7 @@ Here, I want to show you that a modern Mixed Integer Programming (MIP) solver, s
 2. Build a [.mps](http://en.wikipedia.org/wiki/MPS_%28format%29) instance with those columns
 3. Use a MIP solver to solve the .mps instance
 
-Indeed, in this post we try to answer to the following question:
+Indeed, in this post we try to answer the following question:
 
 
 > Is there any hope to solve any hard graph coloring instances with this naive approach?
@@ -62,9 +62,9 @@ Indeed, we *"cover"* every vertex of $$G$$ with the minimal number of maximal st
 The issue with this model is the total number of maximal stable sets in $$G$$, which *is exponential in the number of vertices of G*.
 
 Column Generation is a "mathematically elegant" method to by-pass this issue:
-it lets you to solve the set covering model by *generating* a very small subset of the elements in $$S$$. This happens by repeatedly solving an auxiliary problem,
+it lets you solve the set covering model by *generating* a very small subset of the elements in $$S$$. This happens by repeatedly solving an auxiliary problem,
 called the *pricing* subproblem. For graph coloring, the pricing subproblem consists of a Maximum Weighted Stable Set problem.
-If you are interested in Column Generation, I recommend you to look at the first chapter of
+If you are interested in Column Generation, I recommend that you look at the first chapter of
 the [Column Generation book](http://www.springer.com/gp/book/9780387254852),
 which contains a nice tutorial on the topic, and I would **strongly** recommend reading the nice survey "Selected Topics in Column Generation", [4].
 
@@ -76,9 +76,9 @@ However, *"high"* is a subjective measure, so let me do some computations on my 
 
 ## Hard instances
 Among the [DIMACS instances](http://mat.gsia.cmu.edu/COLOR/instances.html) of Graph Coloring, there are a few instances
-proposed by David Johnson, which are still unsolved (in the sense that we have not a computational proof of optimality of the best known upper bounds).
+proposed by David Johnson, which are still unsolved (in the sense that we do not have a computational proof of optimality of the best known upper bounds).
 
-The table below shows the dimensions of these instances. The name of instances are DSJC{n}.{d}, where {n} is the number of vertices and {d} gives the density of the graph (e.g., DSJC125.9 has 125 vertices and 0.9 of density).
+The table below shows the dimensions of these instances. The names of the instances are DSJC{n}.{d}, where {n} is the number of vertices and {d} gives the density of the graph (e.g., DSJC125.9 has 125 vertices and 0.9 of density).
 
 |---------|------------|---------|---------|----------|-----------|
 | Graph | Nodes | Edges | Max stable sets | Enumeration Time |
@@ -99,7 +99,7 @@ The table below shows the dimensions of these instances. The name of instances a
 
 <br>
 As you can see the number of maximal stable sets (i.e. the cardinality of $$S$$)
-of several instances is not so high, above all for very dense graphs, where the number of stables set is less than the number of edges. However, for sparse graphs, the number of maximal stable sets is too large for the memory available in my laptop.
+of several instances is not so high, above all for very dense graphs, where the number of stable sets is less than the number of edges. However, for sparse graphs, the number of maximal stable sets is too large for the memory available in my laptop.
 
 Now, let me re-state the main question of this post:
 
@@ -108,16 +108,16 @@ Now, let me re-state the main question of this post:
 ## Results
 I have written a small script which uses [Cliquer](http://users.aalto.fi/~pat/cliquer.html) to enumerate all the maximal
 stable sets of a graph, and then I generate an [.mps](http://en.wikipedia.org/wiki/MPS_%28format%29)
-instance for each of the DSJC instance where I was able to store all maximal stable sets.
-The .mps file are on my public [GitHub repository for this post](https://github.com/stegua/MyBlogEntries/tree/master/Coloring).
+instance for each of the DSJC instances where I was able to store all maximal stable sets.
+The .mps files are on my public [GitHub repository for this post](https://github.com/stegua/MyBlogEntries/tree/master/Coloring).
 
 The table below shows some numbers for the sparse instances obtained using Gurobi (v6.0.0)
 with a timeout of 10 minutes on my laptop. If you compare these numbers with the results published in the literature, you can see that they are not bad at all.
 
-Believe me, these number are not bad at all, and establish a new **TIME RECORD**.
+Believe me, these numbers are not bad at all, and establish a new **TIME RECORD**.
 
 For example, the instance DSJC250.9 was solved to optimality only recently in
-11094 seconds by [3], while the column enumeration approach solves the same instance on a similar hardware in only 23 seconds (!), and, honestly, our work in [2] did not solve this instance to optimality at all.
+11094 seconds by [3], while the column enumeration approach solves the same instance on similar hardware in only 23 seconds (!), and, honestly, our work in [2] did not solve this instance to optimality at all.
 
 |---------|------------|---------|---------|----------|-----------|------|------|-----|
 | Graph | Best known | Enum. Time | Run time | LB | UB | Time [2] | LB[2] | UB [2]  
@@ -138,7 +138,7 @@ I would say:
 
 > "Yes, we can!"
 
-... but likely we need to be smarter while branching on the decision variables, since the default branching strategy of a generic MIP solver does not exploit the structure of the problem. If I had the time to work again on Graph Coloring, I would likely use the same branching scheme used in [2], where we combined a Zykov's branching rule with a randomized [iterative deepening depth-first search](http://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search) (randomised because at each restart we were using a different initial pool of columns). Another interesting option would be to tighten the set covering formulation with valid inequalities, by starting with those studied in [5]. 
+... but likely we need to be smarter while branching on the decision variables, since the default branching strategy of a generic MIP solver does not exploit the structure of the problem. If I had the time to work again on Graph Coloring, I would likely use the same branching scheme used in [2], where we combined a Zykov's branching rule with a randomized [iterative deepening depth-first search](http://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search) (randomized because at each restart we were using a different initial pool of columns). Another interesting option would be to tighten the set covering formulation with valid inequalities, by starting with those studied in [5]. 
 
 In conclusion, I believe that enumerating all columns can be a simple but good starting point to attempt to solve to optimality at least the instances DSJC500.9 and DSJC1000.9.
 

@@ -12,13 +12,13 @@ cover:
 ---
 This morning, after reading [this very nice post](http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/), I decided to challenge myself in Python and to have a look at the impact of [mispredicted branches](https://en.wikipedia.org/wiki/Branch_misprediction) in a language different from C/C++. The basic idea was to use only [Python builtins](https://docs.python.org/3.6/library/functions.html): external libraries are not allowed!
 
-As a benchmark, I grabbed a large text file from [P. Norvig's website](http://norvig.com/big.txt), which is 6'488'666 byte long.
+As a benchmark, I grabbed a large text file from [P. Norvig's website](http://norvig.com/big.txt), which is 6'488'666 bytes long.
 
 **The final answer?** Yes, **mispredicted branches** have a huge impact in Python too.
 
-**The hidden answer?** Python dictionaries ever stop to surprise me: they are REALLY efficient.
+**The hidden answer?** Python dictionaries never stop surprising me: they are REALLY efficient.
 
-**NOTE**: The followig code snippets were executed in a Python 3.5 notebook, on a windows machine, running Windows 10 and [Anaconda Python 3.5 64 bits](https://www.continuum.io/downloads).
+**NOTE**: The following code snippets were executed in a Python 3.5 notebook, on a windows machine, running Windows 10 and [Anaconda Python 3.5 64 bits](https://www.continuum.io/downloads).
 You can find my notebook on my [Blog GitHub repo](https://github.com/stegua/MyBlogEntries). Don't ask me why, but this blog entry is better visualized directly on [GitHub](https://github.com/stegua/MyBlogEntries/blob/master/Remove%2Bblanks%2Bfrom%2Ba%2Bstring.ipynb).
 
 **UPDATE**: Well, most of the time I would use my first implementation based on the ```filter``` builtin function, and I would try for alternative implementations only after a profiler has shown
@@ -31,7 +31,7 @@ In Python, I prefer to write as much code in functional style as possible, relyi
 2. [```filter```](https://docs.python.org/3/library/functions.html#filter)
 3. [```reduce```](https://docs.python.org/3/library/functools.html#functools.reduce) (this is in the functools module and it is not a true builtin)
 
-Therefore, after few preliminaries, here is my first code snippet:
+Therefore, after a few preliminaries, here is my first code snippet:
 
 ```python
 import cProfile
@@ -66,7 +66,7 @@ cProfile.run('RemoveBlanksFilter(test)')
     
     
 
-Wow, I didn't realize that I would have call the lambda function for every single byte of my input file. This is clearly too much overhead.
+Wow, I didn't realize that I would have to call the lambda function for every single byte of my input file. This is clearly too much overhead.
 
 ### 2nd attempt: remove function calls overhead
 Let me drop my functional style, and write a plain old for-loop:
@@ -109,7 +109,7 @@ cProfile.run('RemoveBlanks(test)')
 Mmm... we just shift the problem to the list append function calls. Maybe we can do better by working in place.
 
 ### 3rd attempt: work in place
-Well, almost in place: Python string are immutable; therefore, we first copy the string into a list, and then we work in place over the copied list.
+Well, almost in place: Python strings are immutable; therefore, we first copy the string into a list, and then we work in place over the copied list.
 
 
 ```python
@@ -146,7 +146,7 @@ cProfile.run('RemoveBlanksInPlace(test)')
     
     
 
-Ok, working in place does have an impact. Let me go on the true point: avoiding *mispredicted branches*.
+Ok, working in place does have an impact. Let me get to the true point: avoiding *mispredicted branches*.
     
 ### 4th attempt: to avoid mispredicted branches
 As in the [original blog post](http://lemire.me/blog/2017/01/20/how-quickly-can-you-remove-spaces-from-a-string/):

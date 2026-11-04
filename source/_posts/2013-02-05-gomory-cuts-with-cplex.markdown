@@ -20,7 +20,7 @@ you show that it _cuts off_ the optimum solution of the LP relaxation.
 
 This post presents a naive (textbook) implementation of **Fractional Gomory Cuts** that uses the basic solution
 computed by CPLEX, the commercial Linear Programming solver used in our lab sessions.
-In practice, this post is an online supplement to one of my last exercise session.
+In practice, this post is an online supplement to one of my last exercise sessions.
 
 In order to solve the *"blackboard"* examples with [CPLEX](http://www-01.ibm.com/software/integration/optimization/cplex-optimizer/),
 it is necessary to use a couple of functions
@@ -32,7 +32,7 @@ As usual, all the sources used to write this post are publicly available on
 [my GitHub repository](https://github.com/stegua/MyBlogEntries/tree/master/GomoryCut).
 
 ### The basics
-Given a Integer Linear Program in the form:
+Given an Integer Linear Program in the form:
 
 $$(P) \qquad \min \{ cx \mid Ax \leq b, \, x \geq 0, \, x \mbox{ integer} \}$$
 
@@ -43,7 +43,7 @@ $$(P) \qquad \min \{ cx \mid Ax + Ix_S = b, \, x \geq 0, \, x \mbox{ integer}, \
 where $$I$$ is the identity matrix and $$x_S$$ is a vector of slack variables, one for each constraint in $$(P)$$.
 Let us denote by $$(\bar{P})$$ the linear relaxation of $$(P)$$ obtained by relaxing the integrality constraint.
 
-The optimum solution vector of $$(\bar{P})$$, if it exists and it is finite, it is used to derive a basis
+The optimum solution vector of $$(\bar{P})$$, if it exists and it is finite, is used to derive a basis
 (for a formal definition of **basis**, see [1] or [3]).
 Indeed, the basis partitions the columns of matrix $$A$$ into two submatrices
 $$B$$ and $$N$$, where $$B$$ is given by the columns corresponding to the basic variables,
@@ -65,7 +65,7 @@ In practice, for each fractional basic variable, it is possible to generate a va
 
 The key step to generate Gomory cuts is to get an optimal basis or, even better, the inverse of the basis matrix $$B^{-1}$$
 multiplied by $$A$$ and by $$b$$. Once we have that matrix, in order to generate a Gomory cut from a fractional
-basic variable, we just use the last equation in the previous derivation, applying it to each row of the system of inequalities
+basic variable, we just use the last equation in the previous derivation, applying it to each row of the system of inequalities.
 
 Given the optimal basis, the optimal basic vector is $$x_B=B^{-1}b$$, since the non basic variables are equal to zero.
 Let $$j$$ be the index of a fractional basic variable, and let $$i$$ be the index of the constraint corresponding to
@@ -114,12 +114,12 @@ POST_CMD( CPXaddrows (env, model, 0, n_cuts, idx, gc_rhs, gc_sense,
 ```
 
 The code reads row by row (index *i*) the inverse basis matrix $$B^{-1}$$ multiplied by $$A$$ (line 7),
-which is temporally stored in vector `z`,
+which is temporarily stored in vector `z`,
 and then the code stores the corresponding Gomory cut in the compact matrix given by vectors `rmatbeg`, `rmatind`, and `rmatval` (lines 8-15).
 The array `b_bar` contains the vector $$B^{-1}b$$ (line 21). In lines 26-27, all the cuts are added at once to the current LP data structure.
 
 On GitHub you find a small program that I wrote to generate Gomory cuts for problems written as $$(P)$$.
-The repository have an [example of execution](https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/README.md) of my program.
+The repository has an [example of execution](https://github.com/stegua/MyBlogEntries/blob/master/GomoryCut/README.md) of my program.
 
 
 The code is simple only because it is designed for small IPs in the form
@@ -139,18 +139,18 @@ the version-to-version speed-up given by the blue bars in the chart below
 
 {% img http://stegua.github.io/images/cplex65.png %}
 
-Gomory cuts are still subject of research, since they pose a number of implementation challenges. 
+Gomory cuts are still a subject of research, since they pose a number of implementation challenges. 
 These cuts suffer from severe numerical issues, mainly because the computation of the inverse matrix
 requires the division by its determinant.
 
-> "In 1959, [...] We started to experience the unpredictability of the computational results rather steadily" (Gomory, see [4])."
+> "In 1959, [...] We started to experience the unpredictability of the computational results rather steadily" (Gomory, see [4]).
 
 A recent paper by Cornuejols, Margot, and Nannicini deals with some of these issues [2].
 
-If you like to learn more about how the basis are computed in the CPLEX LP solver, there is very nice paper
+If you like to learn more about how the bases are computed in the CPLEX LP solver, there is a very nice paper
 by Bixby [3]. The paper explains different approaches to get the first basic feasible solution and
 gives some hints of the CPLEX implementation of that time, i.e., 1992. Though the paper does not deal with Gomory
-cuts directly, it is a very pleasant reading.
+cuts directly, it is a very pleasant read.
 
 To conclude, for those of you interested in [Optimization Stories](http://www.math.uiuc.edu/documenta/vol-ismp/vol-ismp.html)
 there is a nice chapter by G. Cornuejols about the **Ongoing Story of Gomory Cuts** [4].

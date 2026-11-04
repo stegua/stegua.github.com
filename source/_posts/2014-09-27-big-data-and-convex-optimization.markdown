@@ -12,11 +12,11 @@ sharing: true
 In the last months, I came several times across different definitions of **Big Data**.
 However, when someone asks me what Big Data means in practice, I am never
 able to give a satisfactory explanation. Indeed, you can easily find a flood
-of posts on twitter, blogs, newspaper, and even scientific journals and conferences,
+of posts on twitter, blogs, newspapers, and even scientific journals and conferences,
 but I always kept feeling that **Big Data** is a buzzword.
 
 By sheer serendipity, this morning I came across [three paragraphs](http://web.stanford.edu/~boyd/papers/pdf/admm_distr_stats.pdf) clearly
-stating the importance of Big Data from a scientific standpoint, that I like to **cross-post** here (the following paragraphs appear in the introduction of [1]):
+stating the importance of Big Data from a scientific standpoint, that I'd like to **cross-post** here (the following paragraphs appear in the introduction of [1]):
 
 *In all applied fields, it is now commonplace to attack problems through data analysis, particularly through the use of statistical and machine learning algorithms on what are often large datasets. In industry, this trend has been referred to as ‘Big Data’, and it has had a significant impact in areas as varied as artificial intelligence, internet applications, computational biology, medicine, finance, marketing, journalism, network analysis, and logistics.*
 
@@ -26,7 +26,7 @@ stating the importance of Big Data from a scientific standpoint, that I like to 
 
 *Given the significant work on decomposition methods and decentralized algorithms in the optimization community, it is natural to look to parallel optimization algorithms as a mechanism for solving large-scale statistical tasks. This approach also has the benefit that one algorithm could be flexible enough to solve many problems.*
 
-Even if I am not an expert of Convex Optimization [2], I do have my own **mathematical optimization** bias. 
+Even if I am not an expert in Convex Optimization [2], I do have my own **mathematical optimization** bias. 
 Likely, you may have a different opinion (that I am always happy to hear), but, honestly, the above paragraphs
 are the best content that I have read so far about **Big Data**.
 
@@ -36,4 +36,4 @@ are the best content that I have read so far about **Big Data**.
 *Distributed Optimization and Statistical Learning via the Alternating Direction Method of Multipliers*.
 Foundations and Trends in Machine Learning. Vol. 3, No. 1 (2010) 1–122. [[pdf]](http://web.stanford.edu/~boyd/papers/pdf/admm_distr_stats.pdf)
 
-[2] If you like to have a speedy overview of *Convex Optimization*, you may read a [J.F. Puget's blog post](https://www.ibm.com/developerworks/community/blogs/jfp/entry/convex_optimization?lang=en).
+[2] If you would like to have a speedy overview of *Convex Optimization*, you may read [J.F. Puget's blog post](https://www.ibm.com/developerworks/community/blogs/jfp/entry/convex_optimization?lang=en).

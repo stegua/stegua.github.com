@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Challenging MIPs instances"
+title: "Challenging MIP instances"
 date: 2012-12-13 18:11
 updated: 2012-12-13 18:11
 comments: true
@@ -50,16 +50,16 @@ and an initial mapping $$\pi$$ of each process to a single machine
 Each process consumes several _resources_, e.g., CPU, memory, and bandwidth.
 In the challenge, some processes were defined to be
 _transient_: they consume resources both on the machine where they are initially located,
-and in the machine they are going to be after the reassignment.
+and on the machine they are going to be after the reassignment.
 The problem asks to find a new assignment of processes to machines that minimizes a rather involved cost function.
 
-A basic ILP model will have a 0-1 variable $$x_{pi}$$ equals to 1 if you
+A basic ILP model will have a 0-1 variable $$x_{pi}$$ equal to 1 if you
 (re)assign process $$p$$ to machine $$i$$. The number of processes and the number of machines give
 a first clue on the size of the problem. 
 The constraints on the resource capacities yield a multi-dimensional knapsack subproblem for each machine.
 The Machine Reassignment Problem has other constraints (kind of logical 0-1 constraints), 
 but I do not want to bore you here with a full problem description. 
-If you like to see my model, please read the 
+If you would like to see my model, please read the 
 [AMPL model file](https://github.com/stegua/MyBlogEntries/blob/master/Roadef2012/ampl-scripts/roadef2012.mod). 
 
 ## A first attempt with Gurobi
@@ -69,7 +69,7 @@ The table below reports for each instance the best result obtained by the partic
 of the challenge (second column). The remaining four columns give 
 the upper bound (UB), the lower bound (LB), the number of branch-and-bound nodes, and the computation time in seconds
 obtained with Gurobi 5.0.1, a timeout of 300 seconds, and the default parameter setting on a rather old desktop
-(single core, 2Gb of RAM).
+(single core, 2GB of RAM).
 
 |----------|---------------|---------------|---------------|-------|-------|
 | Instance | Best Known UB | Upper Bound   | Lower Bound   | Nodes | Time  |
@@ -90,8 +90,8 @@ obtained with Gurobi 5.0.1, a timeout of 300 seconds, and the default parameter 
 Instances **a1-1**, **a1-3**, **a1-5** are solved to optimality within 300 seconds
 and hence they are not further considered.
 
-The remaining seven instances are the challenging instances mentioned at the begging of this post.
-The instances **a2-x** are embarrassing: they have an UB that is far away from both the best known UB
+The remaining seven instances are the challenging instances mentioned at the beginning of this post.
+The instances **a2-x** are embarrassing: they have a UB that is far away from both the best known UB
 and the computed LB.
 Specifically, look at the instance **a2-1**: the best result of the challenge has value 198, Gurobi
 (using my model) finds a solution with cost 54,350,836: you may agree that this is "_slightly_" more than 198.
@@ -99,14 +99,14 @@ At the same time the LB is only 110.
 
 Note that for all the **a2-x** instances the number of branch-and-bound nodes is zero.
 After 300 seconds the solver is still at the root node trying to generate cutting planes and/or
-running their primal heuristics. Using CPLEX 12.5 we got pretty similar results.
+running its primal heuristics. Using CPLEX 12.5 we got pretty similar results.
 
 This is why I think these instances are challenging for branch-and-cut solvers. 
 
 ## Search Strategies: Feasibility vs Optimality
-Commercial solvers have usually a meta-parameter that controls the search focus by setting other parameters
-(how they are precisely set is undocumented: do you know more about?).
-The two basic options of this parameter are (1) to focus on looking for feasible solution
+Commercial solvers usually have a meta-parameter that controls the search focus by setting other parameters
+(how they are precisely set is undocumented: do you know more about it?).
+The two basic options of this parameter are (1) to focus on looking for feasible solutions
 or (2) to focus on proving optimality.
 The name of this parameter is **MipEmphasis** in CPLEX and **MipFocus** in Gurobi. 
 Since the LPs are quite time consuming and after 300 seconds the solver is still at the root node, 
@@ -116,7 +116,7 @@ If we set the MipFocus to **feasibility** and we explicitly **disable all cut ge
 
 Look at the table below:
 the values of the upper bounds of instances **a1-2**, **a1-4**, and **a2-3** are slightly better than before: 
-this is a good news. However, for instance **a2-1** the upper bound is worse, and for the other three instances there is no difference. Moreover, the LBs are always weaker: as expected, there is no free lunch!
+this is good news. However, for instance **a2-1** the upper bound is worse, and for the other three instances there is no difference. Moreover, the LBs are always weaker: as expected, there is no free lunch!
 
 |----------|---------------|---------------|---------|-------| 
 | Instance | Upper Bound   | Lower Bound   | Gap     | Nodes |
@@ -135,12 +135,12 @@ If we want to keep a timeout of 300 seconds, there is little we can do, unless w
 
 > Can we improve those results with a branch-and-cut solver using a longer timeout?
 
-Most of the papers that uses branch-and-cut to solve hard problems have a timeout
-of at least one hour, and they start by running an heuristic for around 5 minutes.
+Most of the papers that use branch-and-cut to solve hard problems have a timeout
+of at least one hour, and they start by running a heuristic for around 5 minutes.
 Therefore, we can think of using the best results obtained by the participants of the 
 challenge as starting solution. 
 
-So, let us make a step backward: we enable all cut generators and we set all parameters at the default value.
+So, let us take a step back: we enable all cut generators and we set all parameters at the default value.
 In addition we set the time limit to one hour. The table below gives the new results.
 With this setting we are able to "prove" near-optimality of instance **a1-2**, and we reduce
 significantly the gap of instance **a2-4**.
@@ -187,7 +187,7 @@ With the focus on optimality you get better lower bounds, but you might not impr
 
 > 1) How to balance feasibility with optimality?
 
-To use branch-and-cut solver and to disable cut generators is counterintuitive, but if you do you, you get better
+To use a branch-and-cut solver and to disable cut generators is counterintuitive, but if you do, you get better
 primal bounds.  
 
 > 2) Why should I use a branch-and-cut solver then? 

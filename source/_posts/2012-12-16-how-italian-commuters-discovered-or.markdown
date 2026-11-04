@@ -8,7 +8,7 @@ comments: true
 categories: 
 ---
 
-Last week, more then 700,000 Italian commuters discovered the importance of Operations Research (OR).
+Last week, more than 700,000 Italian commuters discovered the importance of Operations Research (OR).
 Nobody explicitly mentioned OR, 
 but due to a horrible crew schedule of [Trenord](http://www.trenord.it) 
 (a train operator with around 330 trains and 2700 employees),
@@ -25,19 +25,19 @@ Likely, the system is not faulty, but it "_only_" had bad input data.
 
 ## What newspapers do not write
 
-Before the Goal System, Trenord was using a different software, produced by
+Before the Goal System, Trenord was using a different piece of software, produced by
 [Management Artificial Intelligence Operations Research srl (MAIOR)](http://www.maior.it)
 that is used by several public transportation companies in Italy,
-included [ATM](http://www.atm.it) that operates the subway and buses in Milan.
+including [ATM](http://www.atm.it) that operates the subway and buses in Milan.
 In addition, MAIOR collaborates with the _Politecnico di Milano_ and the _University of Pisa_
-to improve continuously its software.
+to continuously improve its software.
 Honestly, I am biased, since I collaborate with MAIOR. 
-However, Trenord dismissed the software of MAOIR
+However, Trenord dismissed the software of MAIOR
 without any specific complaint, since the management had decided to buy the Goal System software.
 
 Newspapers do not ask the following question:
 
-> Why to change a piece of software, if the previous one was working correctly?
+> Why change a piece of software, if the previous one was working correctly?
 
 In Italy, soccer players have a motto: "_squadra che vince non si cambia_".
 Maybe at Trenord nobody plays soccer.
@@ -48,7 +48,7 @@ since OR experts from MAIOR are traveling to Milan to
 help Trenord to improve the situation.
 
 ### Disclaimer (post edited on 18th December 2012)
-1. I am a Pavia-Milano commuter disappointed of the chaotic week we had.
-2. The information reported in this post were obtained with searches on google.it and published on Italian online magazines.
+1. I am a Pavia-Milano commuter disappointed by the chaotic week we had.
+2. The information reported in this post was obtained with searches on google.it and published on Italian online magazines.
 3. Surely, the Goal System is a piece of software as good as MAIOR software is.
 4. This post does not intend to offend anyone. 
