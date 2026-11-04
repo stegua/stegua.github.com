@@ -39,7 +39,7 @@ import cProfile
 # Download file from: 'http://norvig.com/big.txt'
 big = open('big.txt', 'r')
 
-# Read the while file
+# Read the whole file
 test = big.read()
 
 def RemoveBlanksFilter(in_str):
