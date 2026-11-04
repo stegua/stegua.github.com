@@ -119,7 +119,7 @@ Whenever the ground distance $$d(\mathbf{x},\mathbf{y})$$ is a metric, then $$\m
 I am being too technical, too early. Let me take a step back in *History*.
 
 ## Once Upon a Time: from Monge to Kantorovich
-The History of Optimal Transport is quite fascinating and it begins with the [*Mémoire sur la théorie des déblais et des remblais*](https://gallica.bnf.fr/ark:/12148/bpt6k35800/f796) by [Gaspard Monge](https://en.wikipedia.org/wiki/Gaspard_Monge) (1746-1818). I like to think of Gaspard as visiting the [Dune of Pilat](https://en.wikipedia.org/wiki/Dune_of_Pilat), near Bordeaux, and then writing his *Mémoire* while going back home... but this is only my imagination. Still, particles of sand give me the most concrete idea for passing from a continuous to a discrete problem.
+The History of Optimal Transport is quite fascinating and it begins with the [*Mémoire sur la théorie des déblais et des remblais*](https://gallica.bnf.fr/ark:/12148/bpt6k35800/f796) by [Gaspard Monge](https://en.wikipedia.org/wiki/Gaspard_Monge) (1746-1818). I like to think of Gaspard as visiting the [Dune du Pilat](https://en.wikipedia.org/wiki/Dune_of_Pilat), near Bordeaux, and then writing his *Mémoire* while going back home... but this is only my imagination. Still, particles of sand give me the most concrete idea for passing from a continuous to a discrete problem.
 
 {% img center ../../../../../../images/dune_pillat.JPG %}
 
@@ -141,14 +141,14 @@ For the record, Leonid Kantorovich won the Nobel Prize, and [his autobiography](
 
 Well, I have still so much to learn from the past!
 
-### Two Fields medal winners: Alessio Figalli and Cedric Villani
+### Two Fields Medal winners: Alessio Figalli and Cédric Villani
 If you think that Optimal Transport belongs to the past, you are wrong!
 
 Last summer (2018), in Rio de Janeiro, [Alessio Figalli](https://people.math.ethz.ch/~afigalli/) won the [Fields Medal](https://en.wikipedia.org/wiki/Fields_Medal) with this citation:
 
 > *"for his contributions to the **theory of optimal transport**, and its application to partial differential equations, metric geometry, and probability"*
 
-Alessio is not the first Fields medalist who worked on Optimal Transport. Already [Cedric Villani](https://cedricvillani.org/for-mathematicians/), who wrote the [most cited book](http://cedricvillani.org/wp-content/uploads/2012/08/B07.StFlour.pdf) on Optimal Transport [1], won the Fields Medal in 2010. I strongly suggest you look at any of [his lectures available on Youtube](https://www.youtube.com/watch?v=Kc0Kthyo0hU). And ... do you know that Villani spent a short period of time during his PhD in my current Math Dept. at University of Pavia?
+Alessio is not the first Fields medalist who worked on Optimal Transport. Already [Cédric Villani](https://cedricvillani.org/for-mathematicians/), who wrote the [most cited book](http://cedricvillani.org/wp-content/uploads/2012/08/B07.StFlour.pdf) on Optimal Transport [1], won the Fields Medal in 2010. I strongly suggest you look at any of [his lectures available on Youtube](https://www.youtube.com/watch?v=Kc0Kthyo0hU). And ... do you know that Villani spent a short period of time during his PhD in my current Math Dept. at University of Pavia?
 
 As an extra bonus, if you don't know what a Fields Medal is, you can have Robin Williams explain the prize in this clip taken from [Good Will Hunting](https://www.youtube.com/watch?v=TRU4YYxM7vU).
 
